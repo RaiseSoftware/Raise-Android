@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Raise</string>
+    <string name="text_create_game">Create game</string>
+    <string name="text_join_game">Join game</string>
+    <string name="text_game_id">Game ID</string>
+    <string name="text_submit">Submit</string>
+    <string name="text_passcode">Passcode</string>
+    <string name="text_scan_qrcode">Scan QR code to join</string>
+    <string name="text_enter_game_id">Enter Game ID to join</string>
+    <string name="select_poker_deck_type">Select poker deck type</string>
+    <string name="text_game_name">Game Name</string>
+    <string name="text_fibonacci">Fibonacci</string>
+    <string name="text_tshirt_sizes">T-Shirt Sizes</string>
+    <string name="text_require_passcode">Require Passcode?</string>
+    <string name="error_try_again">There was an issue. Please Try again</string>
+    <string name="text_start_game">Start Game</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_info_fragment">Hello info fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_qrcode_instructions">Anyone can scan QR Code to join. Long press to share</string>
+    <string name="text_game_details">Game Details</string>
+    <string name="text_or_divider">-------- or --------</string>
+    <string name="text_passcode_value">Passcode: %1$s</string>
+    <string name="text_game_id_value">Game ID: %1$s</string>
+    <string name="text_exit_game">Exit Poker Game</string>
+    <string name="text_sure_exit">Are you sure you want to exit this game?</string>
+    <string name="text_enter_name_id">Enter your name and the Game ID in order to join</string>
+    <string name="text_enter_name">Enter your name</string>
+    <string name="text_enter_gameid">Enter Game ID to join</string>
+    <string name="text_name_qrcode">Enter your name and scan the QR code in order to join</string>
+    <string name="text_qrcode_success">QR Code has successfully been entered</string>
+
+</resources>

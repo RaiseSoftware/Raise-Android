@@ -1,0 +1,62 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="Base.AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="alertDialogTheme">@style/AlertDialogStyle</item>
+    </style>
+
+    <style name="Intro.AppTheme" parent="Base.AppTheme">
+        <item name="colorPrimary">@color/introColorPrimary</item>
+        <item name="colorPrimaryDark">@color/introColorPrimaryDark</item>
+        <item name="colorControlNormal">@color/introColorPrimaryDark</item>
+        <item name="colorControlActivated">@color/introColorPrimaryDark</item>
+        <item name="android:windowBackground">@color/introColorPrimary</item>
+    </style>
+    
+    <style name="Pending.AppTheme" parent="Base.AppTheme">
+        <item name="colorPrimary">@color/pendingColorPrimary</item>
+        <item name="colorPrimaryDark">@color/pendingColorPrimaryDark</item>
+        <item name="colorControlNormal">@color/pendingColorPrimaryDark</item>
+        <item name="colorControlActivated">@color/pendingColorPrimaryDark</item>
+        <item name="android:windowBackground">@color/pendingColorPrimary</item>
+    </style>
+
+    <style name="Poker.AppTheme" parent="Base.AppTheme">
+        <item name="colorPrimary">@color/pokerColorPrimary</item>
+        <item name="colorPrimaryDark">@color/pokerColorPrimaryDark</item>
+        <item name="colorControlNormal">@color/pokerColorPrimaryDark</item>
+        <item name="colorControlActivated">@color/pokerColorPrimaryDark</item>
+        <item name="android:windowBackground">@color/pokerColorPrimary</item>
+    </style>
+
+    <style name="AlertDialogStyle" parent="Base.AppTheme">
+        <item name="android:colorAccent">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ButtonText">
+        <item name="android:textSize">@dimen/text_button_size</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+
+    <style name="BottomBarButton" parent="ButtonText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="back_button">Back button</string>
+    <string name="text_qr_code">QR Code</string>
+    <string name="qr_code_success_check_mark">QR code success check mark</string>
+    <string name="poker_card">poker card</string>
+    <string name="close_button">Close Button</string>
+    <string name="settings">Settings</string>
+</resources>

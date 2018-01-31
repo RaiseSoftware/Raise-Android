@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="introColorPrimary">@color/pistachio</color>
+    <color name="introColorPrimaryDark">@color/strong_pistachio</color>
+    <color name="pendingColorPrimary">@color/pure_orange</color>
+    <color name="pendingColorPrimaryDark">@color/strong_orange</color>
+    <color name="pokerColorPrimary">@color/light_blue</color>
+    <color name="pokerColorPrimaryDark">@color/tall_blue</color>
+    <color name="colorAccent">@color/white</color>
+
+    <color name="white">#fff</color>
+    <color name="black">#000</color>
+    <color name="trolley_grey">#808080</color>
+
+    <color name="pistachio">#76c23b</color>
+    <color name="strong_pistachio">#63b42d</color>
+
+    <color name="pure_orange">#ff9800</color>
+    <color name="strong_orange">#ff8500</color>
+
+    <color name="light_blue">#53a1ff</color>
+    <color name="tall_blue">#428fff</color>
+
+    <color name="mcgpalette0_50">#eff8e7</color>
+    <color name="mcgpalette0_100">#d6edc4</color>
+    <color name="mcgpalette0_200">#bbe19d</color>
+    <color name="mcgpalette0_300">#9fd476</color>
+    <color name="mcgpalette0_400">#8bcb58</color>
+    <color name="mcgpalette0_500">#76c23b</color>
+    <color name="mcgpalette0_600">#6ebc35</color>
+    <color name="mcgpalette0_700">#63b42d</color>
+    <color name="mcgpalette0_800">#59ac26</color>
+    <color name="mcgpalette0_900">#469f19</color>
+    <color name="mcgpalette0_A100">#e1ffd4</color>
+    <color name="mcgpalette0_A200">#beffa1</color>
+    <color name="mcgpalette0_A400">#9bff6e</color>
+    <color name="mcgpalette0_A700">#89ff55</color>
+
+    <color name="mcgpalette1_50">#eaf4ff</color>
+    <color name="mcgpalette1_100">#cbe3ff</color>
+    <color name="mcgpalette1_200">#a9d0ff</color>
+    <color name="mcgpalette1_300">#87bdff</color>
+    <color name="mcgpalette1_400">#6dafff</color>
+    <color name="mcgpalette1_500">#53a1ff</color>
+    <color name="mcgpalette1_600">#4c99ff</color>
+    <color name="mcgpalette1_700">#428fff</color>
+    <color name="mcgpalette1_800">#3985ff</color>
+    <color name="mcgpalette1_900">#2974ff</color>
+    <color name="mcgpalette1_A200">#ffffff</color>
+    <color name="mcgpalette1_A400">#d6e3ff</color>
+    <color name="mcgpalette1_A700">#bdd2ff</color>
+
+    <color name="mcgpalette2_50">#fff3e0</color>
+    <color name="mcgpalette2_100">#ffe0b3</color>
+    <color name="mcgpalette2_200">#ffcc80</color>
+    <color name="mcgpalette2_300">#ffb74d</color>
+    <color name="mcgpalette2_400">#ffa726</color>
+    <color name="mcgpalette2_500">#ff9800</color>
+    <color name="mcgpalette2_600">#ff9000</color>
+    <color name="mcgpalette2_700">#ff8500</color>
+    <color name="mcgpalette2_800">#ff7b00</color>
+    <color name="mcgpalette2_900">#ff6a00</color>
+    <color name="mcgpalette2_A200">#fff7f2</color>
+    <color name="mcgpalette2_A400">#ffd6bf</color>
+    <color name="mcgpalette2_A700">#ffc5a6</color>
+</resources>

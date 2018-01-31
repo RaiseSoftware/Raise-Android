@@ -1,0 +1,220 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'io.fabric'
+
+apply plugin: 'jacoco'
+
+androidExtensions {
+    experimental = true
+}
+
+android {
+    signingConfigs {
+        release {
+            keyAlias System.getenv('KEY_ALIAS') ?: "${key_alias}"
+            keyPassword System.getenv('KEY_PASSWORD') ?: "${key_password}"
+            storeFile file(System.getenv('STORE_FILE_LOCATION') ?: "${store_file_location}")
+            storePassword System.getenv('STORE_PASSWORD') ?: "${store_password}"
+        }
+    }
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.cameronvwilliams.raise"
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 1
+        versionName "0.1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        buildConfigField "String", "ADMOB_APP_ID", System.getenv('AD_MOB_ID') ?: "${ad_mob_id}"
+        buildConfigField "String", "AD_UNIT_ID", System.getenv('AD_UNIT_ID') ?:  "${ad_unit_id}"
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: System.getenv('HOCKEYAPP_APP_ID') ?: "${hockeyapp_app_id}"]
+            testCoverageEnabled = true
+            minifyEnabled false
+            debuggable true
+            buildConfigField "String", "SOCKET_URL", '"http://10.0.2.2:3000/"'
+            buildConfigField "String", "API_URL", '"http://10.0.2.2:3000/api/"'
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "SOCKET_URL", '"https://raise.cameronvwilliams.com/"'
+            buildConfigField "String", "API_URL", '"https://raise.cameronvwilliams.com/api/"'
+        }
+    }
+    sourceSets {
+        debug {
+            java.srcDirs = ['src/debug/java']
+            manifest.srcFile 'src/debug/AndroidManifest.xml'
+        }
+    }
+    testOptions {
+        unitTests {
+            all {
+                jacoco {
+                    includeNoLocationClasses = true
+                }
+            }
+            includeAndroidResources = true
+        }
+    }
+}
+
+jacoco {
+    toolVersion = "0.7.9"
+}
+
+dependencies {
+    def retrofitVersion = '2.3.0'
+    def okhttpVersion = '3.9.0'
+    def supportVersion = '26.1.0'
+    def playServicesVersion = '11.8.0'
+    def gsonVersion = '2.8.2'
+    def daggerVersion = '2.11'
+    def rxjavaVersion = '2.1.5'
+    def rxAndroidVersion = '2.0.1'
+    def socketIOVersion = '1.0.0'
+    def timberVersion = '4.6.0'
+
+    //Support Libraries
+    implementation "com.android.support:appcompat-v7:$supportVersion"
+    implementation "com.android.support:design:$supportVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
+
+    //Play Services Libraries
+    implementation "com.google.android.gms:play-services-vision:$playServicesVersion"
+
+    //Crashlytics
+    implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+        transitive = true
+    }
+
+    // Firebase
+    implementation "com.google.firebase:firebase-core:$playServicesVersion"
+    implementation "com.google.firebase:firebase-ads:$playServicesVersion"
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+
+    //OkHttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+
+    //Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+
+    //Gson
+    implementation "com.google.code.gson:gson:$gsonVersion"
+
+    //Dagger
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    implementation 'com.android.support:support-v4:26.1.0'
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+
+    //RxJava
+    implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+
+    // Socket IO
+    implementation("io.socket:socket.io-client:$socketIOVersion") {
+        exclude group: 'org.json', module: 'json'
+    }
+
+    //Timber
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+
+    // Dexter
+    implementation 'com.karumi:dexter:4.2.0'
+
+    //Testing Libs
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.11.0'
+    testImplementation 'org.robolectric:robolectric:3.5.1'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs'
+    })
+    debugImplementation 'com.facebook.stetho:stetho:1.5.0'
+    debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+
+    // Hockey App
+    debugImplementation 'net.hockeyapp.android:HockeySDK:5.0.4'
+    releaseImplementation 'com.android.support:multidex:1.0.2'
+}
+
+task copyTestClasses(type: Copy) {
+    from "build/tmp/kotlin-classes/debugUnitTest"
+    into "build/intermediates/classes/debug"
+}
+
+task copySdkClasses(type: Copy) {
+    from "build/tmp/kotlin-classes/debug"
+    into "build/intermediates/classes/debug"
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+    group = 'Reporting'
+    description = 'Generate Jacoco coverage reports'
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+    def excludes = [
+            '**/R.class',
+            '**/R$*.class',
+            '**/BuildConfig.*',
+            '**/Manifest*.*',
+            'android/**/*.*',
+            '**/Lambda$*.class',
+            '**/Lambda.class',
+            '**/*Lambda.class',
+            '**/*Lambda*.class',
+            '**/*Lambda*.*',
+            '**/*Builder.*',
+            '**/*_MembersInjector.class',
+            '**/*_MembersInjector*.*',
+            '**/*_*Factory*.*',
+            '**/*Component*.*',
+            '**/*Module*.*',
+            '**/R.class',
+            '**/R$*.class',
+            '**/*$ViewInjector*.*',
+            '**/BuildConfig.*',
+            '**/Manifest*.*',
+            '**/*Test*.*',
+            'android/**/*.*',
+            '**/*Fragment.*',
+            '**/*Activity.*'
+    ]
+    // generated classes
+    classDirectories = fileTree(
+            dir: "$buildDir/intermediates/classes/debug",
+            excludes: excludes
+    ) + fileTree(
+            dir: "$buildDir/tmp/kotlin-classes/debug",
+            excludes: excludes
+    )
+
+    // sources
+    sourceDirectories = files([
+            android.sourceSets.main.java.srcDirs,
+            "src/main/kotlin"
+    ])
+    executionData = files("$buildDir/jacoco/testDebugUnitTest.exec")
+}
+
+apply plugin: 'com.google.gms.google-services'
