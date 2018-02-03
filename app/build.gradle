@@ -39,8 +39,9 @@ android {
         debug {
             applicationIdSuffix ".debug"
             manifestPlaceholders = [HOCKEYAPP_APP_ID: System.getenv('HOCKEYAPP_APP_ID') ?: "${hockeyapp_app_id}"]
-            testCoverageEnabled = true
+            testCoverageEnabled true
             minifyEnabled false
+            shrinkResources false
             debuggable true
             buildConfigField "String", "SOCKET_URL", '"http://10.0.2.2:3000/"'
             buildConfigField "String", "API_URL", '"http://10.0.2.2:3000/api/"'
@@ -48,6 +49,7 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
+            shrinkResources true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "SOCKET_URL", '"https://raise.cameronvwilliams.com/"'

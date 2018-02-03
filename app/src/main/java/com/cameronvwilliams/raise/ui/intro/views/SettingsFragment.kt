@@ -3,6 +3,7 @@ package com.cameronvwilliams.raise.ui.intro.views
 
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,9 @@ class SettingsFragment : BaseFragment() {
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
+
+        //privacyPolicy.text = Html.fromHtml(getString(R.string.html_privacy_policy))
+
     }
 
     companion object {

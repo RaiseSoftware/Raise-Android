@@ -10,8 +10,6 @@ import javax.inject.Inject
 
 class PokerActivity : BaseActivity() {
 
-    override val currentTheme: Int = R.style.Poker_AppTheme
-
     @Inject
     lateinit var navigator: Navigator
 

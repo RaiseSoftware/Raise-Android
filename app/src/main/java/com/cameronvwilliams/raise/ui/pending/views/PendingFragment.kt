@@ -99,7 +99,7 @@ class PendingFragment : BaseFragment() {
         }
 
         backButton.setOnClickListener {
-            onBackPressed()
+            backButtonDialog.show()
         }
 
         if (pokerGame.requiresPasscode) {

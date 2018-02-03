@@ -10,8 +10,6 @@ import javax.inject.Inject
 
 open class IntroActivity : BaseActivity() {
 
-    override val currentTheme: Int = R.style.Intro_AppTheme
-
     @Inject
     lateinit var navigator: Navigator
 

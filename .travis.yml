@@ -19,3 +19,6 @@ cache:
     - $HOME/.android/build-cache
 script:
   - ./gradlew clean lint test jacocoTestReport build
+branches:
+  only:
+    - master
