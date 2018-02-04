@@ -17,10 +17,10 @@ androidExtensions {
 android {
     signingConfigs {
         release {
-            keyAlias System.getenv('KEY_ALIAS') ?: "${key_alias}"
-            keyPassword System.getenv('KEY_PASSWORD') ?: "${key_password}"
-            storeFile file(System.getenv('STORE_FILE_LOCATION') ?: "${store_file_location}")
-            storePassword System.getenv('STORE_PASSWORD') ?: "${store_password}"
+            keyAlias "${System.getenv('KEY_ALIAS')}" ?: "${key_alias}"
+            keyPassword "${System.getenv('KEY_PASSWORD')}" ?: "${key_password}"
+            storeFile file("${System.getenv('STORE_FILE_LOCATION')}" ?: "${store_file_location}")
+            storePassword "${System.getenv('STORE_PASSWORD')}" ?: "${store_password}"
         }
     }
     compileSdkVersion 26
@@ -38,7 +38,7 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
-            manifestPlaceholders = [HOCKEYAPP_APP_ID: System.getenv('HOCKEYAPP_APP_ID') ?: "${hockeyapp_app_id}"]
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: "${System.getenv('HOCKEYAPP_APP_ID')}" ?: "${hockeyapp_app_id}"]
             testCoverageEnabled true
             minifyEnabled false
             shrinkResources false
