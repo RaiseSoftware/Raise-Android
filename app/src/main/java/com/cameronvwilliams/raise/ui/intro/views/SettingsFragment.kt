@@ -3,7 +3,6 @@ package com.cameronvwilliams.raise.ui.intro.views
 
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,8 @@ import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
 import kotlinx.android.synthetic.main.fragment_settings.*
+import android.content.Intent
+import com.cameronvwilliams.raise.BuildConfig
 
 class SettingsFragment : BaseFragment() {
 
@@ -25,11 +26,53 @@ class SettingsFragment : BaseFragment() {
 
         toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_arrow_back_white_24dp, null)
         toolbar.setNavigationOnClickListener {
-            onBackPressed()
+            if (!activity.supportFragmentManager.popBackStackImmediate("intro", 0)) {
+                activity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.layoutRoot, IntroFragment.newInstance())
+                    .setCustomAnimations(
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_left,
+                        R.anim.slide_out_right,
+                        R.anim.slide_in_right
+                    )
+                    .addToBackStack("intro")
+                    .commit()
+            }
         }
 
-        //privacyPolicy.text = Html.fromHtml(getString(R.string.html_privacy_policy))
+        aboutRow.setOnClickListener {
+            activity.supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_left,
+                    R.anim.slide_out_right,
+                    R.anim.slide_in_right
+                )
+                .replace(R.id.layoutRoot, AboutFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
+        }
 
+        shareRow.setOnClickListener {
+            val sendIntent = Intent()
+            sendIntent.action = Intent.ACTION_SEND
+            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.text_share_app, BuildConfig.APPLICATION_ID))
+            sendIntent.type = "text/plain"
+            startActivity(Intent.createChooser(sendIntent, getString(R.string.text_choose_app)))
+        }
+
+        feedbackRow.setOnClickListener {
+            activity.supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_left,
+                    R.anim.slide_out_right,
+                    R.anim.slide_in_right
+                )
+                .replace(R.id.layoutRoot, FeedbackFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     companion object {

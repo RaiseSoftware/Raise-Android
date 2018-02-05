@@ -14,6 +14,7 @@ androidExtensions {
     experimental = true
 }
 
+def hockeyAppId = System.getenv('HOCKEYAPP_APP_ID') ?: hockeyapp_app_id
 android {
     signingConfigs {
         release {
@@ -33,12 +34,12 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         buildConfigField "String", "ADMOB_APP_ID", System.getenv('AD_MOB_ID') ?: "${ad_mob_id}"
-        buildConfigField "String", "AD_UNIT_ID", System.getenv('AD_UNIT_ID') ?:  "${ad_unit_id}"
+        buildConfigField "String", "AD_UNIT_ID", System.getenv('AD_UNIT_ID') ?: "${ad_unit_id}"
     }
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
-            manifestPlaceholders = [HOCKEYAPP_APP_ID: "${System.getenv('HOCKEYAPP_APP_ID')}" ?: "${hockeyapp_app_id}"]
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: "${hockeyAppId}"]
             testCoverageEnabled true
             minifyEnabled false
             shrinkResources false

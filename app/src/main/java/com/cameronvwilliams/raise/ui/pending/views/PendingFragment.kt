@@ -116,6 +116,7 @@ class PendingFragment : BaseFragment() {
         dm.getGameStart()
             .subscribe { game ->
                 navigator.goToPokerGameView()
+                activity.finish()
             }
     }
 }

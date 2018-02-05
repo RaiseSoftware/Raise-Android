@@ -20,4 +20,13 @@ abstract class IntroFragmentProvider {
 
     @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
     abstract fun provideSettingsFragment(): SettingsFragment
+
+    @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
+    abstract fun provideAboutFragment(): AboutFragment
+
+    @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
+    abstract fun provideHtmlFragment(): HtmlFragment
+
+    @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
+    abstract fun provideFeedbackFragment(): FeedbackFragment
 }
