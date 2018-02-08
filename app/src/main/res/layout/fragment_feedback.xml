@@ -12,7 +12,30 @@
         android:layout_width="match_parent"
         android:background="@color/introColorPrimary"
         android:layout_height="?attr/actionBarSize"
+        app:theme="@style/ToolBarStyle"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <LinearLayout
+        android:id="@+id/faqRow"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:orientation="horizontal"
+        android:layout_marginStart="16dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:text="Frequently Asked Questions" />
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical|end"
+            android:src="@drawable/ic_keyboard_arrow_right_grey_24dp"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/rateUsRow"
@@ -33,7 +56,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="center_vertical|end"
-            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"/>
+            android:src="@drawable/ic_keyboard_arrow_right_grey_24dp"/>
 
     </LinearLayout>
 
@@ -56,7 +79,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="center_vertical|end"
-            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"/>
+            android:src="@drawable/ic_keyboard_arrow_right_grey_24dp"/>
 
     </LinearLayout>
 
