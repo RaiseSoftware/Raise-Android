@@ -68,7 +68,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
     }
 
     override fun onBackPressed(): Boolean {
-        navigator.goToIntro()
+        navigator.goBack()
 
         return true
     }

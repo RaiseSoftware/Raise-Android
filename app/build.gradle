@@ -14,14 +14,18 @@ androidExtensions {
     experimental = true
 }
 
+def alias = System.getenv('KEY_ALIAS') ?: "${key_alias}"
+def password = System.getenv('KEY_PASSWORD') ?: "${key_password}"
+def storeFileLocation = System.getenv('STORE_FILE_LOCATION') ?: "${store_file_location}"
+def strPassword = System.getenv('STORE_PASSWORD') ?: "${store_password}"
 def hockeyAppId = System.getenv('HOCKEYAPP_APP_ID') ?: hockeyapp_app_id
 android {
     signingConfigs {
         release {
-            keyAlias "${System.getenv('KEY_ALIAS')}" ?: "${key_alias}"
-            keyPassword "${System.getenv('KEY_PASSWORD')}" ?: "${key_password}"
-            storeFile file("${System.getenv('STORE_FILE_LOCATION')}" ?: "${store_file_location}")
-            storePassword "${System.getenv('STORE_PASSWORD')}" ?: "${store_password}"
+            keyAlias alias
+            keyPassword password
+            storeFile file(storeFileLocation)
+            storePassword strPassword
         }
     }
     compileSdkVersion 26

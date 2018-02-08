@@ -102,6 +102,6 @@ class CreatePresenterTest {
 
     @Test fun onBackPressed() {
         assertTrue(createPresenter.onBackPressed())
-        verify(navigator).goToIntro()
+        verify(navigator).goBack()
     }
 }
