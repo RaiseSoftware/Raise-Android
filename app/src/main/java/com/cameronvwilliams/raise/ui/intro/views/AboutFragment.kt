@@ -22,7 +22,7 @@ class AboutFragment : BaseFragment() {
         toolbar.title = getString(R.string.text_about)
         toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_arrow_back_white_24dp, null)
         toolbar.setNavigationOnClickListener {
-
+            activity.supportFragmentManager.popBackStackImmediate()
         }
         versionText.text = "Version ${BuildConfig.VERSION_NAME}"
         privacyPolicyRow.setOnClickListener {

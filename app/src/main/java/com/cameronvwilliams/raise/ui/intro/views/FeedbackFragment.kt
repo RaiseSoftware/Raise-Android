@@ -25,7 +25,7 @@ class FeedbackFragment : BaseFragment() {
         toolbar.title = getString(R.string.text_feedback)
         toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_arrow_back_white_24dp, null)
         toolbar.setNavigationOnClickListener {
-
+            activity.supportFragmentManager.popBackStackImmediate()
         }
 
         rateUsRow.setOnClickListener {
@@ -33,7 +33,12 @@ class FeedbackFragment : BaseFragment() {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)))
             } catch (e: android.content.ActivityNotFoundException) {
                 Timber.e(e)
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)))
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)
+                    )
+                )
             }
         }
 

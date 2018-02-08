@@ -26,18 +26,7 @@ class SettingsFragment : BaseFragment() {
 
         toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_arrow_back_white_24dp, null)
         toolbar.setNavigationOnClickListener {
-            if (!activity.supportFragmentManager.popBackStackImmediate("intro", 0)) {
-                activity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.layoutRoot, IntroFragment.newInstance())
-                    .setCustomAnimations(
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_left,
-                        R.anim.slide_out_right,
-                        R.anim.slide_in_right
-                    )
-                    .addToBackStack("intro")
-                    .commit()
-            }
+            activity.supportFragmentManager.popBackStackImmediate()
         }
 
         aboutRow.setOnClickListener {
