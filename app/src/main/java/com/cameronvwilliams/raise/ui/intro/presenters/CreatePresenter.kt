@@ -8,6 +8,7 @@ import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.IntroContract
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.security.InvalidParameterException
 
 class CreatePresenter(private val navigator: Navigator, private val dm: DataManager) :
     IntroContract.CreateUserActions {
@@ -26,7 +27,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
         val deckType: DeckType = when (selectedDeckType) {
             actions.RADIO_FIBONACCI -> DeckType.FIBONACCI
             actions.RADIO_T_SHIRT -> DeckType.T_SHIRT
-            else -> throw Exception()
+            else -> throw IllegalArgumentException()
         }
 
         val disposable: Disposable = dm.createPokerGame(PokerGame(gameName, deckType.type, requirePasscode))
@@ -38,7 +39,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
                 if (actions.shouldShowInterstitialAd()) {
                     createdPokerGame = pokerGame
                     selectedUserName = userName
-                    actions.shouldShowInterstitialAd()
+                    actions.showInterstitialAd()
                 } else {
                     navigator.goToPendingView(pokerGame, userName)
                 }
@@ -67,7 +68,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
     }
 
     override fun onBackPressed(): Boolean {
-        navigator.goToIntro()
+        navigator.goBack()
 
         return true
     }

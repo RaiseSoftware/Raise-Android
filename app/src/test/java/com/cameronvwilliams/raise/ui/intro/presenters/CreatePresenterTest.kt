@@ -66,7 +66,7 @@ class CreatePresenterTest {
         inOrder.verify(actions).showDefaultErrorSnackBar()
     }
 
-    @Test(expected = Exception::class) fun onCreateButtonIncorrectDeckType() {
+    @Test(expected = IllegalArgumentException::class) fun onCreateButtonIncorrectDeckType() {
         createPresenter.onCreateButtonClicked("", "",5,true)
     }
 
@@ -102,6 +102,6 @@ class CreatePresenterTest {
 
     @Test fun onBackPressed() {
         assertTrue(createPresenter.onBackPressed())
-        verify(navigator).goToIntro()
+        verify(navigator).goBack()
     }
 }

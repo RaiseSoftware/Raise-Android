@@ -12,7 +12,6 @@ import javax.inject.Inject
 
 
 class PendingActivity : BaseActivity() {
-    override val currentTheme: Int = R.style.Pending_AppTheme
 
     @Inject
     lateinit var navigator: Navigator

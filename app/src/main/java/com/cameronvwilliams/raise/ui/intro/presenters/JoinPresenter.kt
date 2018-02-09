@@ -119,7 +119,7 @@ class JoinPresenter(
     }
 
     override fun onBackPressed(): Boolean {
-        navigator.goToIntro()
+        navigator.goBack()
         return true
     }
 

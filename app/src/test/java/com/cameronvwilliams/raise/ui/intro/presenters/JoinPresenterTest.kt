@@ -38,6 +38,6 @@ class JoinPresenterTest {
 
     @Test fun onBackPressed() {
         assertTrue(joinPresenter.onBackPressed())
-        Mockito.verify(navigator).goToIntro()
+        Mockito.verify(navigator).goBack()
     }
 }

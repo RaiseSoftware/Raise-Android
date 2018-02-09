@@ -20,6 +20,15 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
+
+-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+-optimizations !method/inlining/*
+-optimizationpasses 5
+-allowaccessmodification
+
 # Crashlytics
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable
@@ -33,4 +42,17 @@
 -dontwarn retrofit2.Platform$Java8
 -keepattributes Signature
 -keepattributes Exceptions
+
+# Okhttp
+-dontwarn okhttp3.**
 -dontwarn okio.**
+-dontwarn javax.annotation.**
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+# Gson
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
+# Raise
+-keep class com.cameronvwilliams.raise.data.model.** { *; }

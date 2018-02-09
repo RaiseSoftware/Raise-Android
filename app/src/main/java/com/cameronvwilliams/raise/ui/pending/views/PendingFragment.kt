@@ -87,7 +87,7 @@ class PendingFragment : BaseFragment() {
             .setPositiveButton(android.R.string.yes, { dialog, _ ->
                 dm.leaveGame()
                 dialog.dismiss()
-                onBackPressed()
+                activity.finish()
             })
             .setNegativeButton(android.R.string.no, { dialog, _ ->
                 dialog.dismiss()
@@ -99,7 +99,7 @@ class PendingFragment : BaseFragment() {
         }
 
         backButton.setOnClickListener {
-            onBackPressed()
+            backButtonDialog.show()
         }
 
         if (pokerGame.requiresPasscode) {
@@ -116,6 +116,13 @@ class PendingFragment : BaseFragment() {
         dm.getGameStart()
             .subscribe { game ->
                 navigator.goToPokerGameView()
+                activity.finish()
             }
+    }
+
+    override fun onBackPressed(): Boolean {
+        backButtonDialog.show()
+
+        return true
     }
 }

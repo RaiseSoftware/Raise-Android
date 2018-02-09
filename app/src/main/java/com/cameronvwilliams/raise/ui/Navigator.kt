@@ -17,6 +17,10 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
 
     // I decided not to include this in the article because this is more like a corner case, but I think I have quite clean solution for that. To implement this, Navigator should recieve a list of requestCodes in the constructor, one for each “start for result” action he can do. This list is provided by somebody who can receive onActivityResult(). In onActivityResult() you map requestCode to the proper Navigator and pass Intent to it. Navigator then unwrap Intent and pass pure data to the Presenter. So still all navigation related stuff will be in the Navigator.
 
+    fun goBack() {
+        fm.popBackStackImmediate()
+    }
+
     fun goToIntro(animate: Boolean = true) {
         if (!fm.popBackStackImmediate("intro", 0)) {
             fm.beginTransaction()

@@ -11,8 +11,6 @@ import javax.inject.Inject
 
 class IntroActivityDebug: BaseActivity() {
 
-    override val currentTheme: Int = R.style.Intro_AppTheme
-
     @Inject lateinit var navigator: Navigator
 
     override fun onCreate(savedInstanceState: Bundle?) {

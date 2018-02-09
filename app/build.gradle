@@ -14,13 +14,19 @@ androidExtensions {
     experimental = true
 }
 
+def alias = System.getenv('KEY_ALIAS') ?: "${key_alias}"
+def password = System.getenv('KEY_PASSWORD') ?: "${key_password}"
+def storeFileLocation = System.getenv('STORE_FILE_LOCATION') ?: "${store_file_location}"
+def strPassword = System.getenv('STORE_PASSWORD') ?: "${store_password}"
+def hockeyAppId = System.getenv('HOCKEYAPP_APP_ID') ?: hockeyapp_app_id
+def buildVersionCode = System.getenv("TRAVIS_BUILD_NUMBER") as Integer ?: 1
 android {
     signingConfigs {
         release {
-            keyAlias System.getenv('KEY_ALIAS') ?: "${key_alias}"
-            keyPassword System.getenv('KEY_PASSWORD') ?: "${key_password}"
-            storeFile file(System.getenv('STORE_FILE_LOCATION') ?: "${store_file_location}")
-            storePassword System.getenv('STORE_PASSWORD') ?: "${store_password}"
+            keyAlias alias
+            keyPassword password
+            storeFile file(storeFileLocation)
+            storePassword strPassword
         }
     }
     compileSdkVersion 26
@@ -28,19 +34,20 @@ android {
         applicationId "com.cameronvwilliams.raise"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 1
-        versionName "0.1.0"
+        versionCode buildVersionCode
+        versionName "0.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         buildConfigField "String", "ADMOB_APP_ID", System.getenv('AD_MOB_ID') ?: "${ad_mob_id}"
-        buildConfigField "String", "AD_UNIT_ID", System.getenv('AD_UNIT_ID') ?:  "${ad_unit_id}"
+        buildConfigField "String", "AD_UNIT_ID", System.getenv('AD_UNIT_ID') ?: "${ad_unit_id}"
     }
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
-            manifestPlaceholders = [HOCKEYAPP_APP_ID: System.getenv('HOCKEYAPP_APP_ID') ?: "${hockeyapp_app_id}"]
-            testCoverageEnabled = true
+            manifestPlaceholders = [HOCKEYAPP_APP_ID: "${hockeyAppId}"]
+            testCoverageEnabled true
             minifyEnabled false
+            shrinkResources false
             debuggable true
             buildConfigField "String", "SOCKET_URL", '"http://10.0.2.2:3000/"'
             buildConfigField "String", "API_URL", '"http://10.0.2.2:3000/api/"'
@@ -48,6 +55,7 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
+            shrinkResources true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "SOCKET_URL", '"https://raise.cameronvwilliams.com/"'

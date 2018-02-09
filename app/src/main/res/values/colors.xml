@@ -8,9 +8,11 @@
     <color name="pokerColorPrimaryDark">@color/tall_blue</color>
     <color name="colorAccent">@color/white</color>
 
+    <!-- Neutrals -->
     <color name="white">#fff</color>
     <color name="black">#000</color>
     <color name="trolley_grey">#808080</color>
+    <color name="gray98">#fafafa</color>
 
     <color name="pistachio">#76c23b</color>
     <color name="strong_pistachio">#63b42d</color>
