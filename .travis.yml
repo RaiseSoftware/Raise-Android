@@ -18,9 +18,6 @@ cache:
     - "$HOME/.android/build-cache"
 script:
   - "./gradlew clean lint test jacocoTestReport assembleDebug assembleRelease"
-branches:
-  only:
-    - master
 before_install:
   - openssl aes-256-cbc -K $encrypted_7df291687e82_key -iv $encrypted_7df291687e82_iv
     -in raise-software-ks.jks.enc -out ./raise-software-ks.jks -d
