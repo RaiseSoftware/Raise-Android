@@ -19,6 +19,7 @@ def password = System.getenv('KEY_PASSWORD') ?: "${key_password}"
 def storeFileLocation = System.getenv('STORE_FILE_LOCATION') ?: "${store_file_location}"
 def strPassword = System.getenv('STORE_PASSWORD') ?: "${store_password}"
 def hockeyAppId = System.getenv('HOCKEYAPP_APP_ID') ?: hockeyapp_app_id
+def buildVersionCode = System.getenv("TRAVIS_BUILD_NUMBER") as Integer ?: 1
 android {
     signingConfigs {
         release {
@@ -33,8 +34,8 @@ android {
         applicationId "com.cameronvwilliams.raise"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 1
-        versionName "0.1.0"
+        versionCode buildVersionCode
+        versionName "0.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         buildConfigField "String", "ADMOB_APP_ID", System.getenv('AD_MOB_ID') ?: "${ad_mob_id}"
