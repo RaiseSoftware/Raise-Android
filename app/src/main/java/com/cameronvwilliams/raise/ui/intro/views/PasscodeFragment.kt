@@ -10,7 +10,7 @@ import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.intro.IntroContract
 import com.cameronvwilliams.raise.util.onChange
-import kotlinx.android.synthetic.main.fragment_passcode.*
+import kotlinx.android.synthetic.main.intro_passcode_fragment.*
 import javax.inject.Inject
 
 class PasscodeFragment : BaseFragment(), IntroContract.PasscodeViewActions {
@@ -47,7 +47,7 @@ class PasscodeFragment : BaseFragment(), IntroContract.PasscodeViewActions {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_passcode, container, false)
+        return inflater.inflate(R.layout.intro_passcode_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,7 +68,7 @@ class PasscodeFragment : BaseFragment(), IntroContract.PasscodeViewActions {
                 player = arguments!!.getPlayer()
             }
 
-            actions.onSubmitButtonClick(gameId, passcodeEditText.text.toString(), player!!.userName)
+            actions.onSubmitButtonClick(gameId, passcodeEditText.text.toString(), player!!.name)
         }
     }
 

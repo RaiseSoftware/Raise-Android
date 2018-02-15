@@ -5,7 +5,7 @@ import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseActivity
 import com.cameronvwilliams.raise.ui.Navigator
 import com.google.android.gms.ads.AdRequest
-import kotlinx.android.synthetic.main.activity_intro.*
+import kotlinx.android.synthetic.main.intro_activity.*
 import net.hockeyapp.android.UpdateManager
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ class IntroActivityDebug: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_intro)
+        setContentView(R.layout.intro_activity)
 
         adView.loadAd(AdRequest.Builder().build())
 

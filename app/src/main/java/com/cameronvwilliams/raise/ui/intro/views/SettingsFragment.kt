@@ -9,14 +9,14 @@ import android.view.ViewGroup
 
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
-import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.intro_settings_fragment.*
 import android.content.Intent
 import com.cameronvwilliams.raise.BuildConfig
 
 class SettingsFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_settings, container, false)
+        return inflater!!.inflate(R.layout.intro_settings_fragment, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

@@ -2,6 +2,7 @@ package com.cameronvwilliams.raise.data.remote
 
 import android.support.v4.util.Pair
 import android.support.v7.util.DiffUtil
+import com.cameronvwilliams.raise.R.id.userName
 import com.cameronvwilliams.raise.data.model.*
 import com.cameronvwilliams.raise.data.model.event.*
 import com.cameronvwilliams.raise.util.ActiveCardDiffCallback
@@ -11,6 +12,7 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.socket.client.IO
 import io.socket.client.Socket
+import io.socket.engineio.client.transports.WebSocket
 import okhttp3.OkHttpClient
 import java.net.URLEncoder
 import javax.inject.Singleton
@@ -27,9 +29,11 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         socketSubject.replay(1).refCount()
     }
 
-    fun connect(gameId: String, userName: String, passcode: String?) {
+    fun connect(token: String) {
         val opts = IO.Options()
-        opts.query = "gameId=$gameId&passocde=$passcode&userName=${URLEncoder.encode(userName, "utf-8")}"
+        opts.query = "token=$token"
+        opts.secure = true
+        opts.transports = arrayOf(WebSocket.NAME)
 
         socket = IO.socket(url, opts)
         initializeSocketListeners()

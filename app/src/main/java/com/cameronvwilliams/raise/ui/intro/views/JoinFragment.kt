@@ -21,7 +21,7 @@ import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.karumi.dexter.Dexter
-import kotlinx.android.synthetic.main.fragment_join_game.*
+import kotlinx.android.synthetic.main.intro_join_fragment.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -55,7 +55,7 @@ class JoinFragment : BaseFragment(), IntroContract.JoinViewActions {
             .setRequestedPreviewSize(256, 256)
             .build()
 
-        return inflater.inflate(R.layout.fragment_join_game, container, false)
+        return inflater.inflate(R.layout.intro_join_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

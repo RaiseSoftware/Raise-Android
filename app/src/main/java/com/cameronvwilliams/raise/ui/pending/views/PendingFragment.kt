@@ -15,7 +15,7 @@ import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.ui.pending.views.adapter.PendingAdapter
-import kotlinx.android.synthetic.main.fragment_pending.*
+import kotlinx.android.synthetic.main.pending_fragment.*
 import javax.inject.Inject
 
 class PendingFragment : BaseFragment() {
@@ -63,7 +63,7 @@ class PendingFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pending, container, false)
+        return inflater.inflate(R.layout.pending_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -102,11 +102,7 @@ class PendingFragment : BaseFragment() {
             backButtonDialog.show()
         }
 
-        if (pokerGame.requiresPasscode) {
-            dm.joinGame(pokerGame.gameId, userName, pokerGame.passcode)
-        } else {
-            dm.joinGame(pokerGame.gameId, userName)
-        }
+        dm.joinGame()
 
         dm.getPlayersInGame()
             .subscribe { result ->

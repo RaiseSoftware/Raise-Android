@@ -10,6 +10,8 @@ apply plugin: 'io.fabric'
 
 apply plugin: 'jacoco'
 
+apply plugin: 'com.github.triplet.play'
+
 androidExtensions {
     experimental = true
 }
@@ -20,6 +22,7 @@ def storeFileLocation = System.getenv('STORE_FILE_LOCATION') ?: "${store_file_lo
 def strPassword = System.getenv('STORE_PASSWORD') ?: "${store_password}"
 def hockeyAppId = System.getenv('HOCKEYAPP_APP_ID') ?: hockeyapp_app_id
 def buildVersionCode = System.getenv("TRAVIS_BUILD_NUMBER") as Integer ?: 1
+
 android {
     signingConfigs {
         release {
@@ -49,8 +52,6 @@ android {
             minifyEnabled false
             shrinkResources false
             debuggable true
-            buildConfigField "String", "SOCKET_URL", '"http://10.0.2.2:3000/"'
-            buildConfigField "String", "API_URL", '"http://10.0.2.2:3000/api/"'
         }
         release {
             signingConfig signingConfigs.release
@@ -58,6 +59,17 @@ android {
             shrinkResources true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "remote"
+    productFlavors {
+        local {
+            dimension "remote"
+            buildConfigField "String", "SOCKET_URL", '"http://10.0.2.2:3000/"'
+            buildConfigField "String", "API_URL", '"http://10.0.2.2:3000/api/"'
+        }
+        staging {
+            dimension "remote"
             buildConfigField "String", "SOCKET_URL", '"https://raise.cameronvwilliams.com/"'
             buildConfigField "String", "API_URL", '"https://raise.cameronvwilliams.com/api/"'
         }
@@ -99,7 +111,7 @@ dependencies {
     //Support Libraries
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation "com.android.support:design:$supportVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta5'
 
     //Play Services Libraries
     implementation "com.google.android.gms:play-services-vision:$playServicesVersion"
@@ -150,8 +162,8 @@ dependencies {
 
     //Testing Libs
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.11.0'
-    testImplementation 'org.robolectric:robolectric:3.5.1'
+    testImplementation 'org.mockito:mockito-core:2.13.0'
+    testImplementation 'org.robolectric:robolectric:3.6.1'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
@@ -161,7 +173,6 @@ dependencies {
 
     // Hockey App
     debugImplementation 'net.hockeyapp.android:HockeySDK:5.0.4'
-    releaseImplementation 'com.android.support:multidex:1.0.2'
 }
 
 task copyTestClasses(type: Copy) {
@@ -182,31 +193,12 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
         html.enabled = true
     }
     def excludes = [
-            '**/R.class',
-            '**/R$*.class',
-            '**/BuildConfig.*',
-            '**/Manifest*.*',
-            'android/**/*.*',
-            '**/Lambda$*.class',
-            '**/Lambda.class',
-            '**/*Lambda.class',
-            '**/*Lambda*.class',
-            '**/*Lambda*.*',
-            '**/*Builder.*',
-            '**/*_MembersInjector.class',
-            '**/*_MembersInjector*.*',
-            '**/*_*Factory*.*',
-            '**/*Component*.*',
-            '**/*Module*.*',
-            '**/R.class',
-            '**/R$*.class',
-            '**/*$ViewInjector*.*',
-            '**/BuildConfig.*',
-            '**/Manifest*.*',
-            '**/*Test*.*',
-            'android/**/*.*',
-            '**/*Fragment.*',
-            '**/*Activity.*'
+            '**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*',
+            'android/**/*.*', '**/*Builder.*', '**/*_MembersInjector.class',
+            '**/*_MembersInjector*.*', '**/*_*Factory*.*', '**/*Component*.*',
+            '**/*Module*.*', '**/R.class', '**/R$*.class', '**/*$ViewInjector*.*',
+            '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*',
+            '**/*Fragment.*', '**/*Activity.*'
     ]
     // generated classes
     classDirectories = fileTree(

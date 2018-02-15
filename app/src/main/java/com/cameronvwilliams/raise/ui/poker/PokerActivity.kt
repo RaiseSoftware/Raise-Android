@@ -5,7 +5,7 @@ import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseActivity
 import com.cameronvwilliams.raise.ui.Navigator
 import com.google.android.gms.ads.AdRequest
-import kotlinx.android.synthetic.main.activity_poker.*
+import kotlinx.android.synthetic.main.poker_activity.*
 import javax.inject.Inject
 
 class PokerActivity : BaseActivity() {
@@ -15,7 +15,7 @@ class PokerActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_poker)
+        setContentView(R.layout.poker_activity)
         navigator.goToPoker()
         adView.loadAd(AdRequest.Builder().build())
     }

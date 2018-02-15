@@ -3,6 +3,7 @@ package com.cameronvwilliams.raise.ui.intro.presenters
 import com.cameronvwilliams.raise.R.id.userName
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.DeckType
+import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.IntroContract
@@ -30,7 +31,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
             else -> throw IllegalArgumentException()
         }
 
-        val disposable: Disposable = dm.createPokerGame(PokerGame(gameName, deckType.type, requirePasscode))
+        val disposable: Disposable = dm.createPokerGame(PokerGame(gameName, deckType.type, requirePasscode), Player(userName))
             .doOnSubscribe {
                 actions.showLoadingView()
             }

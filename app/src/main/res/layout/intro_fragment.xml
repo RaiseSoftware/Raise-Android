@@ -11,7 +11,7 @@
         android:layout_height="32dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/margin_medium"
         android:background="@null"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_settings_white_24dp"

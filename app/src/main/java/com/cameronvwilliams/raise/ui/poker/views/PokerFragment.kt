@@ -16,7 +16,7 @@ import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.poker.PokerActivity
 import com.cameronvwilliams.raise.ui.poker.views.adapter.PokerAdapter
-import kotlinx.android.synthetic.main.fragment_poker.*
+import kotlinx.android.synthetic.main.poker_fragment.*
 import javax.inject.Inject
 
 class PokerFragment : BaseFragment() {
@@ -46,7 +46,7 @@ class PokerFragment : BaseFragment() {
             })
             .create()
 
-        return inflater!!.inflate(R.layout.fragment_poker, container, false)
+        return inflater!!.inflate(R.layout.poker_fragment, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

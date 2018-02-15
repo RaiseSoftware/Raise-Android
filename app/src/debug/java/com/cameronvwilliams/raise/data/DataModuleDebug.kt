@@ -1,9 +1,12 @@
 package com.cameronvwilliams.raise.data
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.cameronvwilliams.raise.BuildConfig
 import com.cameronvwilliams.raise.data.remote.RaiseAPI
 import com.cameronvwilliams.raise.data.remote.RxErrorHandlingCallAdapterFactory
 import com.cameronvwilliams.raise.data.remote.SocketClient
+import com.cameronvwilliams.raise.di.ApplicationContext
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import dagger.Module
@@ -39,5 +42,11 @@ abstract class DataModuleDebug {
         @Singleton
         @JvmStatic fun provideSocketClient(gson: Gson, okHttpClient: OkHttpClient): SocketClient
                 = SocketClient(gson, okHttpClient, BuildConfig.SOCKET_URL)
+
+        @Provides
+        @Singleton
+        @JvmStatic
+        fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
+            context.getSharedPreferences("raise_preferences_debug", Context.MODE_PRIVATE)
     }
 }

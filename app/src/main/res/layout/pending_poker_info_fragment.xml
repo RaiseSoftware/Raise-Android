@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/margin_small"
             android:text="@string/text_game_details"
             android:textSize="24sp" />
 
@@ -25,39 +25,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:layout_margin="8dp"
-            android:textSize="16sp" />
+            android:layout_margin="@dimen/margin_small"
+            android:textSize="@dimen/textsize_normal" />
 
         <TextView
             android:id="@+id/passcodeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:layout_margin="8dp"
-            android:textSize="16sp" />
+            android:layout_margin="@dimen/margin_small"
+            android:textSize="@dimen/textsize_normal" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/margin_medium"
             android:text="@string/text_or_divider"
-            android:textSize="16sp" />
+            android:textSize="@dimen/textsize_normal" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/margin_small"
             android:gravity="center_horizontal"
             android:text="@string/text_qrcode_instructions"
-            android:textSize="16sp" />
+            android:textSize="@dimen/textsize_normal" />
 
         <ImageView
             android:id="@+id/qrCodeImage"
             android:layout_width="192dp"
             android:layout_height="192dp"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/margin_small"
             android:contentDescription="@string/text_qr_code" />
 
     </LinearLayout>

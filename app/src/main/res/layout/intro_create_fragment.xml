@@ -13,7 +13,7 @@
         android:scaleX="-1"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/margin_small"
         android:background="@null"
         android:contentDescription="@string/back_button"
         android:scaleType="fitCenter"
@@ -39,7 +39,7 @@
             android:id="@+id/deckTypeRadioGroup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/margin_medium"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -66,7 +66,7 @@
             android:id="@+id/joinForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/margin_medium"
             android:background="@drawable/background_white_rounded"
             android:orientation="vertical">
 
@@ -79,14 +79,14 @@
                 android:inputType="textCapWords"
                 android:padding="16dp"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textsize_normal" />
 
             <View
                 android:id="@+id/formDivider"
                 android:layout_width="match_parent"
                 android:layout_height=".5dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginStart="@dimen/margin_medium"
                 android:background="@color/trolley_grey" />
 
             <EditText
@@ -98,7 +98,7 @@
                 android:inputType="text"
                 android:padding="16dp"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textsize_normal" />
 
         </LinearLayout>
 
@@ -107,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_medium"
             android:textColor="@color/white"
             android:buttonTint="@color/white"
             android:text="@string/text_require_passcode"/>

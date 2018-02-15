@@ -5,12 +5,12 @@ import android.view.View
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.ActiveCard
 import com.cameronvwilliams.raise.data.model.CardValue
-import kotlinx.android.synthetic.main.active_card_row_item.view.*
+import kotlinx.android.synthetic.main.poker_active_card_row_item.view.*
 
 class ActiveCardListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bindPlayer(activeCard: ActiveCard) {
-        itemView.playerIcon.text = activeCard.player.userName[0].toUpperCase().toString()
-        itemView.userName.text = activeCard.player.userName
+        itemView.playerIcon.text = activeCard.player.name[0].toUpperCase().toString()
+        itemView.userName.text = activeCard.player.name
 
         when (activeCard.card.value) {
             CardValue.X_SMALL.value -> itemView.pokerCard.setImageResource(R.drawable.card_0)

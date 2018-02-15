@@ -1,6 +1,8 @@
 package com.cameronvwilliams.raise.data.remote
 
 import com.cameronvwilliams.raise.data.model.PokerGame
+import com.cameronvwilliams.raise.data.model.api.PokerGameBody
+import com.cameronvwilliams.raise.data.model.api.PokerGameResponse
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -11,5 +13,5 @@ interface RaiseAPI {
             Observable<PokerGame>
 
     @POST("poker-game")
-    fun createPokerGame(@Body game: PokerGame): Observable<PokerGame>
+    fun createPokerGame(@Body pokerGame: PokerGameBody): Observable<PokerGameResponse>
 }

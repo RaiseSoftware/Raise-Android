@@ -14,22 +14,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Raise.AppTheme">
-        <activity
-            android:name=".ui.intro.IntroActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Intro.AppTheme">
+
+        <activity android:name=".ui.splash.SplashActivity"
+            android:theme="@style/Splash.AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.poker.PokerActivity"
+
+        <activity
+            android:name=".ui.intro.IntroActivity"
+            android:theme="@style/Intro.AppTheme"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".ui.poker.PokerActivity"
             android:theme="@style/Poker.AppTheme" />
-        <activity android:name=".ui.pending.PendingActivity"
+        <activity
+            android:name=".ui.pending.PendingActivity"
             android:theme="@style/Pending.AppTheme" />
+
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
+
     </application>
 
 </manifest>

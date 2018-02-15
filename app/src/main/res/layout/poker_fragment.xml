@@ -11,7 +11,7 @@
         android:id="@+id/closeButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/margin_small"
         android:background="@null"
         android:contentDescription="@string/close_button"
         android:scaleType="fitCenter"

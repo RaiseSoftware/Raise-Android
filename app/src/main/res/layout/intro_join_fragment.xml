@@ -12,7 +12,7 @@
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/margin_small"
         android:background="@null"
         android:contentDescription="@string/back_button"
         android:scaleType="fitCenter"
@@ -37,29 +37,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/margin_medium"
                 android:gravity="center"
                 android:text="@string/text_enter_name_id"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textsize_normal" />
 
             <TextView
                 android:id="@+id/scanQRCodeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/margin_medium"
                 android:gravity="center"
                 android:text="@string/text_name_qrcode"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="@dimen/textsize_normal"
                 android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/joinForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/margin_medium"
                 android:background="@drawable/background_white_rounded"
                 android:orientation="vertical">
 
@@ -72,14 +72,14 @@
                     android:inputType="textCapWords"
                     android:padding="16dp"
                     android:textCursorDrawable="@null"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_normal" />
 
                 <View
                     android:id="@+id/formDivider"
                     android:layout_width="match_parent"
                     android:layout_height=".5dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:layout_marginStart="@dimen/margin_medium"
                     android:background="@color/trolley_grey" />
 
                 <EditText
@@ -92,7 +92,7 @@
                     android:maxLength="7"
                     android:padding="16dp"
                     android:textCursorDrawable="@null"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/textsize_normal" />
 
             </LinearLayout>
 
@@ -101,7 +101,7 @@
                 android:layout_width="256dp"
                 android:layout_height="256dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/margin_small"
                 android:visibility="gone" />
 
             <TextView
@@ -110,9 +110,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/text_or_divider"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/margin_small"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textsize_normal" />
 
             <TextView
                 android:id="@+id/barcodeText"
@@ -121,7 +121,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/text_scan_qrcode"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="@dimen/textsize_normal" />
 
             <TextView
                 android:id="@+id/gameIdText"
@@ -130,7 +130,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/text_enter_gameid"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="@dimen/textsize_normal"
                 android:visibility="gone" />
 
             <ImageView
@@ -149,7 +149,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/text_qrcode_success"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="@dimen/textsize_normal"
                 android:visibility="gone" />
 
         </LinearLayout>

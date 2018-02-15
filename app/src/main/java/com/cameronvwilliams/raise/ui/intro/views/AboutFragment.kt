@@ -8,13 +8,13 @@ import com.cameronvwilliams.raise.BuildConfig
 
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
-import kotlinx.android.synthetic.main.fragment_about.*
+import kotlinx.android.synthetic.main.intro_about_fragment.*
 
 class AboutFragment : BaseFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_about, container, false)
+        return inflater!!.inflate(R.layout.intro_about_fragment, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

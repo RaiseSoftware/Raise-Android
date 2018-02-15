@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.intro.IntroContract
-import kotlinx.android.synthetic.main.fragment_intro.*
+import kotlinx.android.synthetic.main.intro_fragment.*
 import javax.inject.Inject
 
 class IntroFragment : BaseFragment(), IntroContract.IntroViewActions {
@@ -16,7 +16,7 @@ class IntroFragment : BaseFragment(), IntroContract.IntroViewActions {
     lateinit var actions: IntroContract.IntroUserActions
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_intro, container, false)
+        return inflater.inflate(R.layout.intro_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

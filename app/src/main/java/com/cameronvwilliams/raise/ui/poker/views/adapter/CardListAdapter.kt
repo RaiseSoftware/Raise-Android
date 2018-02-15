@@ -13,7 +13,7 @@ class CardListAdapter(private var cards: List<Card>, private val cb: (position: 
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): CardListViewHolder {
         val view = LayoutInflater.from(parent?.context)
-            .inflate(R.layout.card_list_item, parent, false)
+            .inflate(R.layout.poker_card_list_item, parent, false)
 
         return CardListViewHolder(view, cb)
     }

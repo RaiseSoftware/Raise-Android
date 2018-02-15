@@ -11,13 +11,13 @@ import android.view.ViewGroup
 
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
-import kotlinx.android.synthetic.main.fragment_html.*
+import kotlinx.android.synthetic.main.intro_html_fragment.*
 
 class HtmlFragment : BaseFragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_html, container, false)
+        return inflater!!.inflate(R.layout.intro_html_fragment, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

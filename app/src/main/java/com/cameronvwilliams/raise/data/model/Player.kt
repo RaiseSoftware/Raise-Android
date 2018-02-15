@@ -4,14 +4,14 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.cameronvwilliams.raise.util.parcelableCreator
 
-data class Player(val userName: String) : Parcelable {
+data class Player(val name: String) : Parcelable {
 
     private constructor(parcel: Parcel) : this(
-        userName = parcel.readString()
+        name = parcel.readString()
     )
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeString(userName)
+        writeString(name)
     }
 
     override fun describeContents(): Int = 0

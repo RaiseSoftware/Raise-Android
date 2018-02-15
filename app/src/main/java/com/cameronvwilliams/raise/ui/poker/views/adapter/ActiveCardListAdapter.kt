@@ -18,7 +18,7 @@ class ActiveCardListAdapter(private var list: List<ActiveCard>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ActiveCardListViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(R.layout.active_card_row_item, parent, false)
+        val view = LayoutInflater.from(parent?.context).inflate(R.layout.poker_active_card_row_item, parent, false)
 
         return ActiveCardListViewHolder(view)
     }
