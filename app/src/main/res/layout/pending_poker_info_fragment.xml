@@ -18,7 +18,7 @@
             android:textColor="@color/white"
             android:layout_margin="@dimen/margin_small"
             android:text="@string/text_game_details"
-            android:textSize="24sp" />
+            android:textSize="@dimen/textsize_large" />
 
         <TextView
             android:id="@+id/gameIdText"

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="@string/select_poker_deck_type"
             android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:textSize="@dimen/textsize_large" />
 
         <RadioGroup
             android:id="@+id/deckTypeRadioGroup"
@@ -50,7 +50,7 @@
                 android:buttonTint="@color/white"
                 android:text="@string/text_fibonacci"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="@dimen/textsize_medium" />
 
             <RadioButton
                 android:id="@+id/tshirtRadio"
@@ -59,7 +59,7 @@
                 android:buttonTint="@color/white"
                 android:text="@string/text_tshirt_sizes"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="@dimen/textsize_medium" />
         </RadioGroup>
 
         <LinearLayout
@@ -106,7 +106,7 @@
             android:id="@+id/requirePasscodeCheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="@dimen/textsize_medium"
             android:layout_marginTop="@dimen/margin_medium"
             android:textColor="@color/white"
             android:buttonTint="@color/white"

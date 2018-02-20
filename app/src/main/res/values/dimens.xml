@@ -8,6 +8,8 @@
 
     <!-- Text Size -->
     <dimen name="textsize_normal">16sp</dimen>
+    <dimen name="textsize_medium">20sp</dimen>
+    <dimen name="textsize_large">24sp</dimen>
 
     <dimen name="text_button_size">14sp</dimen>
 </resources>

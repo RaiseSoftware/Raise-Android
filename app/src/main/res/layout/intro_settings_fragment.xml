@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/textsize_medium"
                     android:layout_marginBottom="@dimen/margin_medium"
                     android:text="Login or Sign Up"/>
 
