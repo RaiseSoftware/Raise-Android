@@ -14,7 +14,9 @@ androidExtensions {
     experimental = true
 }
 
-def appCenterKey = System.getenv("APP_CENTER_KEY") ?: "${app_center_key}"
+def appCenterKey = System.getenv("APP_CENTER_KEY") ?: app_center_key
+def adMobId = System.getenv('AD_MOB_ID') ?: ad_mob_id
+def adUnitId = System.getenv('AD_UNIT_ID') ?: ad_unit_id
 def buildVersionCode = 1
 
 android {
@@ -27,9 +29,9 @@ android {
         versionName "0.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        buildConfigField "String", "APP_CENTER_KEY", appCenterKey
-        buildConfigField "String", "ADMOB_APP_ID", System.getenv('AD_MOB_ID') ?: "${ad_mob_id}"
-        buildConfigField "String", "AD_UNIT_ID", System.getenv('AD_UNIT_ID') ?: "${ad_unit_id}"
+        buildConfigField "String", "APP_CENTER_KEY", "${appCenterKey}"
+        buildConfigField "String", "ADMOB_APP_ID", "${adMobId}"
+        buildConfigField "String", "AD_UNIT_ID", "${adUnitId}"
     }
     buildTypes {
         debug {
