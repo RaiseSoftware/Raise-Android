@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Component(modules = [
     RaiseModuleDebug::class,
     DataModuleDebug::class,
-    ActivityBindingModuleDebug::class,
+    ActivityBindingModule::class,
     AndroidSupportInjectionModule::class
 ])
 interface RaiseComponentDebug: RaiseComponent {
