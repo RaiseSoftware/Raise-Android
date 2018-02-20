@@ -11,7 +11,7 @@ import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.pending.views.adapter.PlayerListAdapter
-import kotlinx.android.synthetic.main.fragment_player_list.*
+import kotlinx.android.synthetic.main.pending_player_list_fragment.*
 import javax.inject.Inject
 
 class PlayerListFragment : BaseFragment() {
@@ -25,7 +25,7 @@ class PlayerListFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_player_list, container, false)
+        return inflater.inflate(R.layout.pending_player_list_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -5,7 +5,7 @@ import android.view.View
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.Card
 import com.cameronvwilliams.raise.data.model.CardValue
-import kotlinx.android.synthetic.main.card_list_item.view.*
+import kotlinx.android.synthetic.main.poker_card_list_item.view.*
 
 class CardListViewHolder(view: View, private val onClick: (position: Int, view: View) -> Unit) :
     RecyclerView.ViewHolder(view) {

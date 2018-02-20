@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/gray98"
-    tools:context="com.cameronvwilliams.raise.ui.intro.views.AboutFragment">
+    tools:context="com.cameronvwilliams.raise.ui.intro.views.FeedbackFragment">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -15,58 +15,42 @@
         app:theme="@style/ToolBarStyle"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:layout_margin="16dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_raise_logo_green"/>
-
-    <TextView
-        android:id="@+id/versionText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
-        android:textSize="16sp" />
-
     <LinearLayout
-        android:id="@+id/privacyPolicyRow"
+        android:id="@+id/faqRow"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:orientation="horizontal"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/margin_medium"
         android:gravity="center_vertical">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="@dimen/textsize_normal"
             android:layout_weight="1"
-            android:text="Privacy Policy" />
-        
+            android:text="Frequently Asked Questions" />
+
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="center_vertical|end"
             android:src="@drawable/ic_keyboard_arrow_right_grey_24dp"/>
-
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/termsRow"
+        android:id="@+id/rateUsRow"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:orientation="horizontal"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/margin_medium"
         android:gravity="center_vertical">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="@dimen/textsize_normal"
             android:layout_weight="1"
-            android:text="Terms and Conditions" />
+            android:text="Rate Us" />
 
         <ImageView
             android:layout_width="36dp"
@@ -77,19 +61,19 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/thirdPartyRow"
+        android:id="@+id/issueRow"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:orientation="horizontal"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/margin_medium"
         android:gravity="center_vertical">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="@dimen/textsize_normal"
             android:layout_weight="1"
-            android:text="Third Party Notices" />
+            android:text="Open feature request or issue" />
 
         <ImageView
             android:layout_width="36dp"
@@ -98,4 +82,5 @@
             android:src="@drawable/ic_keyboard_arrow_right_grey_24dp"/>
 
     </LinearLayout>
+
 </LinearLayout>

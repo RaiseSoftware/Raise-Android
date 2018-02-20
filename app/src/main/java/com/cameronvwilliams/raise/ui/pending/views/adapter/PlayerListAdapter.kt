@@ -19,7 +19,7 @@ class PlayerListAdapter(private var list: List<Player>) :
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PlayerListViewHolder {
         val view = LayoutInflater.from(parent?.context)
-            .inflate(R.layout.player_row_item, parent, false)
+            .inflate(R.layout.pending_player_row_item, parent, false)
 
         return PlayerListViewHolder(view)
     }

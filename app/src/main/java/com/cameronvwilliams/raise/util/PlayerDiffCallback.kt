@@ -8,7 +8,7 @@ class PlayerDiffCallback(private val current: List<Player>, private val next: Li
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val currentItem = current[oldItemPosition]
         val nextItem = next[newItemPosition]
-        return currentItem.userName == nextItem.userName
+        return currentItem.name == nextItem.name
     }
 
     override fun getOldListSize() = current.size

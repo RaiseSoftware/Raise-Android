@@ -7,7 +7,7 @@ import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseActivity
 import com.cameronvwilliams.raise.ui.Navigator
 import com.google.android.gms.ads.AdRequest
-import kotlinx.android.synthetic.main.activity_pending.*
+import kotlinx.android.synthetic.main.pending_activity.*
 import javax.inject.Inject
 
 
@@ -39,7 +39,7 @@ class PendingActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pending)
+        setContentView(R.layout.pending_activity)
         with(PendingActivity.IntentOptions) {
             navigator.goToPending(intent.getPokerGame(), intent.getUserName())
         }

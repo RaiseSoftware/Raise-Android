@@ -41,8 +41,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:layout_marginBottom="16dp"
+                    android:textSize="@dimen/textsize_medium"
+                    android:layout_marginBottom="@dimen/margin_medium"
                     android:text="Login or Sign Up"/>
 
             </LinearLayout>
@@ -81,13 +81,13 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="32dp"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/margin_medium"
                     android:src="@drawable/ic_raise_logo_grey"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/textsize_normal"
                     android:layout_weight="1"
                     android:text="Game Instructions" />
 
@@ -102,13 +102,13 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/margin_medium"
                     android:src="@drawable/ic_attach_money_grey_24dp"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/textsize_normal"
                     android:layout_weight="1"
                     android:text="Remove Ads" />
 
@@ -124,13 +124,13 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/margin_medium"
                     android:src="@drawable/ic_share_grey_24dp"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/textsize_normal"
                     android:layout_weight="1"
                     android:text="Share" />
 
@@ -146,13 +146,13 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/margin_medium"
                     android:src="@drawable/ic_feedback_grey_24dp"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/textsize_normal"
                     android:layout_weight="1"
                     android:text="Help &amp; Feedback" />
 
@@ -168,13 +168,13 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/margin_medium"
                     android:src="@drawable/ic_info_outline_grey_24dp"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/textsize_normal"
                     android:layout_weight="1"
                     android:text="About" />
 

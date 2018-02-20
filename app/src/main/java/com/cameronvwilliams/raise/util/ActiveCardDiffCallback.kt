@@ -7,7 +7,7 @@ class ActiveCardDiffCallback(private val current: List<ActiveCard>, private val 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val currentItem = current[oldItemPosition]
         val nextItem = next[newItemPosition]
-        return currentItem.player.userName == nextItem.player.userName
+        return currentItem.player.name == nextItem.player.name
     }
 
     override fun getOldListSize() = current.size

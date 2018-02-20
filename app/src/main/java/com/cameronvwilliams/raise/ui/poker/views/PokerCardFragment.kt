@@ -15,7 +15,7 @@ import com.cameronvwilliams.raise.data.model.Card
 import com.cameronvwilliams.raise.data.model.CardValue
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.poker.views.adapter.CardListAdapter
-import kotlinx.android.synthetic.main.fragment_poker_card.*
+import kotlinx.android.synthetic.main.poker_card_fragment.*
 import javax.inject.Inject
 import kotlin.math.min
 
@@ -35,7 +35,7 @@ class PokerCardFragment : BaseFragment() {
         inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_poker_card, container, false)
+        return inflater!!.inflate(R.layout.poker_card_fragment, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

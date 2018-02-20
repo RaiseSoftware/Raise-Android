@@ -2,7 +2,9 @@ package com.cameronvwilliams.raise.data
 
 import android.support.v4.util.Pair
 import android.support.v7.util.DiffUtil
+import com.cameronvwilliams.raise.data.local.RaisePreferences
 import com.cameronvwilliams.raise.data.model.*
+import com.cameronvwilliams.raise.data.model.api.PokerGameBody
 import com.cameronvwilliams.raise.data.remote.RaiseAPI
 import com.cameronvwilliams.raise.data.remote.SocketClient
 import io.reactivex.Observable
@@ -14,16 +16,21 @@ import javax.inject.Singleton
 @Singleton
 class DataManager @Inject constructor(
     private val raiseAPI: RaiseAPI,
-    private val socketClient: SocketClient
+    private val socketClient: SocketClient,
+    private val raisePreferences: RaisePreferences
 ) {
 
     val CODE_FORBIDDEN = 403
     val CODE_NOT_FOUND = 404
 
-    fun createPokerGame(game: PokerGame): Observable<PokerGame> {
-        return raiseAPI.createPokerGame(game)
+    fun createPokerGame(game: PokerGame, player: Player): Observable<PokerGame> {
+        return raiseAPI.createPokerGame(PokerGameBody(game, player))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { response ->
+                setGameToken(response.token.token)
+            }
+            .map{ response -> response.pokerGame }
     }
 
     fun findPokerGame(gameId: String, passcode: String? = null): Observable<PokerGame> {
@@ -32,8 +39,8 @@ class DataManager @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun joinGame(gameId: String, userName: String, passcode: String? = "") {
-        socketClient.connect(gameId, userName, passcode)
+    fun joinGame() {
+        socketClient.connect(getGameToken())
     }
 
     fun leaveGame() {
@@ -94,4 +101,8 @@ class DataManager @Inject constructor(
             Card(DeckType.FIBONACCI.type, CardValue.COFFEE.value)
         )
     }
+
+    private fun setGameToken(token: String) = raisePreferences.setCurrentGameToken(token)
+
+    private fun getGameToken(): String = raisePreferences.getCurrentGameToken()
 }

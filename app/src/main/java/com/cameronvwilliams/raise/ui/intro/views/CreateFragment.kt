@@ -15,9 +15,7 @@ import com.cameronvwilliams.raise.util.onAdClosed
 import com.cameronvwilliams.raise.util.onChange
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
-import kotlinx.android.synthetic.main.activity_intro.*
-import kotlinx.android.synthetic.main.fragment_create_game.*
-import timber.log.Timber
+import kotlinx.android.synthetic.main.intro_create_fragment.*
 import javax.inject.Inject
 
 class CreateFragment : BaseFragment(), IntroContract.CreateViewActions {
@@ -47,7 +45,7 @@ class CreateFragment : BaseFragment(), IntroContract.CreateViewActions {
             actions.onAdClosed()
         }
 
-        return inflater.inflate(R.layout.fragment_create_game, container, false)
+        return inflater.inflate(R.layout.intro_create_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

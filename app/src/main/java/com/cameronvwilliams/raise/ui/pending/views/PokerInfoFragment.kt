@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseFragment
-import kotlinx.android.synthetic.main.fragment_poker_info.*
+import kotlinx.android.synthetic.main.pending_poker_info_fragment.*
 
 
 class PokerInfoFragment : BaseFragment() {
@@ -23,7 +23,7 @@ class PokerInfoFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_poker_info, container, false)
+        return inflater.inflate(R.layout.pending_poker_info_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

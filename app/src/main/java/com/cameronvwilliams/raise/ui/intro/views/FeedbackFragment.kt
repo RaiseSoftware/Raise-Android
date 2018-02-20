@@ -11,13 +11,13 @@ import com.cameronvwilliams.raise.BuildConfig
 
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
-import kotlinx.android.synthetic.main.fragment_feedback.*
+import kotlinx.android.synthetic.main.intro_feedback_fragment.*
 import timber.log.Timber
 
 class FeedbackFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_feedback, container, false)
+        return inflater!!.inflate(R.layout.intro_feedback_fragment, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
