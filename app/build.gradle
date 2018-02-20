@@ -29,9 +29,9 @@ android {
         versionName "0.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        buildConfigField "String", "APP_CENTER_KEY", "${appCenterKey}"
-        buildConfigField "String", "ADMOB_APP_ID", "${adMobId}"
-        buildConfigField "String", "AD_UNIT_ID", "${adUnitId}"
+        buildConfigField "String", "APP_CENTER_KEY", "\"${appCenterKey}\""
+        buildConfigField "String", "ADMOB_APP_ID", "\"${adMobId}\""
+        buildConfigField "String", "AD_UNIT_ID", "\"${adUnitId}\""
     }
     buildTypes {
         debug {
