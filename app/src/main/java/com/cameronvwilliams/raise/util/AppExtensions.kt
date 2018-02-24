@@ -11,12 +11,6 @@ import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.karumi.dexter.DexterBuilder
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
 
 fun EditText.onChange(cb: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
@@ -42,28 +36,6 @@ fun SurfaceHolder.callbacks(
 
         override fun surfaceCreated(holder: SurfaceHolder?) {
             onCreated(holder)
-        }
-    })
-}
-
-fun DexterBuilder.SinglePermissionListener.listeners(
-    onGranted: (response: PermissionGrantedResponse?) -> Unit,
-    onDenied: (response: PermissionDeniedResponse?) -> Unit
-): DexterBuilder {
-    return this.withListener(object : PermissionListener {
-        override fun onPermissionGranted(response: PermissionGrantedResponse?) {
-            onGranted(response)
-        }
-
-        override fun onPermissionRationaleShouldBeShown(
-            permission: PermissionRequest?,
-            token: PermissionToken
-        ) {
-            token.continuePermissionRequest()
-        }
-
-        override fun onPermissionDenied(response: PermissionDeniedResponse?) {
-            onDenied(response)
         }
     })
 }

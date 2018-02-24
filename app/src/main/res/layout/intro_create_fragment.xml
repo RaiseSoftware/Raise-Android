@@ -6,6 +6,128 @@
     android:orientation="vertical"
     tools:context=".ui.intro.views.CreateFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/createButtonWrapper">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:id="@+id/createGameForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_poker_deck_type"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/textsize_large" />
+
+                <RadioGroup
+                    android:id="@+id/deckTypeRadioGroup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/fibonacciRadio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/white"
+                        android:text="@string/text_fibonacci"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_medium" />
+
+                    <RadioButton
+                        android:id="@+id/tshirtRadio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/white"
+                        android:text="@string/text_tshirt_sizes"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_medium" />
+                </RadioGroup>
+
+                <LinearLayout
+                    android:id="@+id/joinForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_medium"
+                    android:background="@drawable/background_white_rounded"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/userNameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/text_enter_name"
+                        android:inputType="textCapWords"
+                        android:padding="16dp"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/textsize_normal" />
+
+                    <View
+                        android:id="@+id/formDivider"
+                        android:layout_width="match_parent"
+                        android:layout_height=".5dp"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:background="@color/trolley_grey" />
+
+                    <EditText
+                        android:id="@+id/gameNameText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/text_game_name"
+                        android:inputType="text"
+                        android:padding="16dp"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/textsize_normal" />
+
+                </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/requirePasscodeCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textsize_medium"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:textColor="@color/white"
+                    android:buttonTint="@color/white"
+                    android:text="@string/text_require_passcode"/>
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleLarge"
+                android:color="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"/>
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+
     <ImageButton
         android:id="@+id/backButton"
         android:layout_width="40dp"
@@ -20,111 +142,7 @@
         android:src="@drawable/ic_arrow_left_white_24dp" />
 
     <LinearLayout
-        android:id="@+id/createGameForm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_poker_deck_type"
-            android:textColor="@color/white"
-            android:textSize="@dimen/textsize_large" />
-
-        <RadioGroup
-            android:id="@+id/deckTypeRadioGroup"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_medium"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/fibonacciRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/white"
-                android:text="@string/text_fibonacci"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_medium" />
-
-            <RadioButton
-                android:id="@+id/tshirtRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/white"
-                android:text="@string/text_tshirt_sizes"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_medium" />
-        </RadioGroup>
-
-        <LinearLayout
-            android:id="@+id/joinForm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_medium"
-            android:background="@drawable/background_white_rounded"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/userNameEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:hint="@string/text_enter_name"
-                android:inputType="textCapWords"
-                android:padding="16dp"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/textsize_normal" />
-
-            <View
-                android:id="@+id/formDivider"
-                android:layout_width="match_parent"
-                android:layout_height=".5dp"
-                android:layout_marginEnd="@dimen/margin_medium"
-                android:layout_marginStart="@dimen/margin_medium"
-                android:background="@color/trolley_grey" />
-
-            <EditText
-                android:id="@+id/gameNameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:hint="@string/text_game_name"
-                android:inputType="text"
-                android:padding="16dp"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/textsize_normal" />
-
-        </LinearLayout>
-
-        <CheckBox
-            android:id="@+id/requirePasscodeCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/textsize_medium"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:textColor="@color/white"
-            android:buttonTint="@color/white"
-            android:text="@string/text_require_passcode"/>
-
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:color="@color/white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="gone"/>
-
-    <LinearLayout
+        android:id="@+id/createButtonWrapper"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_alignParentBottom="true"

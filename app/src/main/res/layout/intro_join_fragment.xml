@@ -96,14 +96,6 @@
 
             </LinearLayout>
 
-            <SurfaceView
-                android:id="@+id/cameraView"
-                android:layout_width="256dp"
-                android:layout_height="256dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/margin_small"
-                android:visibility="gone" />
-
             <TextView
                 android:id="@+id/orDividerText"
                 android:layout_width="wrap_content"
@@ -122,16 +114,6 @@
                 android:text="@string/text_scan_qrcode"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_normal" />
-
-            <TextView
-                android:id="@+id/gameIdText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/text_enter_gameid"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_normal"
-                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/checkMark"

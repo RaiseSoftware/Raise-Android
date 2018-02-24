@@ -13,6 +13,11 @@
         <item name="colorControlActivated">@color/introColorPrimaryDark</item>
         <item name="android:windowBackground">@color/introColorPrimary</item>
     </style>
+
+    <style name="Scanner.AppTheme"  parent="Intro.AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
     
     <style name="Pending.AppTheme" parent="Raise.AppTheme">
         <item name="colorPrimary">@color/pendingColorPrimary</item>
