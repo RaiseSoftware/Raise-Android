@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".RaiseApplication"
@@ -14,8 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Raise.AppTheme">
-
-        <activity android:name=".ui.splash.SplashActivity"
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Splash.AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,16 +26,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.intro.IntroActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Intro.AppTheme"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.scanner.ScannerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Scanner.AppTheme" />
+
         <activity
             android:name=".ui.poker.PokerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Poker.AppTheme" />
         <activity
             android:name=".ui.pending.PendingActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Pending.AppTheme" />
 
         <meta-data

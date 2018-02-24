@@ -33,10 +33,14 @@ class DataManager @Inject constructor(
             .map{ response -> response.pokerGame }
     }
 
-    fun findPokerGame(gameId: String, passcode: String? = null): Observable<PokerGame> {
-        return raiseAPI.findPokerGame(gameId, passcode)
+    fun findPokerGame(gameId: String, name: String, passcode: String? = null): Observable<PokerGame> {
+        return raiseAPI.findPokerGame(gameId, name, passcode)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { response ->
+                setGameToken(response.token.token)
+            }
+            .map{ response -> response.pokerGame }
     }
 
     fun joinGame() {

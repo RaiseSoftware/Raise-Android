@@ -1,9 +1,16 @@
 package com.cameronvwilliams.raise.ui.intro.views
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
+import android.net.Uri.fromParts
 import android.os.Bundle
+import android.provider.Settings
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,19 +20,20 @@ import com.cameronvwilliams.raise.di.ActivityContext
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.IntroContract
-import com.cameronvwilliams.raise.util.callbacks
-import com.cameronvwilliams.raise.util.listeners
 import com.cameronvwilliams.raise.util.onChange
-import com.cameronvwilliams.raise.util.onDetect
-import com.google.android.gms.vision.CameraSource
+import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
-import com.karumi.dexter.Dexter
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.intro_join_fragment.*
+import permissions.dispatcher.*
 import timber.log.Timber
 import javax.inject.Inject
 
 
+@RuntimePermissions
 class JoinFragment : BaseFragment(), IntroContract.JoinViewActions {
 
     @Inject
@@ -34,26 +42,33 @@ class JoinFragment : BaseFragment(), IntroContract.JoinViewActions {
     lateinit var navigator: Navigator
     @field:[Inject ActivityContext]
     lateinit var activityContext: Context
+    @Inject
+    lateinit var gson: Gson
 
     private var pokerGame: PokerGame? = null
-    private lateinit var cameraSource: CameraSource
+    private lateinit var qrCodeDialog: AlertDialog
+    private var disposables = CompositeDisposable()
+    private lateinit var barcodeDetector: BarcodeDetector
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        val barcodeDetector = BarcodeDetector.Builder(activityContext)
+        barcodeDetector = BarcodeDetector.Builder(activityContext)
             .setBarcodeFormats(Barcode.QR_CODE)
             .build()
 
-        barcodeDetector.onDetect { detections ->
-            pokerGame = actions.onQrCodeDetect(detections, userNameEditText.text.toString().trim())
-        }
-
-        cameraSource = CameraSource.Builder(activityContext, barcodeDetector)
-            .setRequestedPreviewSize(256, 256)
-            .build()
+        qrCodeDialog = AlertDialog.Builder(activityContext)
+            .setTitle("Join via QR Code")
+            .setMessage("Join via QR code by scanning or uploading the QR code image")
+            .setPositiveButton("Upload", this::showUploadWithPermissionCheck)
+            .setNegativeButton("Scan", this::showScannerActivtyWithPermissionCheck)
+            .setNeutralButton(getString(android.R.string.cancel), { dialog, _ ->
+                dialog.dismiss()
+            })
+            .create()
 
         return inflater.inflate(R.layout.intro_join_fragment, container, false)
     }
@@ -65,12 +80,6 @@ class JoinFragment : BaseFragment(), IntroContract.JoinViewActions {
         backButton.setOnClickListener {
             actions.onBackPressed()
         }
-
-        cameraView.holder.callbacks({ _ ->
-            actions.onDetectorShow()
-        }, {
-            actions.onDetectorHide()
-        })
 
         userNameEditText.onChange { s ->
             actions.onNameTextChanged(s, gameIdEditText.text.toString().trim(), pokerGame)
@@ -89,21 +98,7 @@ class JoinFragment : BaseFragment(), IntroContract.JoinViewActions {
         }
 
         barcodeText.setOnClickListener {
-            actions.onBarcodeTextClick()
-            actions.onGameIdTextChanged(
-                gameIdEditText.text.toString().trim(),
-                userNameEditText.text.toString().trim(),
-                pokerGame
-            )
-        }
-
-        gameIdText.setOnClickListener {
-            actions.onGameIdTextClick()
-            actions.onGameIdTextChanged(
-                gameIdEditText.text.toString().trim(),
-                userNameEditText.text.toString().trim(),
-                pokerGame
-            )
+            qrCodeDialog.show()
         }
     }
 
@@ -142,59 +137,117 @@ class JoinFragment : BaseFragment(), IntroContract.JoinViewActions {
         joinButton.isEnabled = true
     }
 
-    override fun checkForPermissons() {
-        Dexter.withActivity(activity)
-            .withPermission(Manifest.permission.CAMERA)
-            .listeners({
-                actions.onPermissionGranted()
-            }, {
-                actions.onPermissionDenied()
-            })
-            .withErrorListener { error ->
-                Timber.e(error.toString())
+    @SuppressLint("NeedOnRequestPermissionsResult")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    fun showUpload(dialog: DialogInterface, which: Int) {
+        val disposable = navigator.showImageSelection()
+            .subscribe { bitmap ->
+                val frame = Frame.Builder().setBitmap(bitmap).build()
+                val barcodes = barcodeDetector.detect(frame)
+                if (barcodes.size() != 0) {
+                    try {
+                        pokerGame = gson.fromJson(barcodes.valueAt(0).displayValue, PokerGame::class.java)
+                    } catch (e: JsonSyntaxException) {
+                        Timber.e(e)
+                        Snackbar.make(joinGameView, "No Poker Game was detected. Please try again", Snackbar.LENGTH_LONG).show()
+                    }
+                } else {
+                    Snackbar.make(joinGameView, "No Poker Game was detected. Please try again", Snackbar.LENGTH_LONG).show()
+                }
+                showQRCodeSuccessView()
+                disposables.dispose()
+                dialog.dismiss()
             }
-            .check()
+        disposables.add(disposable)
     }
 
-    override fun showQRCodeView() {
-        fillFormText.visibility = View.GONE
-        formDivider.visibility = View.GONE
-        gameIdEditText.visibility = View.GONE
-        barcodeText.visibility = View.GONE
-
-        scanQRCodeText.visibility = View.VISIBLE
-        cameraView.visibility = View.VISIBLE
-        gameIdText.visibility = View.VISIBLE
+    @OnShowRationale(Manifest.permission.READ_EXTERNAL_STORAGE)
+    fun showRationaleForStorage(request: PermissionRequest) {
+        AlertDialog.Builder(activityContext)
+            .setTitle("Unable to upload QR Code")
+            .setMessage("Unable to upload the image without permission. In order to do so, please grant permission from settings")
+            .setPositiveButton("Go to Settings", { dialog, _ ->
+                val intent =  Intent()
+                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS;
+                val uri = Uri.fromParts ("package", activityContext.packageName, null)
+                intent.data = uri
+                startActivity(intent)
+                dialog.dismiss()
+            })
+            .setNegativeButton(getString(android.R.string.cancel), { dialog, _ ->
+                dialog.dismiss()
+            })
+            .show()
     }
 
-    override fun showGameIdView() {
-        fillFormText.visibility = View.VISIBLE
-        formDivider.visibility = View.VISIBLE
-        gameIdEditText.visibility = View.VISIBLE
-        barcodeText.visibility = View.VISIBLE
-
-        scanQRCodeText.visibility = View.GONE
-        cameraView.visibility = View.GONE
-        gameIdText.visibility = View.GONE
+    @OnPermissionDenied(Manifest.permission.READ_EXTERNAL_STORAGE)
+    fun onStorageDenied() {
+        Snackbar.make(joinGameView, "Unable to scan until permission is granted", Snackbar.LENGTH_LONG).show()
     }
 
-    @Throws(SecurityException::class)
-    override fun showCameraSource() {
-        cameraSource.start(cameraView.holder)
+    @OnNeverAskAgain(Manifest.permission.READ_EXTERNAL_STORAGE)
+    fun onStorageNeverAskAgain() {
+        Snackbar.make(joinGameView, "Give permission in order to access the camera", Snackbar.LENGTH_LONG).show()
     }
 
-    override fun hideCameraSource() {
-        cameraSource.release()
+    @NeedsPermission(Manifest.permission.CAMERA)
+    fun showScannerActivty(dialog: DialogInterface, which: Int) {
+        val disposable = navigator.goToScannerView().subscribe { pokerGame ->
+            this.pokerGame = pokerGame
+            showQRCodeSuccessView()
+            disposables.dispose()
+        }
+        dialog.dismiss()
+        disposables.add(disposable)
+    }
+
+    @OnShowRationale(Manifest.permission.CAMERA)
+    fun showRationaleForCamera(request: PermissionRequest) {
+        AlertDialog.Builder(activityContext)
+            .setTitle(getString(R.string.unable_to_scan))
+            .setMessage(getString(R.string.unable_to_scan_long))
+            .setPositiveButton(getString(R.string.go_to_settings), { dialog, _ ->
+                val intent =  Intent()
+                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS;
+                val uri = Uri.fromParts ("package", activityContext.packageName, null)
+                intent.data = uri
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                startActivity(intent)
+                dialog.dismiss()
+            })
+            .setNegativeButton(getString(android.R.string.cancel), { dialog, _ ->
+                dialog.dismiss()
+            })
+            .show()
+    }
+
+    @OnPermissionDenied(Manifest.permission.CAMERA)
+    fun onCameraDenied() {
+        Snackbar.make(joinGameView, "Unable to scan until permission is granted", Snackbar.LENGTH_LONG).show()
+    }
+
+    @OnNeverAskAgain(Manifest.permission.CAMERA)
+    fun onCameraNeverAskAgain() {
+        Snackbar.make(joinGameView, "Give permission in order to access the camera", Snackbar.LENGTH_LONG).show()
     }
 
     override fun showQRCodeSuccessView() {
         qrCodeSuccessText.visibility = View.VISIBLE
         checkMark.visibility = View.VISIBLE
+        scanQRCodeText.visibility = View.VISIBLE
 
         orDividerText.visibility = View.GONE
-        scanQRCodeText.visibility = View.GONE
-        cameraView.visibility = View.GONE
-        gameIdText.visibility = View.GONE
+        fillFormText.visibility = View.GONE
+        formDivider.visibility = View.GONE
+        gameIdEditText.visibility = View.GONE
+        barcodeText.visibility = View.GONE
     }
 
     companion object {

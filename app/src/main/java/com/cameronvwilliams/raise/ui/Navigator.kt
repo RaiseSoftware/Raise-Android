@@ -1,8 +1,10 @@
 package com.cameronvwilliams.raise.ui
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.app.FragmentManager
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.Player
@@ -12,10 +14,49 @@ import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.ui.pending.views.PendingFragment
 import com.cameronvwilliams.raise.ui.poker.PokerActivity
 import com.cameronvwilliams.raise.ui.poker.views.PokerFragment
+import java.io.FileNotFoundException
+import android.graphics.BitmapFactory
+import java.io.IOException
+import android.graphics.Bitmap
+import com.cameronvwilliams.raise.ui.scanner.ScannerActivity
+import com.cameronvwilliams.raise.ui.scanner.views.ScannerFragment
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 
 class Navigator(private val fm: FragmentManager, val context: Context) {
 
-    // I decided not to include this in the article because this is more like a corner case, but I think I have quite clean solution for that. To implement this, Navigator should recieve a list of requestCodes in the constructor, one for each “start for result” action he can do. This list is provided by somebody who can receive onActivityResult(). In onActivityResult() you map requestCode to the proper Navigator and pass Intent to it. Navigator then unwrap Intent and pass pure data to the Presenter. So still all navigation related stuff will be in the Navigator.
+    private val imageRequestCode = 1000
+    private val imageRequestObservable: PublishSubject<Bitmap> = PublishSubject.create()
+
+    private val scannerRequestCode = 2000
+    private val scannerRequestObservable: PublishSubject<PokerGame> = PublishSubject.create()
+
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == imageRequestCode) {
+            if (resultCode == Activity.RESULT_OK) {
+                var bitmap: Bitmap? = null
+                try {
+                    bitmap?.recycle()
+                    val stream = context.contentResolver.openInputStream(data?.data)
+                    bitmap = BitmapFactory.decodeStream(stream)
+                    stream.close()
+                } catch (e: FileNotFoundException) {
+                    Timber.e(e)
+                } catch (e: IOException) {
+                    Timber.e(e)
+                }
+
+                imageRequestObservable.onNext(bitmap!!)
+            }
+        } else if (requestCode == scannerRequestCode) {
+            if (resultCode == Activity.RESULT_OK) {
+                val pokerGame: PokerGame = data?.extras!!["POKER_GAME"] as PokerGame
+
+                scannerRequestObservable.onNext(pokerGame)
+            }
+        }
+    }
 
     fun goBack() {
         fm.popBackStackImmediate()
@@ -98,6 +139,9 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
 
     fun goToPendingView(pokerGame: PokerGame, userName: String) {
         val intent = Intent(context, PendingActivity::class.java)
+
+        fm.popBackStack("intro", 0)
+
         with(PendingActivity.IntentOptions) {
             intent.setPokerGame(pokerGame)
             intent.setUserName(userName)
@@ -133,6 +177,26 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
     fun goToPoker() {
         fm.beginTransaction()
             .replace(R.id.layoutRoot, PokerFragment.newInstance())
+            .commit()
+    }
+
+    fun showImageSelection(): Observable<Bitmap> {
+        val photoPickerIntent = Intent(Intent.ACTION_PICK)
+        photoPickerIntent.type = "image/*"
+        startActivityForResult(context as Activity, photoPickerIntent, imageRequestCode, null)
+        return imageRequestObservable
+    }
+
+    fun goToScannerView(): Observable<PokerGame> {
+        val intent = Intent(context, ScannerActivity::class.java)
+
+        startActivityForResult(context as Activity, intent, scannerRequestCode, null)
+        return scannerRequestObservable
+    }
+
+    fun goToScanner() {
+        fm.beginTransaction()
+            .replace(R.id.layoutRoot, ScannerFragment.newInstance())
             .commit()
     }
 }

@@ -41,31 +41,18 @@ interface IntroContract {
         fun hideLoadingView()
         fun showDefaultErrorSnackBar()
         fun showErrorSnackBar(message: String)
-        fun checkForPermissons()
-        fun showQRCodeView()
-        fun showCameraSource()
-        fun hideCameraSource()
-        fun showGameIdView()
         fun showQRCodeSuccessView()
     }
 
     interface JoinUserActions : BaseUserActions<JoinViewActions> {
         fun onNameTextChanged(userName: String, gameId: String, pokerGame: PokerGame?)
         fun onGameIdTextChanged(gameId: String, userName: String, pokerGame: PokerGame?)
-        fun onQrCodeDetect(detections: Detector.Detections<Barcode>, userName: String): PokerGame?
-        fun onBarcodeTextClick()
-        fun onPermissionGranted()
-        fun onPermissionDenied()
         fun onJoinButtonClick(
             gameId: String,
             userName: String,
             passcode: String? = null,
             pokerGame: PokerGame?
         )
-
-        fun onDetectorShow()
-        fun onDetectorHide()
-        fun onGameIdTextClick()
     }
 
     interface PasscodeViewActions {

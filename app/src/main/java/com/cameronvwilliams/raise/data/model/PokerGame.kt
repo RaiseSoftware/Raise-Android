@@ -7,12 +7,12 @@ import com.cameronvwilliams.raise.util.readBoolean
 import com.cameronvwilliams.raise.util.writeBoolean
 
 data class PokerGame(
-    val gameName: String,
-    val deckType: String,
+    val gameName: String?,
+    val deckType: String?,
     val requiresPasscode: Boolean,
-    val gameId: String = "",
-    val qrcode: String = "",
-    val passcode: String = ""
+    val gameId: String? = "",
+    val qrcode: String? = "",
+    val passcode: String? = ""
 ) : Parcelable {
 
     private constructor(parcel: Parcel) : this(

@@ -9,6 +9,9 @@ import com.cameronvwilliams.raise.ui.pending.di.PendingModule
 import com.cameronvwilliams.raise.ui.poker.PokerActivity
 import com.cameronvwilliams.raise.ui.poker.di.PokerFragmentProvider
 import com.cameronvwilliams.raise.ui.poker.di.PokerModule
+import com.cameronvwilliams.raise.ui.scanner.ScannerActivity
+import com.cameronvwilliams.raise.ui.scanner.di.ScannerFragmentProvider
+import com.cameronvwilliams.raise.ui.scanner.di.ScannerModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -28,4 +31,7 @@ abstract class ActivityBindingModule {
     @ContributesAndroidInjector(modules = [PokerModule::class, PokerFragmentProvider::class])
     internal abstract fun pokerActivity(): PokerActivity
 
+    @PerActivity
+    @ContributesAndroidInjector(modules = [ScannerModule::class, ScannerFragmentProvider::class])
+    internal abstract fun scannerActivity(): ScannerActivity
 }

@@ -7,19 +7,11 @@ import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.data.remote.RetrofitException
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.IntroContract
-import com.google.android.gms.internal.zzahn.runOnUiThread
-import com.google.android.gms.vision.Detector
-import com.google.android.gms.vision.barcode.Barcode
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
 import timber.log.Timber
-import java.io.IOException
 
 class JoinPresenter(
     private val navigator: Navigator,
-    private val dm: DataManager,
-    private val gson: Gson
-) :
+    private val dm: DataManager) :
     IntroContract.JoinUserActions {
 
     override lateinit var actions: IntroContract.JoinViewActions
@@ -34,9 +26,9 @@ class JoinPresenter(
         pokerGame: PokerGame?
     ) {
         val request = if (pokerGame != null) {
-            dm.findPokerGame(pokerGame.gameId, pokerGame.passcode)
+            dm.findPokerGame(pokerGame.gameId!!, userName, pokerGame.passcode)
         } else {
-            dm.findPokerGame(gameId)
+            dm.findPokerGame(gameId, userName)
         }
 
         request.doOnSubscribe {
@@ -72,69 +64,9 @@ class JoinPresenter(
         validateFormData(userName, gameId, pokerGame)
     }
 
-    override fun onQrCodeDetect(
-        detections: Detector.Detections<Barcode>,
-        userName: String
-    ): PokerGame? {
-        val barcodes = detections.detectedItems
-        if (barcodes.size() != 0) {
-            try {
-                val game = gson.fromJson(barcodes.valueAt(0).displayValue, PokerGame::class.java)
-                runOnUiThread {
-                    actions.showQRCodeSuccessView()
-                    if (userName.isNotBlank()) {
-                        actions.enableJoinButton()
-                    } else {
-                        actions.disableJoinButton()
-                    }
-                }
-
-                return game
-            } catch (e: JsonSyntaxException) {
-                Timber.e(e)
-                actions.showDefaultErrorSnackBar()
-                actions.showCameraSource()
-            }
-        }
-
-        return null
-    }
-
-    override fun onBarcodeTextClick() {
-        actions.checkForPermissons()
-    }
-
-    override fun onGameIdTextClick() {
-        actions.showGameIdView()
-        gameIdMode = true
-    }
-
-    override fun onPermissionGranted() {
-        actions.showQRCodeView()
-        gameIdMode = false
-    }
-
-    override fun onPermissionDenied() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun onBackPressed(): Boolean {
         navigator.goBack()
         return true
-    }
-
-    override fun onDetectorShow() {
-        try {
-            actions.showCameraSource()
-        } catch (e: IOException) {
-            Timber.e(e)
-        } catch (e: SecurityException) {
-            Timber.e(e)
-        }
-    }
-
-    override fun onDetectorHide() {
-        actions.hideCameraSource()
     }
 
     private fun validateFormData(userName: String, gameId: String, pokerGame: PokerGame?) {

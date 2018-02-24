@@ -23,7 +23,7 @@ class PasscodePresenter(private val navigator: Navigator, private val dm: DataMa
     }
 
     override fun onSubmitButtonClick(gameId: String, passcode: String, userName: String) {
-        dm.findPokerGame(gameId, passcode)
+        dm.findPokerGame(gameId, userName, passcode)
             .doOnSubscribe {
                 actions.showLoadingView()
             }
