@@ -139,9 +139,7 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
 
     fun goToPendingView(pokerGame: PokerGame, userName: String) {
         val intent = Intent(context, PendingActivity::class.java)
-
-        fm.popBackStack("intro", 0)
-
+        
         with(PendingActivity.IntentOptions) {
             intent.setPokerGame(pokerGame)
             intent.setUserName(userName)
