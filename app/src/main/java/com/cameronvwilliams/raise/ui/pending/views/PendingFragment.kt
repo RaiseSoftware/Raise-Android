@@ -15,6 +15,8 @@ import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.ui.pending.views.adapter.PendingAdapter
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.pending_fragment.*
 import javax.inject.Inject
 
@@ -57,6 +59,7 @@ class PendingFragment : BaseFragment() {
     private lateinit var backButtonDialog: AlertDialog
     private lateinit var pokerGame: PokerGame
     private lateinit var userName: String
+    private val subscriptions: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,16 +107,21 @@ class PendingFragment : BaseFragment() {
 
         dm.joinGame()
 
-        dm.getPlayersInGame()
+        subscriptions.add(dm.getPlayersInGame()
             .subscribe { result ->
                 startButton.isEnabled = result.first!!.isNotEmpty()
-            }
+            })
 
-        dm.getGameStart()
+        subscriptions.add(dm.getGameStart()
             .subscribe { game ->
-                navigator.goToPokerGameView()
+                navigator.goToPokerGameView(pokerGame)
                 activity.finish()
-            }
+            })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        subscriptions.clear()
     }
 
     override fun onBackPressed(): Boolean {

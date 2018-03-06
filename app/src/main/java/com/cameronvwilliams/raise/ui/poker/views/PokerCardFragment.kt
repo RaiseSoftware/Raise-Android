@@ -13,6 +13,8 @@ import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.Card
 import com.cameronvwilliams.raise.data.model.CardValue
+import com.cameronvwilliams.raise.data.model.DeckType
+import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.poker.views.adapter.CardListAdapter
 import kotlinx.android.synthetic.main.poker_card_fragment.*
@@ -44,8 +46,16 @@ class PokerCardFragment : BaseFragment() {
         val originalY = (selectedCard.layoutParams as ConstraintLayout.LayoutParams).topMargin
         val originalX = (selectedCard.layoutParams as ConstraintLayout.LayoutParams).leftMargin
 
+        val pokerGame = with(PokerCardFragment.BundleOptions) {
+            arguments.getPokerGame()
+        }
 
-        cards = dm.getFibonacciCards()
+        when (pokerGame.deckType) {
+            DeckType.FIBONACCI -> cards = dm.getFibonacciCards()
+            DeckType.T_SHIRT -> cards = dm.getTShirtCards()
+        }
+
+
         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         adapter = CardListAdapter(cards, { position, clickedView ->
             var tempPosition: Int = -1
@@ -64,25 +74,25 @@ class PokerCardFragment : BaseFragment() {
             }
 
             when (activeCard.value) {
-                CardValue.X_SMALL.value -> selectedCard.setImageResource(R.drawable.card_0)
-                CardValue.SMALL.value -> selectedCard.setImageResource(R.drawable.card_0)
-                CardValue.MEDIUM.value -> selectedCard.setImageResource(R.drawable.card_0)
-                CardValue.LARGE.value -> selectedCard.setImageResource(R.drawable.card_0)
-                CardValue.X_LARGE.value -> selectedCard.setImageResource(R.drawable.card_0)
-                CardValue.ZERO.value -> selectedCard.setImageResource(R.drawable.card_0)
-                CardValue.ONE_HALF.value -> selectedCard.setImageResource(R.drawable.card_half)
-                CardValue.ONE.value -> selectedCard.setImageResource(R.drawable.card_1)
-                CardValue.TWO.value -> selectedCard.setImageResource(R.drawable.card_2)
-                CardValue.THREE.value -> selectedCard.setImageResource(R.drawable.card_3)
-                CardValue.FIVE.value -> selectedCard.setImageResource(R.drawable.card_5)
-                CardValue.EIGHT.value -> selectedCard.setImageResource(R.drawable.card_8)
-                CardValue.THIRTEEN.value -> selectedCard.setImageResource(R.drawable.card_13)
-                CardValue.TWENTY.value -> selectedCard.setImageResource(R.drawable.card_20)
-                CardValue.FORTY.value -> selectedCard.setImageResource(R.drawable.card_40)
-                CardValue.ONE_HUNDRED.value -> selectedCard.setImageResource(R.drawable.card_100)
-                CardValue.INFINITY.value -> selectedCard.setImageResource(R.drawable.card_infinity)
-                CardValue.QUESTION_MARK.value -> selectedCard.setImageResource(R.drawable.card_question)
-                CardValue.COFFEE.value -> selectedCard.setImageResource(R.drawable.card_0)
+                CardValue.X_SMALL -> selectedCard.setImageResource(R.drawable.card_xs)
+                CardValue.SMALL -> selectedCard.setImageResource(R.drawable.card_s)
+                CardValue.MEDIUM -> selectedCard.setImageResource(R.drawable.card_m)
+                CardValue.LARGE -> selectedCard.setImageResource(R.drawable.card_l)
+                CardValue.X_LARGE -> selectedCard.setImageResource(R.drawable.card_xl)
+                CardValue.ZERO -> selectedCard.setImageResource(R.drawable.card_0)
+                CardValue.ONE_HALF -> selectedCard.setImageResource(R.drawable.card_half)
+                CardValue.ONE -> selectedCard.setImageResource(R.drawable.card_1)
+                CardValue.TWO -> selectedCard.setImageResource(R.drawable.card_2)
+                CardValue.THREE -> selectedCard.setImageResource(R.drawable.card_3)
+                CardValue.FIVE -> selectedCard.setImageResource(R.drawable.card_5)
+                CardValue.EIGHT -> selectedCard.setImageResource(R.drawable.card_8)
+                CardValue.THIRTEEN -> selectedCard.setImageResource(R.drawable.card_13)
+                CardValue.TWENTY -> selectedCard.setImageResource(R.drawable.card_20)
+                CardValue.FORTY -> selectedCard.setImageResource(R.drawable.card_40)
+                CardValue.ONE_HUNDRED -> selectedCard.setImageResource(R.drawable.card_100)
+                CardValue.INFINITY -> selectedCard.setImageResource(R.drawable.card_infinity)
+                CardValue.QUESTION_MARK -> selectedCard.setImageResource(R.drawable.card_question)
+                CardValue.COFFEE -> selectedCard.setImageResource(R.drawable.card_coffee)
             }
 
             val layoutParams = selectedCard.layoutParams as ConstraintLayout.LayoutParams
@@ -132,9 +142,19 @@ class PokerCardFragment : BaseFragment() {
         cardList.adapter = adapter
     }
 
-    companion object {
+    companion object BundleOptions {
+        private const val EXTRA_POKER_GAME = "poker_game"
+
         fun newInstance(): PokerCardFragment {
             return PokerCardFragment()
+        }
+
+        fun Bundle.getPokerGame(): PokerGame {
+            return getParcelable(PokerCardFragment.EXTRA_POKER_GAME)
+        }
+
+        fun Bundle.setPokerGame(game: PokerGame) {
+            putParcelable(PokerCardFragment.EXTRA_POKER_GAME, game)
         }
     }
 }

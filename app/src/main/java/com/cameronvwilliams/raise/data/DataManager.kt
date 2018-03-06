@@ -89,20 +89,32 @@ class DataManager @Inject constructor(
 
     fun getFibonacciCards(): MutableList<Card> {
         return arrayListOf(
-            Card(DeckType.FIBONACCI.type, CardValue.ZERO.value),
-            Card(DeckType.FIBONACCI.type, CardValue.ONE_HALF.value),
-            Card(DeckType.FIBONACCI.type, CardValue.ONE.value),
-            Card(DeckType.FIBONACCI.type, CardValue.TWO.value),
-            Card(DeckType.FIBONACCI.type, CardValue.THREE.value),
-            Card(DeckType.FIBONACCI.type, CardValue.FIVE.value),
-            Card(DeckType.FIBONACCI.type, CardValue.EIGHT.value),
-            Card(DeckType.FIBONACCI.type, CardValue.THIRTEEN.value),
-            Card(DeckType.FIBONACCI.type, CardValue.TWENTY.value),
-            Card(DeckType.FIBONACCI.type, CardValue.FORTY.value),
-            Card(DeckType.FIBONACCI.type, CardValue.ONE_HUNDRED.value),
-            Card(DeckType.FIBONACCI.type, CardValue.INFINITY.value),
-            Card(DeckType.FIBONACCI.type, CardValue.QUESTION_MARK.value),
-            Card(DeckType.FIBONACCI.type, CardValue.COFFEE.value)
+            Card(DeckType.FIBONACCI, CardValue.ZERO),
+            Card(DeckType.FIBONACCI, CardValue.ONE_HALF),
+            Card(DeckType.FIBONACCI, CardValue.ONE),
+            Card(DeckType.FIBONACCI, CardValue.TWO),
+            Card(DeckType.FIBONACCI, CardValue.THREE),
+            Card(DeckType.FIBONACCI, CardValue.FIVE),
+            Card(DeckType.FIBONACCI, CardValue.EIGHT),
+            Card(DeckType.FIBONACCI, CardValue.THIRTEEN),
+            Card(DeckType.FIBONACCI, CardValue.TWENTY),
+            Card(DeckType.FIBONACCI, CardValue.FORTY),
+            Card(DeckType.FIBONACCI, CardValue.ONE_HUNDRED),
+            Card(DeckType.FIBONACCI, CardValue.INFINITY),
+            Card(DeckType.FIBONACCI, CardValue.QUESTION_MARK),
+            Card(DeckType.FIBONACCI, CardValue.COFFEE)
+        )
+    }
+
+    fun getTShirtCards(): MutableList<Card> {
+        return arrayListOf(
+            Card(DeckType.T_SHIRT, CardValue.X_SMALL),
+            Card(DeckType.T_SHIRT, CardValue.SMALL),
+            Card(DeckType.T_SHIRT, CardValue.MEDIUM),
+            Card(DeckType.T_SHIRT, CardValue.LARGE),
+            Card(DeckType.T_SHIRT, CardValue.X_LARGE),
+            Card(DeckType.T_SHIRT, CardValue.QUESTION_MARK),
+            Card(DeckType.T_SHIRT, CardValue.COFFEE)
         )
     }
 
