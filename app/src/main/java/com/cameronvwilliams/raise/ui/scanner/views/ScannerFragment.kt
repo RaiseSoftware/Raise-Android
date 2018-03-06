@@ -1,6 +1,5 @@
 package com.cameronvwilliams.raise.ui.scanner.views
 
-import android.opengl.ETC1.getHeight
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +20,7 @@ import java.io.IOException
 import javax.inject.Inject
 import android.app.Activity
 import android.content.Intent
-
-
+import com.cameronvwilliams.raise.util.afterMeasured
 
 class ScannerFragment : BaseFragment() {
 
@@ -60,10 +58,8 @@ class ScannerFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        cameraView.viewTreeObserver.addOnGlobalLayoutListener {
-            cameraView.viewTreeObserver.removeOnGlobalLayoutListener {
 
-            }
+        cameraView.afterMeasured {
             cameraSource = CameraSource.Builder(activity, barcodeDetector)
                 .setRequestedPreviewSize(cameraView.height, cameraView.width)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)

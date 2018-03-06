@@ -3,6 +3,8 @@ package com.cameronvwilliams.raise.util
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.SurfaceHolder
+import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.EditText
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.InterstitialAd
@@ -68,4 +70,15 @@ fun InterstitialAd.onAdClosed(cb: () -> Unit) {
             cb()
         }
     }
+}
+
+fun <T: View> T.afterMeasured(f: T.() -> Unit) {
+    viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            if (measuredWidth > 0 && measuredHeight > 0) {
+                viewTreeObserver.removeOnGlobalLayoutListener(this)
+                f()
+            }
+        }
+    })
 }
