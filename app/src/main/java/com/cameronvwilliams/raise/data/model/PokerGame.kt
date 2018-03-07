@@ -8,7 +8,7 @@ import com.cameronvwilliams.raise.util.writeBoolean
 
 data class PokerGame(
     val gameName: String?,
-    val deckType: String?,
+    val deckType: DeckType?,
     val requiresPasscode: Boolean,
     val gameId: String? = "",
     val qrcode: String? = "",
@@ -17,7 +17,7 @@ data class PokerGame(
 
     private constructor(parcel: Parcel) : this(
         gameName = parcel.readString(),
-        deckType = parcel.readString(),
+        deckType = DeckType.valueOf(parcel.readString()),
         requiresPasscode = parcel.readBoolean(),
         gameId = parcel.readString(),
         qrcode = parcel.readString(),
@@ -26,7 +26,7 @@ data class PokerGame(
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeString(gameName)
-        writeString(deckType)
+        writeString(deckType?.name)
         writeBoolean(requiresPasscode)
         writeString(gameId)
         writeString(qrcode)

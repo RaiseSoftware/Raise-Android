@@ -167,14 +167,27 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .commit()
     }
 
-    fun goToPokerGameView() {
+    fun goToPokerGameView(pokerGame: PokerGame) {
         val intent = Intent(context, PokerActivity::class.java)
+
+        with(PokerActivity.IntentOptions) {
+            intent.setPokerGame(pokerGame)
+        }
         context.startActivity(intent)
     }
 
-    fun goToPoker() {
+    fun goToPoker(pokerGame: PokerGame) {
+        val fragment = PokerFragment.newInstance()
+        val bundle = Bundle()
+
+        with(PokerFragment.BundleOptions) {
+            bundle.setPokerGame(pokerGame)
+        }
+
+        fragment.arguments = bundle
+
         fm.beginTransaction()
-            .replace(R.id.layoutRoot, PokerFragment.newInstance())
+            .replace(R.id.layoutRoot, fragment)
             .commit()
     }
 

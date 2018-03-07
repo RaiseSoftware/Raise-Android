@@ -62,7 +62,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         return socketSubject.filter { event ->
                 event.type == START_GAME_EVENT
             }.switchMap { event ->
-                Observable.just(PokerGame("", DeckType.FIBONACCI.type, false))
+                Observable.just(PokerGame("", DeckType.FIBONACCI, false))
             }
     }
 
@@ -70,7 +70,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         return socketSubject.filter { event ->
                 event.type == START_GAME_EVENT
             }.switchMap { event ->
-                Observable.just(PokerGame("", DeckType.FIBONACCI.type, false))
+                Observable.just(PokerGame("", DeckType.FIBONACCI, false))
             }
     }
 

@@ -31,7 +31,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
             else -> throw IllegalArgumentException()
         }
 
-        val disposable: Disposable = dm.createPokerGame(PokerGame(gameName, deckType.type, requirePasscode), Player(userName))
+        val disposable: Disposable = dm.createPokerGame(PokerGame(gameName, deckType, requirePasscode), Player(userName))
             .doOnSubscribe {
                 actions.showLoadingView()
             }
