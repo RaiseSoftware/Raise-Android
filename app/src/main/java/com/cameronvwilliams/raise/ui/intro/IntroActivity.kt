@@ -23,6 +23,4 @@ open class IntroActivity : BaseActivity() {
         AppCenter.start(application, BuildConfig.APP_CENTER_KEY,
             Distribute::class.java, Analytics::class.java, Crashes::class.java)
     }
-
-    }
 }
