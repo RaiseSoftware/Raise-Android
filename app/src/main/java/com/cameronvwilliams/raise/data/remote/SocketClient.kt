@@ -14,6 +14,7 @@ import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.engineio.client.transports.WebSocket
 import okhttp3.OkHttpClient
+import org.json.JSONObject
 import java.net.URLEncoder
 import javax.inject.Singleton
 
@@ -46,16 +47,16 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         socket.disconnect()
     }
 
-    fun sendStartGameMessage(pokerGame: PokerGame) {
-        socket.emit(START_GAME_EVENT, pokerGame)
+    fun sendStartGameMessage() {
+        socket.emit(START_GAME_EVENT)
     }
 
     fun sendSubmitCardMessage(card: Card) {
-        socket.emit(CARD_SUBMIT_EVENT, gson.toJson(card))
+        socket.emit(CARD_SUBMIT_EVENT, JSONObject(gson.toJson(card)))
     }
 
-    fun sendEndGameMessage(pokerGame: PokerGame) {
-        socket.emit(END_GAME_EVENT, pokerGame)
+    fun sendEndGameMessage() {
+        socket.emit(END_GAME_EVENT)
     }
 
     fun onGameStart(): Observable<PokerGame> {

@@ -40,7 +40,7 @@ class PokerFragment : BaseFragment() {
             .setTitle(getString(R.string.text_exit_game))
             .setMessage(getString(R.string.text_sure_exit))
             .setPositiveButton(android.R.string.yes, { dialog, _ ->
-                dm.endGame(PokerGame("", DeckType.FIBONACCI, false))
+                dm.endGame()
                 dialog.dismiss()
                 activity.finish()
             })

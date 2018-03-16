@@ -1,6 +1,5 @@
 package com.cameronvwilliams.raise.ui.intro.presenters
 
-import com.cameronvwilliams.raise.R.id.userName
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.DeckType
 import com.cameronvwilliams.raise.data.model.Player
@@ -9,7 +8,6 @@ import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.IntroContract
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import java.security.InvalidParameterException
 
 class CreatePresenter(private val navigator: Navigator, private val dm: DataManager) :
     IntroContract.CreateUserActions {
