@@ -7,6 +7,8 @@ import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.data.remote.RetrofitException
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.IntroContract
+import io.reactivex.disposables.CompositeDisposable
+import org.reactivestreams.Subscription
 import timber.log.Timber
 
 class JoinPresenter(
@@ -15,9 +17,13 @@ class JoinPresenter(
     IntroContract.JoinUserActions {
 
     override lateinit var actions: IntroContract.JoinViewActions
-
+    private val disposables = CompositeDisposable()
     private var gameIdMode = true
     private val minimumGameIdLength = 5
+
+    override fun onViewDestroyed() {
+        disposables.clear()
+    }
 
     override fun onJoinButtonClick(
         gameId: String,
@@ -31,7 +37,7 @@ class JoinPresenter(
             dm.findPokerGame(gameId, userName)
         }
 
-        request.doOnSubscribe {
+        val subscription = request.doOnSubscribe {
             actions.showLoadingView()
         }
             .doOnEach {
@@ -54,6 +60,8 @@ class JoinPresenter(
                     RetrofitException.Kind.UNEXPECTED -> actions.showDefaultErrorSnackBar()
                 }
             })
+
+        disposables.add(subscription)
     }
 
     override fun onNameTextChanged(userName: String, gameId: String, pokerGame: PokerGame?) {

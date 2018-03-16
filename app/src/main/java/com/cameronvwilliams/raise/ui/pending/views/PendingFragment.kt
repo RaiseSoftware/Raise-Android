@@ -98,7 +98,7 @@ class PendingFragment : BaseFragment() {
             .create()
 
         startButton.setOnClickListener {
-            dm.startGame(pokerGame)
+            dm.startGame()
         }
 
         backButton.setOnClickListener {

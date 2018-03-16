@@ -5,14 +5,20 @@ import com.cameronvwilliams.raise.data.model.ErrorResponse
 import com.cameronvwilliams.raise.data.remote.RetrofitException
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.IntroContract
+import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 class PasscodePresenter(private val navigator: Navigator, private val dm: DataManager) :
     IntroContract.PasscodeUserActions {
 
     private val minimumPasscodeLength = 5
+    private val disposables = CompositeDisposable()
 
     override lateinit var actions: IntroContract.PasscodeViewActions
+
+    override fun onViewDestroyed() {
+        disposables.clear()
+    }
 
     override fun onPasscodeTextChanged(passcode: String) {
         if (passcode.length > minimumPasscodeLength) {
@@ -23,7 +29,7 @@ class PasscodePresenter(private val navigator: Navigator, private val dm: DataMa
     }
 
     override fun onSubmitButtonClick(gameId: String, passcode: String, userName: String) {
-        dm.findPokerGame(gameId, userName, passcode)
+        val subscription = dm.findPokerGame(gameId, userName, passcode)
             .doOnSubscribe {
                 actions.showLoadingView()
             }
@@ -46,6 +52,8 @@ class PasscodePresenter(private val navigator: Navigator, private val dm: DataMa
                     RetrofitException.Kind.UNEXPECTED -> actions.showDefaultErrorSnackBar()
                 }
             })
+
+        disposables.add(subscription);
     }
 
 }

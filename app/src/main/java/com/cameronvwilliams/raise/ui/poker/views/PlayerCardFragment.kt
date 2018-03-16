@@ -10,6 +10,7 @@ import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.poker.views.adapter.ActiveCardListAdapter
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.poker_player_card_fragment.*
 import javax.inject.Inject
 
@@ -18,6 +19,7 @@ class PlayerCardFragment : BaseFragment() {
     @Inject
     lateinit var dm: DataManager
 
+    private val subscriptions: CompositeDisposable = CompositeDisposable()
     private lateinit var layoutManager: LinearLayoutManager
     private val adapter = ActiveCardListAdapter(listOf())
 
@@ -35,11 +37,18 @@ class PlayerCardFragment : BaseFragment() {
         activeCardList.layoutManager = layoutManager
         activeCardList.adapter = adapter
 
-        dm.getActivePlayersCards()
+        val subscription = dm.getActivePlayersCards()
             .subscribe { result ->
                 adapter.updateActiveCardList(result.first!!)
                 result.second!!.dispatchUpdatesTo(adapter)
             }
+
+        subscriptions.add(subscription)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        subscriptions.clear()
     }
 
     companion object {

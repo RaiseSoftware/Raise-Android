@@ -51,12 +51,12 @@ class DataManager @Inject constructor(
         socketClient.disconnect()
     }
 
-    fun startGame(pokerGame: PokerGame) {
-        socketClient.sendStartGameMessage(pokerGame)
+    fun startGame() {
+        socketClient.sendStartGameMessage()
     }
 
-    fun endGame(pokerGame: PokerGame) {
-        socketClient.sendEndGameMessage(pokerGame)
+    fun endGame() {
+        socketClient.sendEndGameMessage()
     }
 
     fun submitCard(card: Card) {

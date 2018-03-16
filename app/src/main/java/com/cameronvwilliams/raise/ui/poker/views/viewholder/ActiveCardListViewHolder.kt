@@ -12,7 +12,7 @@ class ActiveCardListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         itemView.playerIcon.text = activeCard.player.name[0].toUpperCase().toString()
         itemView.userName.text = activeCard.player.name
 
-        when (activeCard.card.value) {
+        when (activeCard.card?.value) {
             CardValue.X_SMALL -> itemView.pokerCard.setImageResource(R.drawable.card_xs)
             CardValue.SMALL -> itemView.pokerCard.setImageResource(R.drawable.card_s)
             CardValue.MEDIUM -> itemView.pokerCard.setImageResource(R.drawable.card_m)
