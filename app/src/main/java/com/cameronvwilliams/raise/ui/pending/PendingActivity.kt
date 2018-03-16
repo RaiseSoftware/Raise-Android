@@ -13,9 +13,6 @@ import javax.inject.Inject
 
 class PendingActivity : BaseActivity() {
 
-    @Inject
-    lateinit var navigator: Navigator
-
     companion object IntentOptions {
         private const val EXTRA_POKER_GAME = "poker_game"
         private const val EXTRA_USER_NAME = "user_name"

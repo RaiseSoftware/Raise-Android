@@ -15,9 +15,6 @@ import javax.inject.Inject
 
 class PokerActivity : BaseActivity() {
 
-    @Inject
-    lateinit var navigator: Navigator
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.poker_activity)
