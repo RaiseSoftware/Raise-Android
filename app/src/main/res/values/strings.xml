@@ -40,4 +40,7 @@
 
     <string name="text_add_story">Add User Story</string>
 
+    <string name="text_end_game">End Poker Game</string>
+    <string name="text_sure_end">Are you sure you want to end this game? This will close the game for all other players</string>
+
 </resources>

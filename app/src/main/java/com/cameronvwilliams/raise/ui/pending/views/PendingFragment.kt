@@ -64,7 +64,7 @@ class PendingFragment : BaseFragment() {
         }
     }
 
-    private lateinit var backButtonDialog: AlertDialog
+    private lateinit var closeButtonDialog: AlertDialog
     private lateinit var pokerGame: PokerGame
     private lateinit var userName: String
     private var moderatorMode: Boolean = false
@@ -93,18 +93,7 @@ class PendingFragment : BaseFragment() {
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager, true)
 
-        backButtonDialog = AlertDialog.Builder(activityContext)
-            .setTitle(getString(R.string.text_exit_game))
-            .setMessage(getString(R.string.text_sure_exit))
-            .setPositiveButton(android.R.string.yes, { dialog, _ ->
-                dm.leaveGame()
-                dialog.dismiss()
-                activity.finish()
-            })
-            .setNegativeButton(android.R.string.no, { dialog, _ ->
-                dialog.dismiss()
-            })
-            .create()
+        createCloseButtonDialog()
 
         if (moderatorMode) {
             startButtonBackground.visibility = View.VISIBLE
@@ -117,7 +106,7 @@ class PendingFragment : BaseFragment() {
 
 
         closeButton.setOnClickListener {
-            backButtonDialog.show()
+            closeButtonDialog.show()
         }
 
         dm.joinGame()
@@ -140,8 +129,39 @@ class PendingFragment : BaseFragment() {
     }
 
     override fun onBackPressed(): Boolean {
-        backButtonDialog.show()
+        closeButtonDialog.show()
 
         return true
+    }
+
+    private fun createCloseButtonDialog() {
+        when (moderatorMode) {
+            true -> {
+                closeButtonDialog = AlertDialog.Builder(activityContext)
+                    .setTitle(getString(R.string.text_end_game))
+                    .setMessage(getString(R.string.text_sure_end))
+                    .setPositiveButton(android.R.string.yes, { dialog, _ ->
+                        dm.endGame()
+                    })
+                    .setNegativeButton(android.R.string.no, { dialog, _ ->
+                        dialog.dismiss()
+                    })
+                    .create()
+            }
+            false -> {
+                closeButtonDialog = AlertDialog.Builder(activityContext)
+                    .setTitle(getString(R.string.text_exit_game))
+                    .setMessage(getString(R.string.text_sure_exit))
+                    .setPositiveButton(android.R.string.yes, { dialog, _ ->
+                        dm.leaveGame()
+                        dialog.dismiss()
+                        activity.finish()
+                    })
+                    .setNegativeButton(android.R.string.no, { dialog, _ ->
+                        dialog.dismiss()
+                    })
+                    .create()
+            }
+        }
     }
 }
