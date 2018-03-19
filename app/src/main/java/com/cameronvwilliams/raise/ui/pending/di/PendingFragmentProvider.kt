@@ -1,8 +1,6 @@
 package com.cameronvwilliams.raise.ui.pending.di
 
-import com.cameronvwilliams.raise.ui.pending.views.PendingFragment
-import com.cameronvwilliams.raise.ui.pending.views.PlayerListFragment
-import com.cameronvwilliams.raise.ui.pending.views.PokerInfoFragment
+import com.cameronvwilliams.raise.ui.pending.views.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -16,4 +14,10 @@ abstract class PendingFragmentProvider {
 
     @ContributesAndroidInjector(modules = [PendingFragmentModule::class])
     abstract fun providePendingFragment(): PendingFragment
+
+    @ContributesAndroidInjector(modules = [PendingFragmentModule::class])
+    abstract fun provideModeratorFragment(): ModeratorFragment
+
+    @ContributesAndroidInjector(modules = [PendingFragmentModule::class])
+    abstract fun provideCreateStoryFragment(): CreateStoryFragment
 }

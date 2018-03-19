@@ -12,7 +12,8 @@ data class PokerGame(
     val requiresPasscode: Boolean,
     val gameId: String? = "",
     val qrcode: String? = "",
-    val passcode: String? = ""
+    val passcode: String? = "",
+    val gameUuid: String? = ""
 ) : Parcelable {
 
     private constructor(parcel: Parcel) : this(
@@ -21,7 +22,8 @@ data class PokerGame(
         requiresPasscode = parcel.readBoolean(),
         gameId = parcel.readString(),
         qrcode = parcel.readString(),
-        passcode = parcel.readString()
+        passcode = parcel.readString(),
+        gameUuid = parcel.readString()
     )
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
@@ -31,6 +33,7 @@ data class PokerGame(
         writeString(gameId)
         writeString(qrcode)
         writeString(passcode)
+        writeString(gameUuid)
     }
 
     override fun describeContents(): Int = 0

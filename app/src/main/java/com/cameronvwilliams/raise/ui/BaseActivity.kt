@@ -29,7 +29,7 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val fragmentList = supportFragmentManager.fragments
+        val fragmentList = supportFragmentManager.fragments.reversed()
         var backPressed = false
         for (fragment in fragmentList) {
             backPressed = (fragment as BaseFragment).onBackPressed()

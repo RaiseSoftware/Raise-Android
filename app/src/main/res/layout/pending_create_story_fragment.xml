@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context="com.cameronvwilliams.raise.ui.pending.views.CreateStoryFragment">
+
+    <ImageButton
+        android:id="@+id/closeButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="@dimen/margin_small"
+        android:background="@null"
+        android:contentDescription="@string/close_button"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_close_white_24dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Enter a title and description for your user story"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/titleEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_medium"
+            android:background="@drawable/background_white_rounded_grey_border"
+            android:hint="Story Title"
+            android:inputType="textCapCharacters"
+            android:padding="16dp"
+            android:textSize="@dimen/textsize_normal" />
+
+        <EditText
+            android:id="@+id/descriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_medium"
+            android:background="@drawable/background_white_rounded_grey_border"
+            android:gravity="top|start"
+            android:hint="Story Description"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:maxLines="10"
+            android:minLines="6"
+            android:padding="16dp"
+            android:scrollbars="vertical"
+            android:textSize="@dimen/textsize_normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/startButtonBackground"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/addStoryButton"
+            style="@style/BottomBarButton"
+            android:text="Add Story" />
+    </LinearLayout>
+
+</RelativeLayout>

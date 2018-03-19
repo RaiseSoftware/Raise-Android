@@ -3,24 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.cameronvwilliams.raise.ui.pending.views.PendingFragment"
-    android:orientation="vertical">
+    tools:context="com.cameronvwilliams.raise.ui.pending.views.PendingFragment">
 
     <ImageButton
-        android:id="@+id/backButton"
+        android:id="@+id/closeButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_gravity="start|top"
         android:layout_margin="@dimen/margin_small"
         android:background="@null"
-        android:contentDescription="@string/back_button"
+        android:contentDescription="@string/close_button"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_arrow_left_white_24dp" />
+        android:src="@drawable/ic_close_white_24dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="65dp"
+        android:layout_above="@id/startButtonBackground"
         tools:context=".ui.pending.PendingActivity"
         android:orientation="vertical">
 
@@ -43,6 +41,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/startButtonBackground"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_alignParentBottom="true"

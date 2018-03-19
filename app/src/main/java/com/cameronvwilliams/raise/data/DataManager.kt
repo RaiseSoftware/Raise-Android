@@ -5,9 +5,12 @@ import android.support.v7.util.DiffUtil
 import com.cameronvwilliams.raise.data.local.RaisePreferences
 import com.cameronvwilliams.raise.data.model.*
 import com.cameronvwilliams.raise.data.model.api.PokerGameBody
+import com.cameronvwilliams.raise.data.model.api.StoryBody
 import com.cameronvwilliams.raise.data.remote.RaiseAPI
 import com.cameronvwilliams.raise.data.remote.SocketClient
+import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -23,24 +26,36 @@ class DataManager @Inject constructor(
     val CODE_FORBIDDEN = 403
     val CODE_NOT_FOUND = 404
 
-    fun createPokerGame(game: PokerGame, player: Player): Observable<PokerGame> {
+    fun createPokerGame(game: PokerGame, player: Player): Single<PokerGame> {
         return raiseAPI.createPokerGame(PokerGameBody(game, player))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { response ->
+            .doOnSuccess { response ->
                 setGameToken(response.token.token)
             }
             .map{ response -> response.pokerGame }
     }
 
-    fun findPokerGame(gameId: String, name: String, passcode: String? = null): Observable<PokerGame> {
+    fun findPokerGame(gameId: String, name: String, passcode: String? = null): Single<PokerGame> {
         return raiseAPI.findPokerGame(gameId, name, passcode)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { response ->
+            .doOnSuccess { response ->
                 setGameToken(response.token.token)
             }
             .map{ response -> response.pokerGame }
+    }
+
+    fun createUserStory(userStory: Story, gameUuid: String): Single<List<Story>> {
+        return raiseAPI.createUserStory(StoryBody(userStory, gameUuid))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun findUserStoriesForGame(gameUuid: String): Single<List<Story>> {
+        return raiseAPI.findUserStoriesForGame(gameUuid)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun joinGame() {
@@ -75,13 +90,13 @@ class DataManager @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getGameStart(): Observable<PokerGame> {
+    fun getGameStart(): Observable<String> {
         return socketClient.onGameStart()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getGameEnd(): Observable<PokerGame> {
+    fun getGameEnd(): Completable {
         return socketClient.onGameEnd()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

@@ -34,7 +34,7 @@ class PasscodePresenter(private val navigator: Navigator, private val dm: DataMa
                 actions.showLoadingView()
             }
             .subscribe({ pokerGame ->
-                navigator.goToPendingView(pokerGame, userName)
+                navigator.goToPendingView(pokerGame, userName, false)
                 actions.hideLoadingView()
             }, { error ->
                 Timber.e(error)

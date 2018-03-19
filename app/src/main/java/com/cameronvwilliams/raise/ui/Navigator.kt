@@ -18,6 +18,9 @@ import java.io.FileNotFoundException
 import android.graphics.BitmapFactory
 import java.io.IOException
 import android.graphics.Bitmap
+import android.support.v4.app.FragmentTransaction
+import com.cameronvwilliams.raise.data.model.Story
+import com.cameronvwilliams.raise.ui.pending.views.CreateStoryFragment
 import com.cameronvwilliams.raise.ui.scanner.ScannerActivity
 import com.cameronvwilliams.raise.ui.scanner.views.ScannerFragment
 import io.reactivex.Observable
@@ -137,23 +140,25 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .commit()
     }
 
-    fun goToPendingView(pokerGame: PokerGame, userName: String) {
+    fun goToPendingView(pokerGame: PokerGame, userName: String, moderatorMode: Boolean) {
         val intent = Intent(context, PendingActivity::class.java)
         
         with(PendingActivity.IntentOptions) {
             intent.setPokerGame(pokerGame)
             intent.setUserName(userName)
+            intent.setModeratorMode(moderatorMode)
         }
         context.startActivity(intent)
     }
 
-    fun goToPending(pokerGame: PokerGame, userName: String) {
+    fun goToPending(pokerGame: PokerGame, userName: String, moderatorMode: Boolean) {
         val fragment = PendingFragment.newInstance()
         val bundle = Bundle()
 
         with(PendingFragment.BundleOptions) {
             bundle.setPokerGame(pokerGame)
             bundle.setUserName(userName)
+            bundle.setModeratorMode(moderatorMode)
         }
 
         fragment.arguments = bundle
@@ -165,6 +170,13 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             )
             .replace(R.id.layoutRoot, fragment)
             .commit()
+    }
+
+    fun showCreateStory(pokerGame: PokerGame, cb: (List<Story>) -> Unit) {
+        fm.beginTransaction()
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .add(R.id.layoutRoot, CreateStoryFragment.newInstance(pokerGame, cb))
+            .addToBackStack(null).commit()
     }
 
     fun goToPokerGameView(pokerGame: PokerGame) {

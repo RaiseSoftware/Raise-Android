@@ -8,7 +8,10 @@ import com.cameronvwilliams.raise.data.model.event.*
 import com.cameronvwilliams.raise.util.ActiveCardDiffCallback
 import com.cameronvwilliams.raise.util.PlayerDiffCallback
 import com.google.gson.Gson
+import io.reactivex.Completable
+import io.reactivex.CompletableSource
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -22,12 +25,18 @@ import javax.inject.Singleton
 class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: String) {
 
     private lateinit var socket: Socket
-    private val socketSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
+    private val joinLeaveSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
+    private val cardSubmitSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
+    private val startGameSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
+    private val endGameSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
 
     init {
         IO.setDefaultOkHttpCallFactory(okHttpClient)
         IO.setDefaultOkHttpWebSocketFactory(okHttpClient)
-        socketSubject.replay(1).refCount()
+        joinLeaveSubject.replay(1).refCount()
+        cardSubmitSubject.replay(1).refCount()
+        startGameSubject.replay(1).refCount()
+        endGameSubject.replay(1).refCount()
     }
 
     fun connect(token: String) {
@@ -42,7 +51,10 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
     }
 
     fun disconnect() {
-        socketSubject.onComplete()
+        joinLeaveSubject.onComplete()
+        cardSubmitSubject.onComplete()
+        startGameSubject.onComplete()
+        endGameSubject.onComplete()
         socket.off()
         socket.disconnect()
     }
@@ -59,35 +71,29 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         socket.emit(END_GAME_EVENT)
     }
 
-    fun onGameStart(): Observable<PokerGame> {
-        return socketSubject.filter { event ->
-                event.type == START_GAME_EVENT
-            }.switchMap { event ->
-                Observable.just(PokerGame("", DeckType.FIBONACCI, false))
-            }
+    fun onGameStart(): Observable<String> {
+        return startGameSubject.switchMapSingle { _ ->
+            Single.just("")
+        }
     }
 
-    fun onGameEnd(): Observable<PokerGame> {
-        return socketSubject.filter { event ->
-                event.type == START_GAME_EVENT
-            }.switchMap { event ->
-                Observable.just(PokerGame("", DeckType.FIBONACCI, false))
-            }
+    fun onGameEnd(): Completable {
+        return endGameSubject.flatMapCompletable {
+            Observable.just("").ignoreElements()
+        }
     }
 
     fun onPlayersInGameChange(): Observable<Pair<List<Player>, DiffUtil.DiffResult>> {
         val emptyList: List<Player> = ArrayList()
         val initialPair: Pair<List<Player>, DiffUtil.DiffResult> = Pair.create(emptyList, null)
 
-        return socketSubject.filter { event ->
-                event.type == JOIN_LEAVE_EVENT
-            }
-            .switchMap { event ->
-                Observable.just((event as JoinLeaveEvent).data)
+        return joinLeaveSubject.hide()
+            .map { event ->
+                (event as JoinLeaveEvent).data
             }
             .scan(initialPair, { pair, next ->
                 val callback = PlayerDiffCallback(pair.first!!, next)
-                val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(callback)
+                val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(callback, false)
                 Pair.create(next, result)
             })
             .skip(1)
@@ -97,15 +103,12 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         val emptyList: List<ActiveCard> = ArrayList()
         val initialPair: Pair<List<ActiveCard>, DiffUtil.DiffResult> = Pair.create(emptyList, null)
 
-        return socketSubject.filter { event ->
-                event.type == CARD_SUBMIT_EVENT
-            }
-            .switchMap { event ->
+        return cardSubmitSubject.switchMap { event ->
                 Observable.just((event as CardSubmitEvent).data)
             }
             .scan(initialPair, { pair, next ->
                 val callback = ActiveCardDiffCallback(pair.first!!, next)
-                val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(callback)
+                val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(callback, false)
                 Pair.create(next, result)
             })
             .skip(1)
@@ -115,25 +118,25 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         socket.on(START_GAME_EVENT, { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, StartGameEvent::class.java)
-            socketSubject.onNext(event)
+            startGameSubject.onNext(event)
         })
 
         socket.on(JOIN_LEAVE_EVENT, { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, JoinLeaveEvent::class.java)
-            socketSubject.onNext(event)
+            joinLeaveSubject.onNext(event)
         })
 
         socket.on(CARD_SUBMIT_EVENT, { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, CardSubmitEvent::class.java)
-            socketSubject.onNext(event)
+            cardSubmitSubject.onNext(event)
         })
 
         socket.on(END_GAME_EVENT, { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, EndGameEvent::class.java)
-            socketSubject.onNext(event)
+            endGameSubject.onNext(event)
         })
     }
 
