@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.Single;
 import io.reactivex.functions.Function;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
@@ -51,7 +52,7 @@ public class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
 
         @Override
         public Object adapt(@NonNull Call call) {
-            return ((Observable) wrapped.adapt(call)).onErrorResumeNext(new Function<Throwable, ObservableSource>() {
+            return ((Single) wrapped.adapt(call)).onErrorResumeNext(new Function<Throwable, ObservableSource>() {
                 @Override
                 public ObservableSource apply(Throwable throwable) throws Exception {
                     return Observable.error(asRetrofitException(throwable));

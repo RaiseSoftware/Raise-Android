@@ -21,9 +21,7 @@ class SettingsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        collapsingToolbar.title = getString(R.string.settings)
-        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(context, android.R.color.transparent))
-
+        toolbar.title = getString(R.string.settings)
         toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_arrow_back_white_24dp, null)
         toolbar.setNavigationOnClickListener {
             activity.supportFragmentManager.popBackStackImmediate()

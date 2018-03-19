@@ -40,11 +40,11 @@ class JoinPresenter(
         val subscription = request.doOnSubscribe {
             actions.showLoadingView()
         }
-            .doOnEach {
+            .doOnEvent { _, _ ->
                 actions.hideLoadingView()
             }
             .subscribe({ game ->
-                navigator.goToPendingView(game, userName)
+                navigator.goToPendingView(game, userName, false)
             }, { error ->
                 Timber.e(error)
                 val errorMessage =

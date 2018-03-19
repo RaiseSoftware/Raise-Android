@@ -22,21 +22,11 @@ class PlayerListFragment : BaseFragment() {
 
     private val disposables = CompositeDisposable()
     private lateinit var layoutManager: LinearLayoutManager
-    private val adapter = PlayerListAdapter(listOf())
+    private lateinit var adapter: PlayerListAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.pending_player_list_fragment, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         layoutManager = LinearLayoutManager(activity)
-        playerList.layoutManager = layoutManager
-        playerList.adapter = adapter
-
+        adapter = PlayerListAdapter(listOf())
         val subscription = dm.getPlayersInGame()
             .subscribe { result ->
                 adapter.updatePlayerList(result.first!!)
@@ -44,6 +34,14 @@ class PlayerListFragment : BaseFragment() {
             }
 
         disposables.add(subscription)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.pending_player_list_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        playerList.layoutManager = layoutManager
+        playerList.adapter = adapter
     }
 
     override fun onDestroyView() {

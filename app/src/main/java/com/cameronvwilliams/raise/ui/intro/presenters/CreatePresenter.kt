@@ -40,7 +40,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
                     selectedUserName = userName
                     actions.showInterstitialAd()
                 } else {
-                    navigator.goToPendingView(pokerGame, userName)
+                    navigator.goToPendingView(pokerGame, userName, true)
                 }
             }, {
                 actions.hideLoadingView()
@@ -73,6 +73,6 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
     }
 
     override fun onAdClosed() {
-        navigator.goToPendingView(createdPokerGame, selectedUserName)
+        navigator.goToPendingView(createdPokerGame, selectedUserName, true)
     }
 }

@@ -33,11 +33,14 @@
     <string name="text_share_app">Check out this awesome Scrum Poker app, Raise: http://play.google.com/store/apps/details?id=%1$s</string>
     <string name="text_choose_app">Choose an app to share a link to Raise!</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_feedback">Feedback</string>
     <string name="unable_to_scan">Unable to scan QR Code</string>
     <string name="unable_to_scan_long">Unable to scan an image without permission. In order to do so, please grant permission from settings</string>
     <string name="go_to_settings">Go to Settings</string>
+
+    <string name="text_add_story">Add User Story</string>
+
+    <string name="text_end_game">End Poker Game</string>
+    <string name="text_sure_end">Are you sure you want to end this game? This will close the game for all other players</string>
 
 </resources>

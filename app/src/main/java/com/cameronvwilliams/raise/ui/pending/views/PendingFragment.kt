@@ -16,7 +16,6 @@ import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.ui.pending.views.adapter.PendingAdapter
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.pending_fragment.*
 import javax.inject.Inject
 
@@ -34,6 +33,7 @@ class PendingFragment : BaseFragment() {
     companion object BundleOptions {
         private const val EXTRA_POKER_GAME = "poker_game"
         private const val EXTRA_USER_NAME = "user_name"
+        private const val EXTRA_MODERATOR_MODE = "moderator_mode"
 
         fun newInstance(): PendingFragment {
             return PendingFragment()
@@ -54,18 +54,26 @@ class PendingFragment : BaseFragment() {
         fun Bundle.setUserName(name: String) {
             putString(EXTRA_USER_NAME, name)
         }
+
+        fun Bundle.getModeratorMode(): Boolean {
+            return getBoolean(EXTRA_MODERATOR_MODE)
+        }
+
+        fun Bundle.setModeratorMode(value: Boolean) {
+            putBoolean(EXTRA_MODERATOR_MODE, value)
+        }
     }
 
-    private lateinit var backButtonDialog: AlertDialog
+    private lateinit var closeButtonDialog: AlertDialog
     private lateinit var pokerGame: PokerGame
     private lateinit var userName: String
+    private var moderatorMode: Boolean = false
     private val subscriptions: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.pending_fragment, container, false)
     }
 
@@ -75,34 +83,30 @@ class PendingFragment : BaseFragment() {
         with(BundleOptions) {
             pokerGame = arguments!!.getPokerGame()
             userName = arguments!!.getUserName()
+            moderatorMode = arguments!!.getModeratorMode()
         }
 
         val adapter = PendingAdapter(
             (activityContext as PendingActivity).supportFragmentManager,
-            pokerGame
+            pokerGame, moderatorMode
         )
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager, true)
 
-        backButtonDialog = AlertDialog.Builder(activityContext)
-            .setTitle(getString(R.string.text_exit_game))
-            .setMessage(getString(R.string.text_sure_exit))
-            .setPositiveButton(android.R.string.yes, { dialog, _ ->
-                dm.leaveGame()
-                dialog.dismiss()
-                activity.finish()
-            })
-            .setNegativeButton(android.R.string.no, { dialog, _ ->
-                dialog.dismiss()
-            })
-            .create()
+        createCloseButtonDialog()
 
-        startButton.setOnClickListener {
-            dm.startGame()
+        if (moderatorMode) {
+            startButtonBackground.visibility = View.VISIBLE
+            startButton.setOnClickListener {
+                dm.startGame()
+            }
+        } else {
+            startButtonBackground.visibility = View.GONE
         }
 
-        backButton.setOnClickListener {
-            backButtonDialog.show()
+
+        closeButton.setOnClickListener {
+            closeButtonDialog.show()
         }
 
         dm.joinGame()
@@ -113,7 +117,7 @@ class PendingFragment : BaseFragment() {
             })
 
         subscriptions.add(dm.getGameStart()
-            .subscribe { game ->
+            .subscribe {
                 navigator.goToPokerGameView(pokerGame)
                 activity.finish()
             })
@@ -125,8 +129,39 @@ class PendingFragment : BaseFragment() {
     }
 
     override fun onBackPressed(): Boolean {
-        backButtonDialog.show()
+        closeButtonDialog.show()
 
         return true
+    }
+
+    private fun createCloseButtonDialog() {
+        when (moderatorMode) {
+            true -> {
+                closeButtonDialog = AlertDialog.Builder(activityContext)
+                    .setTitle(getString(R.string.text_end_game))
+                    .setMessage(getString(R.string.text_sure_end))
+                    .setPositiveButton(android.R.string.yes, { dialog, _ ->
+                        dm.endGame()
+                    })
+                    .setNegativeButton(android.R.string.no, { dialog, _ ->
+                        dialog.dismiss()
+                    })
+                    .create()
+            }
+            false -> {
+                closeButtonDialog = AlertDialog.Builder(activityContext)
+                    .setTitle(getString(R.string.text_exit_game))
+                    .setMessage(getString(R.string.text_sure_exit))
+                    .setPositiveButton(android.R.string.yes, { dialog, _ ->
+                        dm.leaveGame()
+                        dialog.dismiss()
+                        activity.finish()
+                    })
+                    .setNegativeButton(android.R.string.no, { dialog, _ ->
+                        dialog.dismiss()
+                    })
+                    .create()
+            }
+        }
     }
 }
