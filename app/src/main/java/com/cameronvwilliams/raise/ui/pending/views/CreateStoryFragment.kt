@@ -52,7 +52,7 @@ class CreateStoryFragment : BaseFragment() {
         }
 
         addStoryButton.setOnClickListener {
-            val story = Story(titleEditText.text.toString().trim(), descriptionEditText.text.toString().trim())
+            val story = Story(titleEditText.text.toString().trim())
             dm.createUserStory(story, pokerGame.gameUuid!!)
                 .subscribe({ list ->
                     val cb = arguments?.get("cb") as (List<Story>) -> Unit

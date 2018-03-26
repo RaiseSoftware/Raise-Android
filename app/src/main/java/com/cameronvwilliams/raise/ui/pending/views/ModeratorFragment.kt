@@ -2,6 +2,7 @@ package com.cameronvwilliams.raise.ui.pending.views
 
 
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,9 @@ class ModeratorFragment : BaseFragment() {
 
         addStoryButton.setOnClickListener {
             navigator.showCreateStory(arguments?.get("game") as PokerGame, { items ->
+                if (items.isNotEmpty()) {
+                    heading.background = ContextCompat.getDrawable(context, R.drawable.background_grey_top_rounded)
+                }
                 adapter.updateStoryList(items)
             })
         }
