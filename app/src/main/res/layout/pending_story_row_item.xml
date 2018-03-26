@@ -12,22 +12,12 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:layout_toStartOf="@id/draggableIcon"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/black"
-        android:textSize="@dimen/textsize_normal"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_toStartOf="@id/draggableIcon"
-        android:ellipsize="end"
-        android:maxLines="1" />
+        android:textSize="@dimen/textsize_normal" />
 
     <ImageView
         android:id="@+id/draggableIcon"
