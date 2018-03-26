@@ -3,29 +3,31 @@ package com.cameronvwilliams.raise.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentTransaction
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
+import com.cameronvwilliams.raise.data.model.Story
+import com.cameronvwilliams.raise.ui.intro.IntroActivity
 import com.cameronvwilliams.raise.ui.intro.views.*
 import com.cameronvwilliams.raise.ui.pending.PendingActivity
+import com.cameronvwilliams.raise.ui.pending.views.CreateStoryFragment
 import com.cameronvwilliams.raise.ui.pending.views.PendingFragment
 import com.cameronvwilliams.raise.ui.poker.PokerActivity
 import com.cameronvwilliams.raise.ui.poker.views.PokerFragment
-import java.io.FileNotFoundException
-import android.graphics.BitmapFactory
-import java.io.IOException
-import android.graphics.Bitmap
-import android.support.v4.app.FragmentTransaction
-import com.cameronvwilliams.raise.data.model.Story
-import com.cameronvwilliams.raise.ui.pending.views.CreateStoryFragment
 import com.cameronvwilliams.raise.ui.scanner.ScannerActivity
 import com.cameronvwilliams.raise.ui.scanner.views.ScannerFragment
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
+import java.io.FileNotFoundException
+import java.io.IOException
+import java.io.Serializable
 
 class Navigator(private val fm: FragmentManager, val context: Context) {
 
@@ -66,18 +68,10 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
     }
 
     fun goToIntro(animate: Boolean = true) {
-        if (!fm.popBackStackImmediate("intro", 0)) {
-            fm.beginTransaction()
-                .replace(R.id.layoutRoot, IntroFragment.newInstance())
-                .setCustomAnimations(
-                    R.anim.slide_in_left,
-                    R.anim.slide_out_left,
-                    R.anim.slide_out_right,
-                    R.anim.slide_in_right
-                )
-                .addToBackStack("intro")
-                .commit()
-        }
+        fm.beginTransaction()
+            .replace(R.id.layoutRoot, IntroFragment.newInstance())
+            .addToBackStack("intro")
+            .commit()
     }
 
     fun goToSettings() {
@@ -142,7 +136,9 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
 
     fun goToPendingView(pokerGame: PokerGame, userName: String, moderatorMode: Boolean) {
         val intent = Intent(context, PendingActivity::class.java)
-        
+
+        (context as IntroActivity).recreate()
+
         with(PendingActivity.IntentOptions) {
             intent.setPokerGame(pokerGame)
             intent.setUserName(userName)

@@ -8,6 +8,7 @@ import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.IntroContract
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import timber.log.Timber
 
 class CreatePresenter(private val navigator: Navigator, private val dm: DataManager) :
     IntroContract.CreateUserActions {
@@ -42,7 +43,8 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
                 } else {
                     navigator.goToPendingView(pokerGame, userName, true)
                 }
-            }, {
+            }, { e ->
+                Timber.e(e)
                 actions.hideLoadingView()
                 actions.showDefaultErrorSnackBar()
             })
