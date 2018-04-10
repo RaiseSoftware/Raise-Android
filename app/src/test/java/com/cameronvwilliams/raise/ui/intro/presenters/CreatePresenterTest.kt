@@ -24,9 +24,9 @@ class CreatePresenterTest {
     @Mock private lateinit var actions: IntroContract.CreateViewActions
 
     private lateinit var createPresenter: IntroContract.CreateUserActions
-    private val pokerGame = PokerGame("", DeckType.FIBONACCI.type, false)
-    private val responsePokerGame = PokerGame("", DeckType.FIBONACCI.type, false)
-    private val errorPokerGame = PokerGame("", DeckType.T_SHIRT.type, true)
+    private val pokerGame = PokerGame("", DeckType.FIBONACCI, false)
+    private val responsePokerGame = PokerGame("", DeckType.FIBONACCI, false)
+    private val errorPokerGame = PokerGame("", DeckType.T_SHIRT, true)
     private val exception = RetrofitException("", "", null, RetrofitException.Kind.HTTP, null, null)
 
     @Before fun setup() {

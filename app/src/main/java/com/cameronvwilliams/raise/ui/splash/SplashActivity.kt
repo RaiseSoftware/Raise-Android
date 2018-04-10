@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import android.content.Intent
 import com.cameronvwilliams.raise.ui.intro.IntroActivity
 
-
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

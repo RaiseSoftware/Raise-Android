@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.cameronvwilliams.raise.BuildConfig
 import com.cameronvwilliams.raise.data.remote.RaiseAPI
 import com.cameronvwilliams.raise.data.remote.RxErrorHandlingCallAdapterFactory
+import com.cameronvwilliams.raise.data.remote.SocketAPI
 import com.cameronvwilliams.raise.data.remote.SocketClient
 import com.cameronvwilliams.raise.di.ApplicationContext
 import com.facebook.stetho.okhttp3.StethoInterceptor
@@ -40,7 +41,7 @@ abstract class DataModuleDebug {
 
         @Provides
         @Singleton
-        @JvmStatic fun provideSocketClient(gson: Gson, okHttpClient: OkHttpClient): SocketClient
+        @JvmStatic fun provideSocketAPI(gson: Gson, okHttpClient: OkHttpClient): SocketAPI
                 = SocketClient(gson, okHttpClient, BuildConfig.SOCKET_URL)
 
         @Provides

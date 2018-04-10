@@ -2,6 +2,7 @@ package com.cameronvwilliams.raise.util
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.util.*
 
 interface Parcelable : Parcelable {
     override fun describeContents() = 0
@@ -25,6 +26,11 @@ inline fun <reified T> parcelableClassLoaderCreator(crossinline create: (Parcel,
         override fun newArray(size: Int) = arrayOfNulls<T>(size)
     }
 
+fun Parcel.readStr() = readNullable {
+    readString()
+}
+
+fun Parcel.writeStr(value: String?) = writeNullable(value) { writeString(it) }
 
 fun Parcel.readBoolean() = readInt() != 0
 
@@ -35,6 +41,12 @@ inline fun <reified T : Enum<T>> Parcel.readEnum() =
 
 fun <T : Enum<T>> Parcel.writeEnum(value: T?) =
     writeInt(value?.ordinal ?: -1)
+
+fun Parcel.readDate() =
+    readNullable { Date(readLong()) }
+
+fun Parcel.writeDate(value: Date?) =
+    writeNullable(value) { writeLong(it.time) }
 
 inline fun <T> Parcel.readNullable(reader: () -> T) =
     if (readInt() != 0) reader() else null

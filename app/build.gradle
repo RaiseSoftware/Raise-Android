@@ -52,19 +52,36 @@ android {
     productFlavors {
         local {
             dimension "remote"
-            buildConfigField "String", "SOCKET_URL", '"http://10.0.2.2:3000/"'
+            buildConfigField "String", "SOCKET_URL", '"http://10.0.2.2:3000/socket/"'
             buildConfigField "String", "API_URL", '"http://10.0.2.2:3000/api/"'
+            buildConfigField "String", "BASE_URL", '"http://10.0.2.2:3000/"'
+            resValue 'string', 'DEEPLINK_URL', '10.0.2.2:3000'
         }
         staging {
             dimension "remote"
-            buildConfigField "String", "SOCKET_URL", '"https://raise.cameronvwilliams.com/"'
+            buildConfigField "String", "SOCKET_URL", '"https://raise.cameronvwilliams.com/socket/"'
             buildConfigField "String", "API_URL", '"https://raise.cameronvwilliams.com/api/"'
+            buildConfigField "String", "BASE_URL", '"https://raise.cameronvwilliams.com/"'
+            resValue 'string', 'DEEPLINK_URL', 'raise.cameronvwilliams.com'
+        }
+        mock {
+            dimension "remote"
+            buildConfigField "String", "SOCKET_URL", '"http://localhost/socket/"'
+            buildConfigField "String", "API_URL", '"http://localhost/api/"'
+            buildConfigField "String", "BASE_URL", '"http://localhost/"'
+            resValue 'string', 'DEEPLINK_URL', 'localhost'
         }
     }
     sourceSets {
         debug {
             java.srcDirs = ['src/debug/java']
             manifest.srcFile 'src/debug/AndroidManifest.xml'
+        }
+        mock {
+            java.srcDirs = ['src/mock/java']
+        }
+        mockDebug {
+            java.srcDirs = ['src/mockDebug/java']
         }
     }
     testOptions {
@@ -101,7 +118,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation "com.android.support:design:$supportVersion"
     implementation "com.android.support:support-v4:$supportVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta5'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
 
     //Play Services Libraries
     implementation "com.google.android.gms:play-services-vision:$playServicesVersion"
@@ -150,6 +167,10 @@ dependencies {
     // Permission Dispatcher
     implementation "com.github.hotchemi:permissionsdispatcher:${permissionDispatcherVersion}"
     kapt "com.github.hotchemi:permissionsdispatcher-processor:${permissionDispatcherVersion}"
+
+    // Deeplink Dispatch
+    implementation 'com.airbnb:deeplinkdispatch:3.1.1'
+    kapt 'com.airbnb:deeplinkdispatch-processor:3.1.1'
 
     //Testing Libs
     testImplementation 'junit:junit:4.12'

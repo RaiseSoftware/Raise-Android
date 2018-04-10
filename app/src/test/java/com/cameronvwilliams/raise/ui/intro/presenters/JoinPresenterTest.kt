@@ -16,7 +16,6 @@ class JoinPresenterTest {
 
     @Mock private lateinit var navigator: Navigator
     @Mock private lateinit var dm: DataManager
-    @Mock private lateinit var gson: Gson
     @Mock private lateinit var actions: IntroContract.JoinViewActions
 
     private lateinit var joinPresenter: IntroContract.JoinUserActions
@@ -25,7 +24,7 @@ class JoinPresenterTest {
     @Before fun setup() {
         MockitoAnnotations.initMocks(this)
 
-        joinPresenter = JoinPresenter(navigator, dm, gson)
+        joinPresenter = JoinPresenter(navigator, dm)
         joinPresenter.onViewCreated(actions)
     }
 

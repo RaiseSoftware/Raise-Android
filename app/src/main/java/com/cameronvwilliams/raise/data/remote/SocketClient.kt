@@ -21,8 +21,7 @@ import org.json.JSONObject
 import java.net.URLEncoder
 import javax.inject.Singleton
 
-@Singleton
-class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: String) {
+class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: String): SocketAPI {
 
     private lateinit var socket: Socket
     private val joinLeaveSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
@@ -39,7 +38,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         endGameSubject.replay(1).refCount()
     }
 
-    fun connect(token: String) {
+    override fun connect(token: String) {
         val opts = IO.Options()
         opts.query = "token=$token"
         opts.secure = true
@@ -50,7 +49,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         socket.connect()
     }
 
-    fun disconnect() {
+    override fun disconnect() {
         joinLeaveSubject.onComplete()
         cardSubmitSubject.onComplete()
         startGameSubject.onComplete()
@@ -59,31 +58,29 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         socket.disconnect()
     }
 
-    fun sendStartGameMessage() {
+    override fun sendStartGameMessage() {
         socket.emit(START_GAME_EVENT)
     }
 
-    fun sendSubmitCardMessage(card: Card) {
+    override fun sendSubmitCardMessage(card: Card) {
         socket.emit(CARD_SUBMIT_EVENT, JSONObject(gson.toJson(card)))
     }
 
-    fun sendEndGameMessage() {
+    override fun sendEndGameMessage() {
         socket.emit(END_GAME_EVENT)
     }
 
-    fun onGameStart(): Observable<String> {
+    override fun onGameStart(): Observable<String> {
         return startGameSubject.switchMapSingle { _ ->
             Single.just("")
         }
     }
 
-    fun onGameEnd(): Completable {
-        return endGameSubject.flatMapCompletable {
-            Observable.just("").ignoreElements()
-        }
+    override fun onGameEnd(): Completable {
+        return Completable.complete()
     }
 
-    fun onPlayersInGameChange(): Observable<Pair<List<Player>, DiffUtil.DiffResult>> {
+    override fun onPlayersInGameChange(): Observable<Pair<List<Player>, DiffUtil.DiffResult>> {
         val emptyList: List<Player> = ArrayList()
         val initialPair: Pair<List<Player>, DiffUtil.DiffResult> = Pair.create(emptyList, null)
 
@@ -99,7 +96,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
             .skip(1)
     }
 
-    fun onActiveCardSetChange(): Observable<Pair<List<ActiveCard>, DiffUtil.DiffResult>> {
+    override fun onActiveCardSetChange(): Observable<Pair<List<ActiveCard>, DiffUtil.DiffResult>> {
         val emptyList: List<ActiveCard> = ArrayList()
         val initialPair: Pair<List<ActiveCard>, DiffUtil.DiffResult> = Pair.create(emptyList, null)
 
