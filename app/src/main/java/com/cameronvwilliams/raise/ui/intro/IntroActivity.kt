@@ -3,10 +3,10 @@ package com.cameronvwilliams.raise.ui.intro
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.airbnb.deeplinkdispatch.DeepLink
 import com.cameronvwilliams.raise.BuildConfig
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseActivity
+import com.cameronvwilliams.raise.util.deeplink.AppDeepLink
 import com.cameronvwilliams.raise.util.deeplink.WebDeepLink
 import com.google.android.gms.ads.AdRequest
 import com.microsoft.appcenter.AppCenter
@@ -35,7 +35,7 @@ open class IntroActivity : BaseActivity() {
     object DeeplinkIntents {
         @JvmStatic
         @WebDeepLink("invite-link")
-        @DeepLink("raise://invite-link")
+        @AppDeepLink("invite-link")
         fun defaultIntent(context: Context, deepLinkData: Bundle): Intent {
             val intent = Intent(context, IntroActivity::class.java)
             val gameId: String? = deepLinkData.getString("gameId")
