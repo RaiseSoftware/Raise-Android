@@ -43,6 +43,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         opts.query = "token=$token"
         opts.secure = true
         opts.transports = arrayOf(WebSocket.NAME)
+        opts.path = "/socket/socket.io"
 
         socket = IO.socket(url, opts)
         initializeSocketListeners()

@@ -52,21 +52,21 @@ android {
     productFlavors {
         local {
             dimension "remote"
-            buildConfigField "String", "SOCKET_URL", '"http://10.0.2.2:3000/socket/"'
+            buildConfigField "String", "SOCKET_URL", '"http://10.0.2.2:3000/"'
             buildConfigField "String", "API_URL", '"http://10.0.2.2:3000/api/"'
             buildConfigField "String", "BASE_URL", '"http://10.0.2.2:3000/"'
             resValue 'string', 'DEEPLINK_URL', '10.0.2.2:3000'
         }
         staging {
             dimension "remote"
-            buildConfigField "String", "SOCKET_URL", '"https://raise.cameronvwilliams.com/socket/"'
+            buildConfigField "String", "SOCKET_URL", '"https://raise.cameronvwilliams.com/"'
             buildConfigField "String", "API_URL", '"https://raise.cameronvwilliams.com/api/"'
             buildConfigField "String", "BASE_URL", '"https://raise.cameronvwilliams.com/"'
             resValue 'string', 'DEEPLINK_URL', 'raise.cameronvwilliams.com'
         }
         mock {
             dimension "remote"
-            buildConfigField "String", "SOCKET_URL", '"http://localhost/socket/"'
+            buildConfigField "String", "SOCKET_URL", '"http://localhost/"'
             buildConfigField "String", "API_URL", '"http://localhost/api/"'
             buildConfigField "String", "BASE_URL", '"http://localhost/"'
             resValue 'string', 'DEEPLINK_URL', 'localhost'

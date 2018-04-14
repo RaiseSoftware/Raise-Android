@@ -18,7 +18,6 @@ class JoinPresenter(
 
     override lateinit var actions: IntroContract.JoinViewActions
     private val disposables = CompositeDisposable()
-    private var gameIdMode = true
     private val minimumGameIdLength = 5
 
     override fun onViewDestroyed() {
@@ -78,14 +77,14 @@ class JoinPresenter(
     }
 
     private fun validateFormData(userName: String, gameId: String, pokerGame: PokerGame?) {
-        if (gameIdMode) {
-            if (userName.isNotBlank() && gameId.isNotBlank() && gameId.length > minimumGameIdLength) {
+        if (pokerGame == null) {
+            if (userName.isNotBlank() && gameId.isNotBlank() && gameId.length >= minimumGameIdLength) {
                 actions.enableJoinButton()
             } else {
                 actions.disableJoinButton()
             }
         } else {
-            if (userName.isNotBlank() && pokerGame != null) {
+            if (userName.isNotBlank()) {
                 actions.enableJoinButton()
             } else {
                 actions.disableJoinButton()
