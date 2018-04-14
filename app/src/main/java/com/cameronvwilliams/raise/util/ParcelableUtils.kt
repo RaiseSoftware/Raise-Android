@@ -26,12 +26,6 @@ inline fun <reified T> parcelableClassLoaderCreator(crossinline create: (Parcel,
         override fun newArray(size: Int) = arrayOfNulls<T>(size)
     }
 
-fun Parcel.readStr() = readNullable {
-    readString()
-}
-
-fun Parcel.writeStr(value: String?) = writeNullable(value) { writeString(it) }
-
 fun Parcel.readBoolean() = readInt() != 0
 
 fun Parcel.writeBoolean(value: Boolean) = writeInt(if (value) 1 else 0)

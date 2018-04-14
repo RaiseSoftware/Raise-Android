@@ -6,8 +6,8 @@ import java.util.Date
 
 data class PokerGame(
     val gameName: String? = "",
-    val deckType: DeckType?,
-    val requiresPasscode: Boolean,
+    val deckType: DeckType? = null,
+    val requiresPasscode: Boolean = false,
     val gameId: String? = "",
     val qrcode: String? = "",
     val passcode: String? = "",
