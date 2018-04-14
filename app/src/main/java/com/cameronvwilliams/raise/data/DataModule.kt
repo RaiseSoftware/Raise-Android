@@ -3,10 +3,7 @@ package com.cameronvwilliams.raise.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.cameronvwilliams.raise.BuildConfig
-import com.cameronvwilliams.raise.data.remote.RaiseAPI
-import com.cameronvwilliams.raise.data.remote.RxErrorHandlingCallAdapterFactory
-import com.cameronvwilliams.raise.data.remote.SocketAPI
-import com.cameronvwilliams.raise.data.remote.SocketClient
+import com.cameronvwilliams.raise.data.remote.*
 import com.cameronvwilliams.raise.di.ApplicationContext
 import com.google.gson.Gson
 import dagger.Module
@@ -25,29 +22,30 @@ abstract class DataModule {
         @Singleton
         @JvmStatic
         fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
-            .build()
+                .addInterceptor(AcceptLanguageHeaderInterceptor())
+                .build()
 
         @Provides
         @Singleton
         @JvmStatic
         fun provideRaiseApi(client: OkHttpClient, gson: Gson): RaiseAPI = Retrofit.Builder()
-            .baseUrl(BuildConfig.API_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
-            .build()
-            .create(RaiseAPI::class.java)
+                .baseUrl(BuildConfig.API_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
+                .build()
+                .create(RaiseAPI::class.java)
 
         @Provides
         @Singleton
         @JvmStatic
         fun provideSocketAPI(gson: Gson, okHttpClient: OkHttpClient): SocketAPI =
-            SocketClient(gson, okHttpClient, BuildConfig.SOCKET_URL)
+                SocketClient(gson, okHttpClient, BuildConfig.SOCKET_URL)
 
         @Provides
         @Singleton
         @JvmStatic
         fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
-            context.getSharedPreferences("raise_preferences", Context.MODE_PRIVATE)
+                context.getSharedPreferences("raise_preferences", Context.MODE_PRIVATE)
     }
 }
