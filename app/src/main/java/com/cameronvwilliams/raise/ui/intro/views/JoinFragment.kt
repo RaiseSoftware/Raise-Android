@@ -136,6 +136,11 @@ class JoinFragment : BaseFragment(), IntroContract.JoinViewActions {
     fun showScannerActivty() {
         val disposable = navigator.goToScannerView().subscribe { pokerGame ->
             this.pokerGame = pokerGame
+            if (userNameEditText.text.toString().trim().isNotEmpty()) {
+                enableJoinButton()
+            } else {
+                disableJoinButton()
+            }
             showQRCodeSuccessView()
             disposables.dispose()
         }
