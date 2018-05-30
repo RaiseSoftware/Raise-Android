@@ -1,5 +1,6 @@
 package com.cameronvwilliams.raise.ui.intro.presenters
 
+import com.cameronvwilliams.raise.R.id.userName
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.ErrorResponse
 import com.cameronvwilliams.raise.data.model.Player
@@ -30,11 +31,8 @@ class JoinPresenter(
         passcode: String?,
         pokerGame: PokerGame?
     ) {
-        val request = if (pokerGame != null) {
-            dm.findPokerGame(pokerGame.gameId!!, userName, pokerGame.passcode)
-        } else {
-            dm.findPokerGame(gameId, userName)
-        }
+        val request = pokerGame?.let { dm.findPokerGame(it.gameId!!, userName, pokerGame.passcode) }
+                ?: dm.findPokerGame(gameId, userName)
 
         val subscription = request.doOnSubscribe {
             actions.showLoadingView()

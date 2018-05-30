@@ -8,8 +8,6 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'jacoco'
 
-apply plugin: 'com.github.triplet.play'
-
 androidExtensions {
     experimental = true
 }
@@ -104,7 +102,7 @@ dependencies {
     def retrofitVersion = '2.3.0'
     def okhttpVersion = '3.9.0'
     def supportVersion = '26.1.0'
-    def playServicesVersion = '11.8.0'
+    def playServicesVersion = '15.0.2'
     def gsonVersion = '2.8.2'
     def daggerVersion = '2.11'
     def rxjavaVersion = '2.1.5'
@@ -117,15 +115,15 @@ dependencies {
     //Support Libraries
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation "com.android.support:design:$supportVersion"
-    implementation "com.android.support:support-v4:$supportVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
+    implementation "com.android.support:recyclerview-v7:$supportVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
     //Play Services Libraries
-    implementation "com.google.android.gms:play-services-vision:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-vision:15.0.2"
 
     // Firebase
-    implementation "com.google.firebase:firebase-core:$playServicesVersion"
-    implementation "com.google.firebase:firebase-ads:$playServicesVersion"
+    implementation "com.google.firebase:firebase-core:15.0.2"
+    implementation "com.google.firebase:firebase-ads:15.0.1"
 
     // App Center
     implementation "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
@@ -141,7 +139,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
 
     //Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
     //Gson
     implementation "com.google.code.gson:gson:$gsonVersion"
@@ -165,8 +163,8 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
     // Permission Dispatcher
-    implementation "com.github.hotchemi:permissionsdispatcher:${permissionDispatcherVersion}"
-    kapt "com.github.hotchemi:permissionsdispatcher-processor:${permissionDispatcherVersion}"
+    implementation "com.github.hotchemi:permissionsdispatcher:$permissionDispatcherVersion"
+    kapt "com.github.hotchemi:permissionsdispatcher-processor:$permissionDispatcherVersion"
 
     // Deeplink Dispatch
     implementation 'com.airbnb:deeplinkdispatch:3.1.1'
@@ -174,7 +172,7 @@ dependencies {
 
     //Testing Libs
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.13.0'
+    testImplementation 'org.mockito:mockito-core:2.18.3'
     testImplementation 'org.robolectric:robolectric:3.6.1'
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

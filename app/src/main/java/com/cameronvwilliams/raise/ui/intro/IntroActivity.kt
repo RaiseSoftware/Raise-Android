@@ -27,7 +27,7 @@ open class IntroActivity : BaseActivity() {
 
         navigator.goToIntro()
 
-        if (intent.getStringExtra("gameId") != null) {
+        intent.getStringExtra("gameId")?.let {
             navigator.goToJoinGame()
         }
     }
