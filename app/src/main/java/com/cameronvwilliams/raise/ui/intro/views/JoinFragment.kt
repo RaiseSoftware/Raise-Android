@@ -20,6 +20,7 @@ import com.cameronvwilliams.raise.di.ActivityContext
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.IntroContract
+import com.cameronvwilliams.raise.ui.intro.presenters.JoinPresenter
 import com.cameronvwilliams.raise.util.onChange
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.barcode.Barcode
@@ -34,10 +35,10 @@ import javax.inject.Inject
 
 
 @RuntimePermissions
-class JoinFragment : BaseFragment(), IntroContract.JoinViewActions {
+class JoinFragment : BaseFragment() {
 
     @Inject
-    lateinit var actions: IntroContract.JoinUserActions
+    lateinit var presenter: JoinPresenter
     @Inject
     lateinit var navigator: Navigator
     @field:[Inject ActivityContext]
@@ -51,10 +52,7 @@ class JoinFragment : BaseFragment(), IntroContract.JoinViewActions {
     private lateinit var barcodeDetector: BarcodeDetector
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         barcodeDetector = BarcodeDetector.Builder(activityContext)
             .setBarcodeFormats(Barcode.QR_CODE)
@@ -75,25 +73,25 @@ class JoinFragment : BaseFragment(), IntroContract.JoinViewActions {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        actions.onViewCreated(this)
+        presenter.onViewCreated(this)
 
         backButton.setOnClickListener {
-            actions.onBackPressed()
+            presenter.onBackPressed()
         }
 
         userNameEditText.onChange { s ->
-            actions.onNameTextChanged(s, gameIdEditText.text.toString().trim(), pokerGame)
+            presenter.onNameTextChanged(s, gameIdEditText.text.toString().trim(), pokerGame)
         }
 
         gameIdEditText.onChange { s ->
-            actions.onGameIdTextChanged(s, userNameEditText.text.toString().trim(), pokerGame)
+            presenter.onGameIdTextChanged(s, userNameEditText.text.toString().trim(), pokerGame)
         }
 
         joinButton.setOnClickListener {
-            actions.onJoinButtonClick(
+            presenter.onJoinButtonClick(
                 gameIdEditText.text.toString().trim(),
                 userNameEditText.text.toString().trim(),
-                pokerGame = pokerGame
+                pokerGame
             )
         }
 
@@ -104,36 +102,36 @@ class JoinFragment : BaseFragment(), IntroContract.JoinViewActions {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        actions.onViewDestroyed()
+        presenter.onViewDestroyed()
     }
 
     override fun onBackPressed(): Boolean {
-        return actions.onBackPressed()
+        return presenter.onBackPressed()
     }
 
-    override fun showLoadingView() {
+    fun showLoadingView() {
         inputWrapper.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
     }
 
-    override fun hideLoadingView() {
+    fun hideLoadingView() {
         inputWrapper.visibility = View.VISIBLE
         progressBar.visibility = View.GONE
     }
 
-    override fun showDefaultErrorSnackBar() {
+    fun showDefaultErrorSnackBar() {
         Snackbar.make(joinGameView, getString(R.string.error_network), Snackbar.LENGTH_LONG).show()
     }
 
-    override fun showErrorSnackBar(message: String) {
+    fun showErrorSnackBar(message: String) {
         Snackbar.make(joinGameView, message, Snackbar.LENGTH_LONG).show()
     }
 
-    override fun enableJoinButton() {
+    fun enableJoinButton() {
         joinButton.isEnabled = true
     }
 
-    override fun disableJoinButton() {
+    fun disableJoinButton() {
         joinButton.isEnabled = true
     }
 
@@ -238,7 +236,7 @@ class JoinFragment : BaseFragment(), IntroContract.JoinViewActions {
         Snackbar.make(joinGameView, "Give permission in order to access the camera", Snackbar.LENGTH_LONG).show()
     }
 
-    override fun showQRCodeSuccessView() {
+    fun showQRCodeSuccessView() {
         qrCodeSuccessText.visibility = View.VISIBLE
         checkMark.visibility = View.VISIBLE
         scanQRCodeText.visibility = View.VISIBLE

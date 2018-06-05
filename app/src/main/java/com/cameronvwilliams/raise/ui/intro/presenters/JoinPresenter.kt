@@ -5,18 +5,18 @@ import com.cameronvwilliams.raise.data.model.ErrorResponse
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.data.remote.RetrofitException
+import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.IntroContract
+import com.cameronvwilliams.raise.ui.intro.views.JoinFragment
 import io.reactivex.disposables.CompositeDisposable
 import org.reactivestreams.Subscription
 import timber.log.Timber
 
-class JoinPresenter(
-    private val navigator: Navigator,
-    private val dm: DataManager) :
-    IntroContract.JoinUserActions {
+class JoinPresenter(private val navigator: Navigator, private val dm: DataManager) : BasePresenter() {
 
-    override lateinit var actions: IntroContract.JoinViewActions
+    private lateinit var view: JoinFragment
+
     private val disposables = CompositeDisposable()
     private var gameIdMode = true
     private val minimumGameIdLength = 5
@@ -25,10 +25,9 @@ class JoinPresenter(
         disposables.clear()
     }
 
-    override fun onJoinButtonClick(
+    fun onJoinButtonClick(
         gameId: String,
         userName: String,
-        passcode: String?,
         pokerGame: PokerGame?
     ) {
         val request = if (pokerGame != null) {
@@ -38,10 +37,10 @@ class JoinPresenter(
         }
 
         val subscription = request.doOnSubscribe {
-            actions.showLoadingView()
+            view.showLoadingView()
         }
             .doOnEvent { _, _ ->
-                actions.hideLoadingView()
+                view.hideLoadingView()
             }
             .subscribe({ game ->
                 navigator.goToPendingView(game, userName, false)
@@ -53,22 +52,22 @@ class JoinPresenter(
                     RetrofitException.Kind.HTTP -> {
                         when (errorMessage?.statusCode) {
                             dm.CODE_FORBIDDEN -> navigator.goToPasscode(gameId, Player(userName))
-                            dm.CODE_NOT_FOUND -> actions.showErrorSnackBar(errorMessage.message)
+                            dm.CODE_NOT_FOUND -> view.showErrorSnackBar(errorMessage.message)
                         }
                     }
-                    RetrofitException.Kind.NETWORK -> actions.showDefaultErrorSnackBar()
-                    RetrofitException.Kind.UNEXPECTED -> actions.showDefaultErrorSnackBar()
+                    RetrofitException.Kind.NETWORK -> view.showDefaultErrorSnackBar()
+                    RetrofitException.Kind.UNEXPECTED -> view.showDefaultErrorSnackBar()
                 }
             })
 
         disposables.add(subscription)
     }
 
-    override fun onNameTextChanged(userName: String, gameId: String, pokerGame: PokerGame?) {
+    fun onNameTextChanged(userName: String, gameId: String, pokerGame: PokerGame?) {
         validateFormData(userName, gameId, pokerGame)
     }
 
-    override fun onGameIdTextChanged(gameId: String, userName: String, pokerGame: PokerGame?) {
+    fun onGameIdTextChanged(gameId: String, userName: String, pokerGame: PokerGame?) {
         validateFormData(userName, gameId, pokerGame)
     }
 
@@ -80,15 +79,15 @@ class JoinPresenter(
     private fun validateFormData(userName: String, gameId: String, pokerGame: PokerGame?) {
         if (gameIdMode) {
             if (userName.isNotBlank() && gameId.isNotBlank() && gameId.length > minimumGameIdLength) {
-                actions.enableJoinButton()
+                view.enableJoinButton()
             } else {
-                actions.disableJoinButton()
+                view.disableJoinButton()
             }
         } else {
             if (userName.isNotBlank() && pokerGame != null) {
-                actions.enableJoinButton()
+                view.enableJoinButton()
             } else {
-                actions.disableJoinButton()
+                view.disableJoinButton()
             }
         }
     }

@@ -30,10 +30,7 @@ class ScannerFragment : BaseFragment() {
     private lateinit var cameraSource: CameraSource
     private lateinit var barcodeDetector: BarcodeDetector
 
-    override fun onCreateView(
-        inflater: LayoutInflater?, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         barcodeDetector = BarcodeDetector.Builder(activity)
             .setBarcodeFormats(Barcode.QR_CODE)
@@ -45,8 +42,8 @@ class ScannerFragment : BaseFragment() {
                     val game = gson.fromJson(detections.detectedItems.valueAt(0).displayValue, PokerGame::class.java)
                     val returnIntent = Intent()
                     returnIntent.putExtra("POKER_GAME", game)
-                    activity.setResult(Activity.RESULT_OK, returnIntent)
-                    activity.finish()
+                    activity!!.setResult(Activity.RESULT_OK, returnIntent)
+                    activity!!.finish()
                 } catch (e: JsonSyntaxException) {
                     Timber.e(e)
                 }
@@ -56,7 +53,7 @@ class ScannerFragment : BaseFragment() {
         return inflater!!.inflate(R.layout.scanner_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         cameraView.afterMeasured {

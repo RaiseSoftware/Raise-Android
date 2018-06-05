@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.intro.IntroContract
+import com.cameronvwilliams.raise.ui.intro.presenters.IntroPresenter
+import com.jakewharton.rxbinding2.view.clicks
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.intro_fragment.*
 import javax.inject.Inject
 
-class IntroFragment : BaseFragment(), IntroContract.IntroViewActions {
+class IntroFragment : BaseFragment() {
 
     @Inject
-    lateinit var actions: IntroContract.IntroUserActions
+    lateinit var presenter: IntroPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.intro_fragment, container, false)
@@ -21,30 +24,23 @@ class IntroFragment : BaseFragment(), IntroContract.IntroViewActions {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        actions.onViewCreated(this)
-
-        createButton.setOnClickListener {
-            actions.onCreateButtonClicked()
-        }
-
-        joinButton.setOnClickListener {
-            actions.onJoinButtonClicked()
-        }
-
-        settingsButton.setOnClickListener {
-            actions.onSettingsButtonClicked()
-        }
+        presenter.onViewCreated(this)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        actions.onViewDestroyed()
+        presenter.onViewDestroyed()
     }
 
     override fun onBackPressed(): Boolean {
-        activity!!.finish()
-        return true
+        return presenter.onBackPressed()
     }
+
+    fun createButtonClicks(): Observable<Unit> = createButton.clicks()
+
+    fun joinButtonClicks(): Observable<Unit> = joinButton.clicks()
+
+    fun settingsButtonClicks(): Observable<Unit> = settingsButton.clicks()
 
     companion object {
         fun newInstance(): IntroFragment {

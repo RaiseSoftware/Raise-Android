@@ -58,11 +58,11 @@ class PokerInfoFragment : BaseFragment() {
             val values = ContentValues()
             values.put(MediaStore.Images.Media.TITLE, "title")
             values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            val uri = activity.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            val uri = activity!!.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
 
             val outstream: OutputStream
             try {
-                outstream = activity.contentResolver.openOutputStream(uri)
+                outstream = activity!!.contentResolver.openOutputStream(uri)
                 decodedByte.compress(Bitmap.CompressFormat.JPEG, 100, outstream)
                 outstream.close()
             } catch (e: Exception) {

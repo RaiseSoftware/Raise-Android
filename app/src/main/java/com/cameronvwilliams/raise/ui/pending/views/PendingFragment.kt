@@ -119,7 +119,7 @@ class PendingFragment : BaseFragment() {
         subscriptions.add(dm.getGameStart()
             .subscribe {
                 navigator.goToPokerGameView(pokerGame)
-                activity.finish()
+                activity!!.finish()
             })
     }
 
@@ -155,7 +155,7 @@ class PendingFragment : BaseFragment() {
                     .setPositiveButton(android.R.string.yes, { dialog, _ ->
                         dm.leaveGame()
                         dialog.dismiss()
-                        activity.finish()
+                        activity!!.finish()
                     })
                     .setNegativeButton(android.R.string.no, { dialog, _ ->
                         dialog.dismiss()

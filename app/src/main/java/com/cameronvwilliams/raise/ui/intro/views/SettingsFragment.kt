@@ -15,20 +15,20 @@ import com.cameronvwilliams.raise.BuildConfig
 
 class SettingsFragment : BaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.intro_settings_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.intro_settings_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toolbar.title = getString(R.string.settings)
         toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_arrow_back_white_24dp, null)
         toolbar.setNavigationOnClickListener {
-            activity.supportFragmentManager.popBackStackImmediate()
+            activity!!.supportFragmentManager.popBackStackImmediate()
         }
 
         aboutRow.setOnClickListener {
-            activity.supportFragmentManager.beginTransaction()
+            activity!!.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
                     R.anim.slide_in_left,
                     R.anim.slide_out_left,
@@ -49,7 +49,7 @@ class SettingsFragment : BaseFragment() {
         }
 
         feedbackRow.setOnClickListener {
-            activity.supportFragmentManager.beginTransaction()
+            activity!!.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
                     R.anim.slide_in_left,
                     R.anim.slide_out_left,

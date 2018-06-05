@@ -17,18 +17,18 @@ abstract class IntroFragmentModule {
     companion object {
         @Provides
         @JvmStatic
-        fun provideIntroPresenter(navigator: Navigator): IntroContract.IntroUserActions =
+        fun provideIntroPresenter(navigator: Navigator): IntroPresenter =
             IntroPresenter(navigator)
 
         @Provides
         @JvmStatic
-        fun provideCreatePresenter(navigator: Navigator, dm: DataManager):
-                IntroContract.CreateUserActions = CreatePresenter(navigator, dm)
+        fun provideCreatePresenter(navigator: Navigator, dm: DataManager): CreatePresenter =
+            CreatePresenter(navigator, dm)
 
         @Provides
         @JvmStatic
-        fun provideJoinPresenter(navigator: Navigator, dm: DataManager, gson: Gson):
-                IntroContract.JoinUserActions = JoinPresenter(navigator, dm)
+        fun provideJoinPresenter(navigator: Navigator, dm: DataManager):
+                JoinPresenter = JoinPresenter(navigator, dm)
 
         @Provides
         @JvmStatic

@@ -11,8 +11,8 @@ import com.cameronvwilliams.raise.ui.poker.views.viewholder.CardListViewHolder
 class CardListAdapter(private var cards: List<Card>, private val cb: (position: Int, view: View) -> Unit) :
     RecyclerView.Adapter<CardListViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): CardListViewHolder {
-        val view = LayoutInflater.from(parent?.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardListViewHolder {
+        val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.poker_card_list_item, parent, false)
 
         return CardListViewHolder(view, cb)
@@ -22,8 +22,8 @@ class CardListAdapter(private var cards: List<Card>, private val cb: (position: 
         return cards.size
     }
 
-    override fun onBindViewHolder(holder: CardListViewHolder?, position: Int) {
-        holder?.bindCard(position, cards[position])
+    override fun onBindViewHolder(holder: CardListViewHolder, position: Int) {
+        holder.bindCard(position, cards[position])
     }
 
     fun updateList(list: List<Card>) {

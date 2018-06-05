@@ -23,14 +23,12 @@ class PlayerCardFragment : BaseFragment() {
     private lateinit var layoutManager: LinearLayoutManager
     private val adapter = ActiveCardListAdapter(listOf())
 
-    override fun onCreateView(
-        inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.poker_player_card_fragment, container, false)
+        return inflater.inflate(R.layout.poker_player_card_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         layoutManager = LinearLayoutManager(activity)

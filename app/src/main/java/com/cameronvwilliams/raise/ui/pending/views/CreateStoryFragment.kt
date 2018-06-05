@@ -27,23 +27,23 @@ class CreateStoryFragment : BaseFragment() {
     @Inject
     lateinit var dm: DataManager
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.pending_create_story_fragment, container, false)
+        return inflater.inflate(R.layout.pending_create_story_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val pokerGame = arguments?.get("game") as PokerGame
 
         when (activity) {
             is PendingActivity -> {
-                closeButton.setColorFilter(ContextCompat.getColor(context, R.color.pendingColorPrimary))
-                addStoryButton.setTextColor(ContextCompat.getColor(context, R.color.pendingColorPrimary))
+                closeButton.setColorFilter(ContextCompat.getColor(context!!, R.color.pendingColorPrimary))
+                addStoryButton.setTextColor(ContextCompat.getColor(context!!, R.color.pendingColorPrimary))
             }
             is PokerActivity -> {
-                closeButton.setColorFilter(ContextCompat.getColor(context, R.color.pokerColorPrimary))
-                addStoryButton.setTextColor(ContextCompat.getColor(context, R.color.pokerColorPrimary))
+                closeButton.setColorFilter(ContextCompat.getColor(context!!, R.color.pokerColorPrimary))
+                addStoryButton.setTextColor(ContextCompat.getColor(context!!, R.color.pokerColorPrimary))
             }
         }
 

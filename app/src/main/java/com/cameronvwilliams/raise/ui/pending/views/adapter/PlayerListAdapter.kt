@@ -13,12 +13,12 @@ class PlayerListAdapter(private var list: List<Player>) :
         return list.size
     }
 
-    override fun onBindViewHolder(holder: PlayerListViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: PlayerListViewHolder, position: Int) {
         holder?.bindPlayer(list[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PlayerListViewHolder {
-        val view = LayoutInflater.from(parent?.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerListViewHolder {
+        val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.pending_player_row_item, parent, false)
 
         return PlayerListViewHolder(view)

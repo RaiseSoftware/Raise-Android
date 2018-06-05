@@ -12,17 +12,16 @@ import kotlinx.android.synthetic.main.intro_about_fragment.*
 
 class AboutFragment : BaseFragment() {
 
-
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.intro_about_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.intro_about_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toolbar.title = getString(R.string.text_about)
         toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_arrow_back_white_24dp, null)
         toolbar.setNavigationOnClickListener {
-            activity.supportFragmentManager.popBackStackImmediate()
+            activity?.supportFragmentManager?.popBackStackImmediate()
         }
         versionText.text = "Version ${BuildConfig.VERSION_NAME}"
         privacyPolicyRow.setOnClickListener {
@@ -33,7 +32,7 @@ class AboutFragment : BaseFragment() {
                 bundle.setDocName("privacy_policy")
             }
             fragment.arguments = bundle
-            activity.supportFragmentManager.beginTransaction()
+            activity!!.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
                     R.anim.slide_in_left,
                     R.anim.slide_out_left,
@@ -53,7 +52,7 @@ class AboutFragment : BaseFragment() {
                 bundle.setDocName("terms_and_conditions")
             }
             fragment.arguments = bundle
-            activity.supportFragmentManager.beginTransaction()
+            activity!!.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
                     R.anim.slide_in_left,
                     R.anim.slide_out_left,

@@ -18,7 +18,10 @@ open class IntroActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.intro_activity)
 
-        navigator.goToIntro(false)
+        if (savedInstanceState == null) {
+            navigator.goToIntro(false)
+        }
+
         adView.loadAd(AdRequest.Builder().build())
         AppCenter.start(application, BuildConfig.APP_CENTER_KEY,
             Distribute::class.java, Analytics::class.java, Crashes::class.java)

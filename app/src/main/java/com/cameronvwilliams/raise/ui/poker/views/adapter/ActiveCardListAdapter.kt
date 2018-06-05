@@ -13,12 +13,12 @@ class ActiveCardListAdapter(private var list: List<ActiveCard>) :
         return list.size
     }
 
-    override fun onBindViewHolder(holder: ActiveCardListViewHolder?, position: Int) {
-        holder?.bindPlayer(list[position])
+    override fun onBindViewHolder(holder: ActiveCardListViewHolder, position: Int) {
+        holder.bindPlayer(list[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ActiveCardListViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(R.layout.poker_active_card_row_item, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActiveCardListViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.poker_active_card_row_item, parent, false)
 
         return ActiveCardListViewHolder(view)
     }

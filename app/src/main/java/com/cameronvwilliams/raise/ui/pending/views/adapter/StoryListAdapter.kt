@@ -13,12 +13,12 @@ class StoryListAdapter(private var list: List<Story>) :
         return list.size
     }
 
-    override fun onBindViewHolder(holder: StoryListViewHolder?, position: Int) {
-        holder?.bindStory(list[position])
+    override fun onBindViewHolder(holder: StoryListViewHolder, position: Int) {
+        holder.bindStory(list[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): StoryListViewHolder {
-        val view = LayoutInflater.from(parent?.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryListViewHolder {
+        val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.pending_story_row_item, parent, false)
 
         return StoryListViewHolder(view)

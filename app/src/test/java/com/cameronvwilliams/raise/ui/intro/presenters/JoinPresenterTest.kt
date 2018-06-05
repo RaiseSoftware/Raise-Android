@@ -2,7 +2,6 @@ package com.cameronvwilliams.raise.ui.intro.presenters
 
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.ui.Navigator
-import com.cameronvwilliams.raise.ui.intro.IntroContract
 import com.google.gson.Gson
 import org.junit.After
 import org.junit.Assert.assertTrue

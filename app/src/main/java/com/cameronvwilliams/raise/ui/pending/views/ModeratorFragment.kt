@@ -24,17 +24,14 @@ class ModeratorFragment : BaseFragment() {
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: StoryListAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater?, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         layoutManager = LinearLayoutManager(activity)
         adapter = StoryListAdapter(listOf())
 
         return inflater!!.inflate(R.layout.pending_moderator_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         storyList.layoutManager = layoutManager
         storyList.adapter = adapter
@@ -42,7 +39,7 @@ class ModeratorFragment : BaseFragment() {
         addStoryButton.setOnClickListener {
             navigator.showCreateStory(arguments?.get("game") as PokerGame, { items ->
                 if (items.isNotEmpty()) {
-                    heading.background = ContextCompat.getDrawable(context, R.drawable.background_grey_top_rounded)
+                    heading.background = ContextCompat.getDrawable(context!!, R.drawable.background_grey_top_rounded)
                 }
                 adapter.updateStoryList(items)
             })

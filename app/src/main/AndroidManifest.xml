@@ -28,7 +28,6 @@
         </activity>
         <activity
             android:name=".ui.intro.IntroActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Intro.AppTheme"
             android:windowSoftInputMode="adjustResize" />
 
