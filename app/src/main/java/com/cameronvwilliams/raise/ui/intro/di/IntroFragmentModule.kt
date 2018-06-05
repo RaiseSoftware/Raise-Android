@@ -27,7 +27,7 @@ abstract class IntroFragmentModule {
 
         @Provides
         @JvmStatic
-        fun provideJoinPresenter(navigator: Navigator, dm: DataManager, gson: Gson):
+        fun provideJoinPresenter(navigator: Navigator, dm: DataManager):
                 IntroContract.JoinUserActions = JoinPresenter(navigator, dm)
 
         @Provides

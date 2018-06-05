@@ -44,7 +44,8 @@ class ScannerFragment : BaseFragment() {
                 try {
                     val game = gson.fromJson(detections.detectedItems.valueAt(0).displayValue, PokerGame::class.java)
                     val returnIntent = Intent()
-                    returnIntent.putExtra("POKER_GAME", game)
+                    returnIntent.putExtra("POKER_GAME_ID", game.gameId)
+                    returnIntent.putExtra("POKER_GAME_PASSCODE", game.passcode)
                     activity.setResult(Activity.RESULT_OK, returnIntent)
                     activity.finish()
                 } catch (e: JsonSyntaxException) {

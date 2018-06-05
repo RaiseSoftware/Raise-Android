@@ -157,7 +157,7 @@
         <Button
             android:id="@+id/joinButton"
             style="@style/BottomBarButton"
-            android:enabled="true"
+            android:enabled="false"
             android:text="@string/text_join_game" />
     </LinearLayout>
 

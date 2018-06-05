@@ -7,7 +7,7 @@ import com.cameronvwilliams.raise.data.model.*
 import com.cameronvwilliams.raise.data.model.api.PokerGameBody
 import com.cameronvwilliams.raise.data.model.api.StoryBody
 import com.cameronvwilliams.raise.data.remote.RaiseAPI
-import com.cameronvwilliams.raise.data.remote.SocketClient
+import com.cameronvwilliams.raise.data.remote.SocketAPI
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -19,7 +19,7 @@ import javax.inject.Singleton
 @Singleton
 class DataManager @Inject constructor(
     private val raiseAPI: RaiseAPI,
-    private val socketClient: SocketClient,
+    private val socketClient: SocketAPI,
     private val raisePreferences: RaisePreferences
 ) {
 
