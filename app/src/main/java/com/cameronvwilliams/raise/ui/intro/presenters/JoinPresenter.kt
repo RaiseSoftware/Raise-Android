@@ -1,5 +1,6 @@
 package com.cameronvwilliams.raise.ui.intro.presenters
 
+import com.cameronvwilliams.raise.R.id.userName
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.ErrorResponse
 import com.cameronvwilliams.raise.data.model.Player
@@ -18,7 +19,6 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
     private lateinit var view: JoinFragment
 
     private val disposables = CompositeDisposable()
-    private var gameIdMode = true
     private val minimumGameIdLength = 5
 
     override fun onViewDestroyed() {
@@ -30,11 +30,8 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
         userName: String,
         pokerGame: PokerGame?
     ) {
-        val request = if (pokerGame != null) {
-            dm.findPokerGame(pokerGame.gameId!!, userName, pokerGame.passcode)
-        } else {
-            dm.findPokerGame(gameId, userName)
-        }
+        val request = pokerGame?.let { dm.findPokerGame(it.gameId!!, userName, pokerGame.passcode) }
+                ?: dm.findPokerGame(gameId, userName)
 
         val subscription = request.doOnSubscribe {
             view.showLoadingView()
@@ -77,14 +74,14 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
     }
 
     private fun validateFormData(userName: String, gameId: String, pokerGame: PokerGame?) {
-        if (gameIdMode) {
+        if (pokerGame == null) {
             if (userName.isNotBlank() && gameId.isNotBlank() && gameId.length > minimumGameIdLength) {
                 view.enableJoinButton()
             } else {
                 view.disableJoinButton()
             }
         } else {
-            if (userName.isNotBlank() && pokerGame != null) {
+            if (userName.isNotBlank()) {
                 view.enableJoinButton()
             } else {
                 view.disableJoinButton()

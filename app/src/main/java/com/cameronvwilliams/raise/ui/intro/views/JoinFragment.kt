@@ -47,7 +47,6 @@ class JoinFragment : BaseFragment() {
     lateinit var gson: Gson
 
     private var pokerGame: PokerGame? = null
-    private lateinit var qrCodeDialog: AlertDialog
     private var disposables = CompositeDisposable()
     private lateinit var barcodeDetector: BarcodeDetector
 
@@ -57,16 +56,6 @@ class JoinFragment : BaseFragment() {
         barcodeDetector = BarcodeDetector.Builder(activityContext)
             .setBarcodeFormats(Barcode.QR_CODE)
             .build()
-
-        qrCodeDialog = AlertDialog.Builder(activityContext)
-            .setTitle("Join via QR Code")
-            .setMessage("Join via QR code by scanning or uploading the QR code image")
-            .setPositiveButton("Upload", this::showUploadWithPermissionCheck)
-            .setNegativeButton("Scan", this::showScannerActivtyWithPermissionCheck)
-            .setNeutralButton(getString(android.R.string.cancel), { dialog, _ ->
-                dialog.dismiss()
-            })
-            .create()
 
         return inflater.inflate(R.layout.intro_join_fragment, container, false)
     }
@@ -96,7 +85,7 @@ class JoinFragment : BaseFragment() {
         }
 
         barcodeText.setOnClickListener {
-            qrCodeDialog.show()
+            showScannerActivtyWithPermissionCheck()
         }
     }
 
@@ -132,7 +121,7 @@ class JoinFragment : BaseFragment() {
     }
 
     fun disableJoinButton() {
-        joinButton.isEnabled = true
+        joinButton.isEnabled = false
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")
@@ -141,66 +130,18 @@ class JoinFragment : BaseFragment() {
         onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-    fun showUpload(dialog: DialogInterface, which: Int) {
-        val disposable = navigator.showImageSelection()
-            .subscribe { bitmap ->
-                val frame = Frame.Builder().setBitmap(bitmap).build()
-                val barcodes = barcodeDetector.detect(frame)
-                if (barcodes.size() != 0) {
-                    try {
-                        pokerGame = gson.fromJson(barcodes.valueAt(0).displayValue, PokerGame::class.java)
-                    } catch (e: JsonSyntaxException) {
-                        Timber.e(e)
-                        Snackbar.make(joinGameView, "No Poker Game was detected. Please try again", Snackbar.LENGTH_LONG).show()
-                    }
-                } else {
-                    Snackbar.make(joinGameView, "No Poker Game was detected. Please try again", Snackbar.LENGTH_LONG).show()
-                }
-                showQRCodeSuccessView()
-                disposables.dispose()
-                dialog.dismiss()
-            }
-        disposables.add(disposable)
-    }
-
-    @OnShowRationale(Manifest.permission.READ_EXTERNAL_STORAGE)
-    fun showRationaleForStorage(request: PermissionRequest) {
-        AlertDialog.Builder(activityContext)
-            .setTitle("Unable to upload QR Code")
-            .setMessage("Unable to upload the image without permission. In order to do so, please grant permission from settings")
-            .setPositiveButton("Go to Settings", { dialog, _ ->
-                val intent =  Intent()
-                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS;
-                val uri = Uri.fromParts ("package", activityContext.packageName, null)
-                intent.data = uri
-                startActivity(intent)
-                dialog.dismiss()
-            })
-            .setNegativeButton(getString(android.R.string.cancel), { dialog, _ ->
-                dialog.dismiss()
-            })
-            .show()
-    }
-
-    @OnPermissionDenied(Manifest.permission.READ_EXTERNAL_STORAGE)
-    fun onStorageDenied() {
-        Snackbar.make(joinGameView, "Unable to scan until permission is granted", Snackbar.LENGTH_LONG).show()
-    }
-
-    @OnNeverAskAgain(Manifest.permission.READ_EXTERNAL_STORAGE)
-    fun onStorageNeverAskAgain() {
-        Snackbar.make(joinGameView, "Give permission in order to access the camera", Snackbar.LENGTH_LONG).show()
-    }
-
     @NeedsPermission(Manifest.permission.CAMERA)
-    fun showScannerActivty(dialog: DialogInterface, which: Int) {
+    fun showScannerActivty() {
         val disposable = navigator.goToScannerView().subscribe { pokerGame ->
             this.pokerGame = pokerGame
+            if (userNameEditText.text.toString().trim().isNotEmpty()) {
+                enableJoinButton()
+            } else {
+                disableJoinButton()
+            }
             showQRCodeSuccessView()
             disposables.dispose()
         }
-        dialog.dismiss()
         disposables.add(disposable)
     }
 

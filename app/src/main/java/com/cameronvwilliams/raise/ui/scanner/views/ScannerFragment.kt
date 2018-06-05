@@ -41,16 +41,17 @@ class ScannerFragment : BaseFragment() {
                 try {
                     val game = gson.fromJson(detections.detectedItems.valueAt(0).displayValue, PokerGame::class.java)
                     val returnIntent = Intent()
-                    returnIntent.putExtra("POKER_GAME", game)
-                    activity!!.setResult(Activity.RESULT_OK, returnIntent)
-                    activity!!.finish()
+                    returnIntent.putExtra("POKER_GAME_ID", game.gameId)
+                    returnIntent.putExtra("POKER_GAME_PASSCODE", game.passcode)
+                    activity?.setResult(Activity.RESULT_OK, returnIntent)
+                    activity?.finish()
                 } catch (e: JsonSyntaxException) {
                     Timber.e(e)
                 }
             }
         }
 
-        return inflater!!.inflate(R.layout.scanner_fragment, container, false)
+        return inflater.inflate(R.layout.scanner_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

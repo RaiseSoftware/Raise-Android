@@ -31,34 +31,16 @@ import java.io.Serializable
 
 class Navigator(private val fm: FragmentManager, val context: Context) {
 
-    private val imageRequestCode = 1000
-    private val imageRequestObservable: PublishSubject<Bitmap> = PublishSubject.create()
-
-    private val scannerRequestCode = 2000
+    private val scannerRequestCode = 1000
     private val scannerRequestObservable: PublishSubject<PokerGame> = PublishSubject.create()
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == imageRequestCode) {
+        if (requestCode == scannerRequestCode) {
             if (resultCode == Activity.RESULT_OK) {
-                var bitmap: Bitmap? = null
-                try {
-                    bitmap?.recycle()
-                    val stream = context.contentResolver.openInputStream(data?.data)
-                    bitmap = BitmapFactory.decodeStream(stream)
-                    stream.close()
-                } catch (e: FileNotFoundException) {
-                    Timber.e(e)
-                } catch (e: IOException) {
-                    Timber.e(e)
-                }
+                val gameId = data?.extras!!["POKER_GAME_ID"] as String
+                val passcode = data.extras!!["POKER_GAME_PASSCODE"] as String?
 
-                imageRequestObservable.onNext(bitmap!!)
-            }
-        } else if (requestCode == scannerRequestCode) {
-            if (resultCode == Activity.RESULT_OK) {
-                val pokerGame: PokerGame = data?.extras!!["POKER_GAME"] as PokerGame
-
-                scannerRequestObservable.onNext(pokerGame)
+                scannerRequestObservable.onNext(PokerGame(gameId = gameId, passcode = passcode, requiresPasscode = passcode != null))
             }
         }
     }
@@ -197,13 +179,6 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         fm.beginTransaction()
             .replace(R.id.layoutRoot, fragment)
             .commit()
-    }
-
-    fun showImageSelection(): Observable<Bitmap> {
-        val photoPickerIntent = Intent(Intent.ACTION_PICK)
-        photoPickerIntent.type = "image/*"
-        startActivityForResult(context as Activity, photoPickerIntent, imageRequestCode, null)
-        return imageRequestObservable
     }
 
     fun goToScannerView(): Observable<PokerGame> {

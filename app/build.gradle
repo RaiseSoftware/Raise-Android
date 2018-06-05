@@ -8,8 +8,6 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'jacoco'
 
-apply plugin: 'com.github.triplet.play'
-
 androidExtensions {
     experimental = true
 }
@@ -54,17 +52,34 @@ android {
             dimension "remote"
             buildConfigField "String", "SOCKET_URL", '"http://10.0.2.2:3000/"'
             buildConfigField "String", "API_URL", '"http://10.0.2.2:3000/api/"'
+            buildConfigField "String", "BASE_URL", '"http://10.0.2.2:3000/"'
+            resValue 'string', 'DEEPLINK_URL', '10.0.2.2:3000'
         }
         staging {
             dimension "remote"
             buildConfigField "String", "SOCKET_URL", '"https://raise.cameronvwilliams.com/"'
             buildConfigField "String", "API_URL", '"https://raise.cameronvwilliams.com/api/"'
+            buildConfigField "String", "BASE_URL", '"https://raise.cameronvwilliams.com/"'
+            resValue 'string', 'DEEPLINK_URL', 'raise.cameronvwilliams.com'
+        }
+        mock {
+            dimension "remote"
+            buildConfigField "String", "SOCKET_URL", '"http://localhost/"'
+            buildConfigField "String", "API_URL", '"http://localhost/api/"'
+            buildConfigField "String", "BASE_URL", '"http://localhost/"'
+            resValue 'string', 'DEEPLINK_URL', 'localhost'
         }
     }
     sourceSets {
         debug {
             java.srcDirs = ['src/debug/java']
             manifest.srcFile 'src/debug/AndroidManifest.xml'
+        }
+        mock {
+            java.srcDirs = ['src/mock/java']
+        }
+        mockDebug {
+            java.srcDirs = ['src/mockDebug/java']
         }
     }
     testOptions {
@@ -161,6 +176,9 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.1.1'
     implementation 'com.jakewharton.rxbinding2:rxbinding-design:2.1.1'
 
+    // Deeplink Dispatch
+    implementation 'com.airbnb:deeplinkdispatch:3.1.1'
+    kapt 'com.airbnb:deeplinkdispatch-processor:3.1.1'
 
     //Testing Libs
     testImplementation 'junit:junit:4.12'

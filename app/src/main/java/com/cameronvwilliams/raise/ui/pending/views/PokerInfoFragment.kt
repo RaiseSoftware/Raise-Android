@@ -19,6 +19,7 @@ import android.os.Environment
 import timber.log.Timber
 import android.content.ContentValues
 import android.provider.MediaStore
+import com.cameronvwilliams.raise.BuildConfig.BASE_URL
 import java.io.*
 
 
@@ -53,25 +54,10 @@ class PokerInfoFragment : BaseFragment() {
 
         qrCodeImage.setOnLongClickListener {
             val share = Intent(Intent.ACTION_SEND)
-            share.type = "image/jpeg"
-
-            val values = ContentValues()
-            values.put(MediaStore.Images.Media.TITLE, "title")
-            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            val uri = activity!!.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-
-            val outstream: OutputStream
-            try {
-                outstream = activity!!.contentResolver.openOutputStream(uri)
-                decodedByte.compress(Bitmap.CompressFormat.JPEG, 100, outstream)
-                outstream.close()
-            } catch (e: Exception) {
-                Timber.e(e)
-            }
-
-
-            share.putExtra(Intent.EXTRA_STREAM, uri)
-            startActivity(Intent.createChooser(share, "Share Image"))
+            share.type = "text/plain"
+            share.putExtra(Intent.EXTRA_SUBJECT, "Link to my Poker Game: ${pokerGame.gameName}!")
+            share.putExtra(Intent.EXTRA_TEXT, BASE_URL + "invite-link?gameId=${pokerGame.gameId}")
+            startActivity(Intent.createChooser(share, "Share Invitation URL"))
             true
         }
     }
