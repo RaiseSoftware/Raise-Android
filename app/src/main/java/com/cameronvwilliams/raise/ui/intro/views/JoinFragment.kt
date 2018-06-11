@@ -26,19 +26,10 @@ import kotlinx.android.synthetic.main.intro_join_fragment.*
 import permissions.dispatcher.*
 import javax.inject.Inject
 
-
-@RuntimePermissions
 class JoinFragment : BaseFragment() {
 
     @Inject
     lateinit var presenter: JoinPresenter
-    @Inject
-    lateinit var navigator: Navigator
-    @field:[Inject ActivityContext]
-    lateinit var activityContext: Context
-
-    private var pokerGame: PokerGame? = null
-    private var disposables = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.intro_join_fragment, container, false)
@@ -94,59 +85,6 @@ class JoinFragment : BaseFragment() {
 
     fun disableJoinButton() {
         joinButton.isEnabled = false
-    }
-
-    @SuppressLint("NeedOnRequestPermissionsResult")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
-    }
-
-    @NeedsPermission(Manifest.permission.CAMERA)
-    fun showScannerActivty() {
-        val disposable = navigator.goToScannerView().subscribe { pokerGame ->
-            this.pokerGame = pokerGame
-            if (userNameEditText.text.toString().trim().isNotEmpty()) {
-                enableJoinButton()
-            } else {
-                disableJoinButton()
-            }
-            showQRCodeSuccessView()
-            disposables.dispose()
-        }
-        disposables.add(disposable)
-    }
-
-    @OnShowRationale(Manifest.permission.CAMERA)
-    fun showRationaleForCamera(request: PermissionRequest) {
-        AlertDialog.Builder(activityContext)
-            .setTitle(getString(R.string.unable_to_scan))
-            .setMessage(getString(R.string.unable_to_scan_long))
-            .setPositiveButton(getString(R.string.go_to_settings), { dialog, _ ->
-                val intent =  Intent()
-                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS;
-                val uri = Uri.fromParts ("package", activityContext.packageName, null)
-                intent.data = uri
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-                startActivity(intent)
-                dialog.dismiss()
-            })
-            .setNegativeButton(getString(android.R.string.cancel), { dialog, _ ->
-                dialog.dismiss()
-            })
-            .show()
-    }
-
-    @OnPermissionDenied(Manifest.permission.CAMERA)
-    fun onCameraDenied() {
-        Snackbar.make(joinGameView, "Unable to scan until permission is granted", Snackbar.LENGTH_LONG).show()
-    }
-
-    @OnNeverAskAgain(Manifest.permission.CAMERA)
-    fun onCameraNeverAskAgain() {
-        Snackbar.make(joinGameView, "Give permission in order to access the camera", Snackbar.LENGTH_LONG).show()
     }
 
     fun showQRCodeSuccessView() {

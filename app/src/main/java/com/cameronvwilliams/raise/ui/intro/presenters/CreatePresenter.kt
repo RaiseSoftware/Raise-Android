@@ -55,10 +55,11 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
             .withLatestFrom(createFormDetails, { _, details ->
                 details
             })
-            .flatMap { onCreateClicked(it).toObservable().startWith {
+            .flatMapSingle { onCreateClicked(it) }
+            .doOnEach {
                 view.showLoadingView()
                 view.disableCreateButton()
-            }}
+            }
             .subscribe({ pokerGame: PokerGame ->
                 view.hideLoadingView()
                 view.enableCreateButton()

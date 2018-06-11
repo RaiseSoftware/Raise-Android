@@ -6,7 +6,7 @@ import java.io.IOException
 
 class RetrofitException(
     override val message: String?, val url: String?, val response: Response<*>?, val kind: Kind,
-    val exception: Throwable?, val retrofit: Retrofit?
+    val exception: Throwable?, private val retrofit: Retrofit?
 ) : RuntimeException() {
 
     enum class Kind {

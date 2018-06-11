@@ -33,14 +33,13 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
         val qrCodeRequests = view.qrCodeScanRequests()
             .flatMap {
                 navigator.goToScannerView()
-            }
+            }.subscribe {  }
 
         val joinFormDetails = Observables.combineLatest(
             view.nameChanges(),
-            view.gameIdChanges(),
-            qrCodeRequests
-        ) { name: CharSequence, passcode: CharSequence, pokerGame: PokerGame? ->
-            JoinDetails(name.toString(), passcode.toString(), pokerGame)
+            view.gameIdChanges()
+        ) { name: CharSequence, passcode: CharSequence ->
+            JoinDetails(name.toString(), passcode.toString(), null)
         }.doOnNext {
             if (it.isValid()) {
                 view.enableJoinButton()
@@ -53,16 +52,19 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
             .withLatestFrom(joinFormDetails, { _, details ->
                 details
             })
-            .flatMap { onJoinClicked(it).toObservable().startWith {
+            .flatMapSingle { onJoinClicked(it) }
+            .doOnEach {
                 view.showLoadingView()
                 view.disableJoinButton()
-            }}
+            }
             .subscribe({ pokerGame ->
                 view.hideLoadingView()
                 view.enableJoinButton()
                 // navigator.goToPendingView(pokerGame, userName, false)
             }, { error ->
                 Timber.e(error)
+                view.hideLoadingView()
+                view.enableJoinButton()
                 val errorMessage =
                     (error as RetrofitException).getErrorBodyAs(ErrorResponse::class.java)
                 when (error.kind) {
@@ -104,7 +106,7 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
                 if (name.isNotEmpty()) {
                     return true
                 }
-            } ?: if (name.isNotEmpty() && gameId.isNotEmpty() && gameId.length > minimumGameIdLength) {
+            } ?: if (name.isNotEmpty() && gameId.isNotEmpty() && gameId.length >= minimumGameIdLength) {
                 return true
             }
 
