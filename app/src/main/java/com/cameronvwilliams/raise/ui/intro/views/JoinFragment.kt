@@ -3,10 +3,8 @@ package com.cameronvwilliams.raise.ui.intro.views
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
-import android.net.Uri.fromParts
 import android.os.Bundle
 import android.provider.Settings
 import android.support.design.widget.Snackbar
@@ -19,18 +17,13 @@ import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.di.ActivityContext
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.Navigator
-import com.cameronvwilliams.raise.ui.intro.IntroContract
 import com.cameronvwilliams.raise.ui.intro.presenters.JoinPresenter
-import com.cameronvwilliams.raise.util.onChange
-import com.google.android.gms.vision.Frame
-import com.google.android.gms.vision.barcode.Barcode
-import com.google.android.gms.vision.barcode.BarcodeDetector
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
+import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding2.widget.textChanges
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.intro_join_fragment.*
 import permissions.dispatcher.*
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -43,50 +36,17 @@ class JoinFragment : BaseFragment() {
     lateinit var navigator: Navigator
     @field:[Inject ActivityContext]
     lateinit var activityContext: Context
-    @Inject
-    lateinit var gson: Gson
 
     private var pokerGame: PokerGame? = null
     private var disposables = CompositeDisposable()
-    private lateinit var barcodeDetector: BarcodeDetector
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        barcodeDetector = BarcodeDetector.Builder(activityContext)
-            .setBarcodeFormats(Barcode.QR_CODE)
-            .build()
-
         return inflater.inflate(R.layout.intro_join_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.onViewCreated(this)
-
-        backButton.setOnClickListener {
-            presenter.onBackPressed()
-        }
-
-        userNameEditText.onChange { s ->
-            presenter.onNameTextChanged(s, gameIdEditText.text.toString().trim(), pokerGame)
-        }
-
-        gameIdEditText.onChange { s ->
-            presenter.onGameIdTextChanged(s, userNameEditText.text.toString().trim(), pokerGame)
-        }
-
-        joinButton.setOnClickListener {
-            presenter.onJoinButtonClick(
-                gameIdEditText.text.toString().trim(),
-                userNameEditText.text.toString().trim(),
-                pokerGame
-            )
-        }
-
-        barcodeText.setOnClickListener {
-            showScannerActivtyWithPermissionCheck()
-        }
     }
 
     override fun onDestroyView() {
@@ -97,6 +57,18 @@ class JoinFragment : BaseFragment() {
     override fun onBackPressed(): Boolean {
         return presenter.onBackPressed()
     }
+
+    fun joinGameRequests(): Observable<Unit> = joinButton.clicks()
+
+    fun backPresses(): Observable<Unit> = backButton.clicks()
+
+    fun qrCodeScanRequests(): Observable<Unit> = barcodeText.clicks().share()
+
+    fun nameChanges(): Observable<CharSequence> = userNameEditText.textChanges()
+        .map { it.trim() }
+
+    fun gameIdChanges(): Observable<CharSequence> = gameIdEditText.textChanges()
+        .map { it.trim() }
 
     fun showLoadingView() {
         inputWrapper.visibility = View.GONE

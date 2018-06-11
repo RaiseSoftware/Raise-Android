@@ -1,17 +1,18 @@
 package com.cameronvwilliams.raise.ui.intro.presenters
 
-import com.cameronvwilliams.raise.R.id.userName
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.ErrorResponse
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.data.remote.RetrofitException
+import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
-import com.cameronvwilliams.raise.ui.intro.IntroContract
 import com.cameronvwilliams.raise.ui.intro.views.JoinFragment
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
-import org.reactivestreams.Subscription
+import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.withLatestFrom
 import timber.log.Timber
 
 class JoinPresenter(private val navigator: Navigator, private val dm: DataManager) : BasePresenter() {
@@ -19,28 +20,47 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
     private lateinit var view: JoinFragment
 
     private val disposables = CompositeDisposable()
-    private val minimumGameIdLength = 5
 
-    override fun onViewDestroyed() {
-        disposables.clear()
-    }
+    override fun onViewCreated(v: BaseFragment) {
+        super.onViewCreated(v)
+        view = v as JoinFragment
 
-    fun onJoinButtonClick(
-        gameId: String,
-        userName: String,
-        pokerGame: PokerGame?
-    ) {
-        val request = pokerGame?.let { dm.findPokerGame(it.gameId!!, userName, pokerGame.passcode) }
-                ?: dm.findPokerGame(gameId, userName)
-
-        val subscription = request.doOnSubscribe {
-            view.showLoadingView()
-        }
-            .doOnEvent { _, _ ->
-                view.hideLoadingView()
+        val backPresses = view.backPresses()
+            .subscribe {
+                onBackPressed()
             }
-            .subscribe({ game ->
-                navigator.goToPendingView(game, userName, false)
+
+        val qrCodeRequests = view.qrCodeScanRequests()
+            .flatMap {
+                navigator.goToScannerView()
+            }
+
+        val joinFormDetails = Observables.combineLatest(
+            view.nameChanges(),
+            view.gameIdChanges(),
+            qrCodeRequests
+        ) { name: CharSequence, passcode: CharSequence, pokerGame: PokerGame? ->
+            JoinDetails(name.toString(), passcode.toString(), pokerGame)
+        }.doOnNext {
+            if (it.isValid()) {
+                view.enableJoinButton()
+            } else {
+                view.disableJoinButton()
+            }
+        }
+
+        val joinRequests = view.joinGameRequests()
+            .withLatestFrom(joinFormDetails, { _, details ->
+                details
+            })
+            .flatMap { onJoinClicked(it).toObservable().startWith {
+                view.showLoadingView()
+                view.disableJoinButton()
+            }}
+            .subscribe({ pokerGame ->
+                view.hideLoadingView()
+                view.enableJoinButton()
+                // navigator.goToPendingView(pokerGame, userName, false)
             }, { error ->
                 Timber.e(error)
                 val errorMessage =
@@ -48,7 +68,7 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
                 when (error.kind) {
                     RetrofitException.Kind.HTTP -> {
                         when (errorMessage?.statusCode) {
-                            dm.CODE_FORBIDDEN -> navigator.goToPasscode(gameId, Player(userName))
+                            //dm.CODE_FORBIDDEN -> navigator.goToPasscode(gameId, Player(userName))
                             dm.CODE_NOT_FOUND -> view.showErrorSnackBar(errorMessage.message)
                         }
                     }
@@ -57,15 +77,12 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
                 }
             })
 
-        disposables.add(subscription)
+        viewSubscriptions.addAll(backPresses, joinRequests)
     }
 
-    fun onNameTextChanged(userName: String, gameId: String, pokerGame: PokerGame?) {
-        validateFormData(userName, gameId, pokerGame)
-    }
-
-    fun onGameIdTextChanged(gameId: String, userName: String, pokerGame: PokerGame?) {
-        validateFormData(userName, gameId, pokerGame)
+    override fun onViewDestroyed() {
+        super.onViewDestroyed()
+        disposables.clear()
     }
 
     override fun onBackPressed(): Boolean {
@@ -73,19 +90,25 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
         return true
     }
 
-    private fun validateFormData(userName: String, gameId: String, pokerGame: PokerGame?) {
-        if (pokerGame == null) {
-            if (userName.isNotBlank() && gameId.isNotBlank() && gameId.length > minimumGameIdLength) {
-                view.enableJoinButton()
-            } else {
-                view.disableJoinButton()
+    private fun onJoinClicked(details: JoinDetails): Single<PokerGame> {
+        return details.pokerGame?.let {
+            dm.findPokerGame(details.gameId, details.name, it.passcode)
+        } ?: dm.findPokerGame(details.gameId, details.name)
+    }
+
+    private data class JoinDetails(val name: String, val gameId: String, val pokerGame: PokerGame?) {
+        private val minimumGameIdLength = 5
+
+        fun isValid(): Boolean {
+            pokerGame?.let {
+                if (name.isNotEmpty()) {
+                    return true
+                }
+            } ?: if (name.isNotEmpty() && gameId.isNotEmpty() && gameId.length > minimumGameIdLength) {
+                return true
             }
-        } else {
-            if (userName.isNotBlank()) {
-                view.enableJoinButton()
-            } else {
-                view.disableJoinButton()
-            }
+
+            return false
         }
     }
 }
