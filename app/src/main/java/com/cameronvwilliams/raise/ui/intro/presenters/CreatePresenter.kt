@@ -31,10 +31,10 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
         super.onViewCreated(v)
         view = v as CreateFragment
 
-        viewSubscriptions.add(view.backPresses()
+        val backPresses = view.backPresses()
             .subscribe {
                 onBackPressed()
-            })
+            }
 
         val createFormDetails = Observables.combineLatest(
             view.deckTypeChanges(),
@@ -43,15 +43,15 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
             view.passcodeChanges()
         ) { deckType: DeckType, userName: CharSequence, gameName: CharSequence, requirePasscode: Boolean ->
             CreateDetails(deckType, userName.toString(), gameName.toString(), requirePasscode)
-        }.doOnNext { details ->
-            if (details.isValid()) {
+        }.doOnNext {
+            if (it.isValid()) {
                 view.enableCreateButton()
             } else {
                 view.disableCreateButton()
             }
         }
 
-        viewSubscriptions.add(view.createGameRequests()
+        val gameRequests = view.createGameRequests()
             .withLatestFrom(createFormDetails, { _, details ->
                 details
             })
@@ -73,7 +73,9 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
                 Timber.e(it)
                 view.hideLoadingView()
                 view.showDefaultErrorSnackBar()
-            }))
+            })
+
+        viewSubscriptions.addAll(gameRequests, backPresses)
     }
 
     override fun onViewDestroyed() {
