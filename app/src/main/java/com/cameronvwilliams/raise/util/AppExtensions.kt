@@ -1,11 +1,8 @@
 package com.cameronvwilliams.raise.util
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.SurfaceHolder
 import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.EditText
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.vision.Detector
@@ -14,9 +11,6 @@ import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.internal.disposables.DisposableHelper.isDisposed
-import io.reactivex.android.MainThreadDisposable
 
 fun SurfaceHolder.callbacks(
     onCreated: (SurfaceHolder?) -> Unit,

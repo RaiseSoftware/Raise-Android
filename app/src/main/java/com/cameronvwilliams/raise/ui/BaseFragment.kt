@@ -1,7 +1,7 @@
 package com.cameronvwilliams.raise.ui
 
-import dagger.android.support.DaggerFragment
 import android.os.Bundle
+import dagger.android.support.DaggerFragment
 
 abstract class BaseFragment : DaggerFragment() {
 

@@ -5,13 +5,8 @@ import android.os.Bundle
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseActivity
-import com.cameronvwilliams.raise.ui.Navigator
-import com.cameronvwilliams.raise.ui.pending.PendingActivity
-import com.cameronvwilliams.raise.ui.pending.PendingActivity.IntentOptions.getPokerGame
-import com.cameronvwilliams.raise.ui.pending.PendingActivity.IntentOptions.getUserName
 import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.poker_activity.*
-import javax.inject.Inject
 
 class PokerActivity : BaseActivity() {
 

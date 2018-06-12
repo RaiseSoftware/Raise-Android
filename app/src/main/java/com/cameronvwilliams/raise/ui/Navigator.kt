@@ -3,8 +3,6 @@ package com.cameronvwilliams.raise.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.app.FragmentManager
@@ -24,11 +22,6 @@ import com.cameronvwilliams.raise.ui.scanner.ScannerActivity
 import com.cameronvwilliams.raise.ui.scanner.views.ScannerFragment
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.io.Serializable
 
 class Navigator(private val fm: FragmentManager, val context: Context) {
 

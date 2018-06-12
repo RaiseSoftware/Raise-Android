@@ -9,14 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
-import com.cameronvwilliams.raise.data.model.DeckType
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.di.ActivityContext
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.Navigator
-import com.cameronvwilliams.raise.ui.pending.views.PendingFragment
-import com.cameronvwilliams.raise.ui.pending.views.PendingFragment.BundleOptions.getPokerGame
-import com.cameronvwilliams.raise.ui.pending.views.PendingFragment.BundleOptions.getUserName
 import com.cameronvwilliams.raise.ui.poker.PokerActivity
 import com.cameronvwilliams.raise.ui.poker.views.adapter.PokerAdapter
 import kotlinx.android.synthetic.main.poker_fragment.*

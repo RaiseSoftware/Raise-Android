@@ -2,7 +2,7 @@ package com.cameronvwilliams.raise.data.model
 
 import android.os.Parcel
 import com.cameronvwilliams.raise.util.*
-import java.util.Date
+import java.util.*
 
 data class PokerGame(
     val gameName: String? = "",

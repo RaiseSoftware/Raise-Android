@@ -2,14 +2,14 @@ package com.cameronvwilliams.raise.data.remote
 
 import android.support.v4.util.Pair
 import android.support.v7.util.DiffUtil
-import com.cameronvwilliams.raise.R.id.userName
-import com.cameronvwilliams.raise.data.model.*
+import com.cameronvwilliams.raise.data.model.ActiveCard
+import com.cameronvwilliams.raise.data.model.Card
+import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.event.*
 import com.cameronvwilliams.raise.util.ActiveCardDiffCallback
 import com.cameronvwilliams.raise.util.PlayerDiffCallback
 import com.google.gson.Gson
 import io.reactivex.Completable
-import io.reactivex.CompletableSource
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
@@ -18,8 +18,6 @@ import io.socket.client.Socket
 import io.socket.engineio.client.transports.WebSocket
 import okhttp3.OkHttpClient
 import org.json.JSONObject
-import java.net.URLEncoder
-import javax.inject.Singleton
 
 class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: String): SocketAPI {
 

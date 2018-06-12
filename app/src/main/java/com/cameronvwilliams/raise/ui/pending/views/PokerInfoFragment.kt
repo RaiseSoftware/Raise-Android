@@ -1,6 +1,7 @@
 package com.cameronvwilliams.raise.ui.pending.views
 
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.TextUtils
@@ -8,19 +9,11 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.cameronvwilliams.raise.BuildConfig.BASE_URL
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseFragment
 import kotlinx.android.synthetic.main.pending_poker_info_fragment.*
-import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Environment
-import timber.log.Timber
-import android.content.ContentValues
-import android.provider.MediaStore
-import com.cameronvwilliams.raise.BuildConfig.BASE_URL
-import java.io.*
 
 
 class PokerInfoFragment : BaseFragment() {

@@ -1,8 +1,8 @@
 package com.cameronvwilliams.raise
 
-import com.cameronvwilliams.raise.util.Analytics
 import com.cameronvwilliams.raise.di.DaggerRaiseComponent
 import com.cameronvwilliams.raise.di.RaiseComponent
+import com.cameronvwilliams.raise.util.Analytics
 import com.google.android.gms.ads.MobileAds
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication

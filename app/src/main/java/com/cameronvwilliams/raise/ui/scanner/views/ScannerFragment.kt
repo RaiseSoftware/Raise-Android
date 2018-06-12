@@ -2,36 +2,32 @@ package com.cameronvwilliams.raise.ui.scanner.views
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
+import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.PokerGame
+import com.cameronvwilliams.raise.di.ActivityContext
 import com.cameronvwilliams.raise.ui.BaseFragment
+import com.cameronvwilliams.raise.ui.scanner.ScannerPresenter
+import com.cameronvwilliams.raise.util.afterMeasured
 import com.cameronvwilliams.raise.util.callbacks
-import com.cameronvwilliams.raise.util.onDetect
+import com.cameronvwilliams.raise.util.detections
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
 import kotlinx.android.synthetic.main.scanner_fragment.*
-import timber.log.Timber
-import javax.inject.Inject
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AlertDialog
-import com.cameronvwilliams.raise.di.ActivityContext
-import com.cameronvwilliams.raise.ui.scanner.ScannerPresenter
-import com.cameronvwilliams.raise.util.afterMeasured
-import com.cameronvwilliams.raise.util.detections
-import io.reactivex.disposables.CompositeDisposable
 import permissions.dispatcher.*
+import javax.inject.Inject
 
 @RuntimePermissions
 class ScannerFragment : BaseFragment() {

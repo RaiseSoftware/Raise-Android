@@ -1,8 +1,5 @@
 package com.cameronvwilliams.raise.data.remote
 
-import com.cameronvwilliams.raise.data.model.event.SocketEvent
-import com.cameronvwilliams.raise.data.model.event.StartGameEvent
-import com.cameronvwilliams.raise.data.remote.SocketClient.Companion.START_GAME_EVENT
 import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposables
