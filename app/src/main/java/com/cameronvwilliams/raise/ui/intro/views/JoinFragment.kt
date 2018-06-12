@@ -1,29 +1,17 @@
 package com.cameronvwilliams.raise.ui.intro.views
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
-import com.cameronvwilliams.raise.data.model.PokerGame
-import com.cameronvwilliams.raise.di.ActivityContext
 import com.cameronvwilliams.raise.ui.BaseFragment
-import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.presenters.JoinPresenter
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.textChanges
 import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.intro_join_fragment.*
-import permissions.dispatcher.*
 import javax.inject.Inject
 
 class JoinFragment : BaseFragment() {

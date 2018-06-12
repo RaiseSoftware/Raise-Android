@@ -2,7 +2,6 @@ package com.cameronvwilliams.raise.ui.intro.presenters
 
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.ErrorResponse
-import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.data.remote.RetrofitException
 import com.cameronvwilliams.raise.ui.BaseFragment
@@ -39,10 +38,10 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
         ) { name: CharSequence, passcode: CharSequence, g ->
             JoinDetails(name.toString(), passcode.toString(), g)
         }.doOnNext {
-            if (it.isValid()) {
-                view.enableJoinButton()
-            } else {
-                view.disableJoinButton()
+            when {
+                it.isValid() -> view.enableJoinButton()
+                it.hasSuccessfullyScanned() -> view.showQRCodeSuccessView()
+                else -> view.disableJoinButton()
             }
         }
 
@@ -93,6 +92,10 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
 
     private data class JoinDetails(val name: String, val gameId: String, val pokerGame: PokerGame?) {
         private val minimumGameIdLength = 5
+
+        fun hasSuccessfullyScanned(): Boolean {
+            return pokerGame != null
+        }
 
         fun isValid(): Boolean {
             pokerGame?.let {

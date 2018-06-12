@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
-import com.cameronvwilliams.raise.ui.intro.IntroContract
 import com.cameronvwilliams.raise.ui.intro.presenters.IntroPresenter
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable

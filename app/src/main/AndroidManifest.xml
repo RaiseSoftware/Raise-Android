@@ -46,7 +46,7 @@
             android:value="barcode" />
 
         <activity
-            android:name=".DeeplinkActivity"
+            android:name=".ui.DeeplinkActivity"
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>

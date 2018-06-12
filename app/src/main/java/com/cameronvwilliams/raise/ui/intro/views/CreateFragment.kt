@@ -19,9 +19,8 @@ import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import com.jakewharton.rxbinding2.widget.textChanges
 import io.reactivex.Observable
-import javax.inject.Inject
-
 import kotlinx.android.synthetic.main.intro_create_fragment.*
+import javax.inject.Inject
 
 class CreateFragment : BaseFragment() {
 

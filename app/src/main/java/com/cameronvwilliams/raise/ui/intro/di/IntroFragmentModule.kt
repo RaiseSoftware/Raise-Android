@@ -2,12 +2,10 @@ package com.cameronvwilliams.raise.ui.intro.di
 
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.ui.Navigator
-import com.cameronvwilliams.raise.ui.intro.IntroContract
 import com.cameronvwilliams.raise.ui.intro.presenters.CreatePresenter
 import com.cameronvwilliams.raise.ui.intro.presenters.IntroPresenter
 import com.cameronvwilliams.raise.ui.intro.presenters.JoinPresenter
 import com.cameronvwilliams.raise.ui.intro.presenters.PasscodePresenter
-import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 
@@ -32,7 +30,7 @@ abstract class IntroFragmentModule {
 
         @Provides
         @JvmStatic
-        fun providePasscodePresenter(navigator: Navigator, dm: DataManager):
-                IntroContract.PasscodeUserActions = PasscodePresenter(navigator, dm)
+        fun providePasscodePresenter(navigator: Navigator, dm: DataManager): PasscodePresenter =
+            PasscodePresenter(navigator, dm)
     }
 }

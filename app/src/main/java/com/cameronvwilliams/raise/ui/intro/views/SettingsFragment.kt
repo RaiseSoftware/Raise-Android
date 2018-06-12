@@ -1,17 +1,15 @@
 package com.cameronvwilliams.raise.ui.intro.views
 
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import com.cameronvwilliams.raise.BuildConfig
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
 import kotlinx.android.synthetic.main.intro_settings_fragment.*
-import android.content.Intent
-import com.cameronvwilliams.raise.BuildConfig
 
 class SettingsFragment : BaseFragment() {
 
