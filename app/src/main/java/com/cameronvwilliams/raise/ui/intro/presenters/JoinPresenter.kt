@@ -10,7 +10,6 @@ import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.views.JoinFragment
 import io.reactivex.Single
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.withLatestFrom
 import timber.log.Timber
@@ -18,8 +17,6 @@ import timber.log.Timber
 class JoinPresenter(private val navigator: Navigator, private val dm: DataManager) : BasePresenter() {
 
     private lateinit var view: JoinFragment
-
-    private val disposables = CompositeDisposable()
 
     override fun onViewCreated(v: BaseFragment) {
         super.onViewCreated(v)
@@ -33,13 +30,14 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
         val qrCodeRequests = view.qrCodeScanRequests()
             .flatMap {
                 navigator.goToScannerView()
-            }.subscribe {  }
+            }
 
         val joinFormDetails = Observables.combineLatest(
             view.nameChanges(),
-            view.gameIdChanges()
-        ) { name: CharSequence, passcode: CharSequence ->
-            JoinDetails(name.toString(), passcode.toString(), null)
+            view.gameIdChanges(),
+            qrCodeRequests
+        ) { name: CharSequence, passcode: CharSequence, g ->
+            JoinDetails(name.toString(), passcode.toString(), g)
         }.doOnNext {
             if (it.isValid()) {
                 view.enableJoinButton()
@@ -80,11 +78,6 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
             })
 
         viewSubscriptions.addAll(backPresses, joinRequests)
-    }
-
-    override fun onViewDestroyed() {
-        super.onViewDestroyed()
-        disposables.clear()
     }
 
     override fun onBackPressed(): Boolean {

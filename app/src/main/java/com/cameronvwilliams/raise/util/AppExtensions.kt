@@ -13,6 +13,12 @@ import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.internal.disposables.DisposableHelper.isDisposed
+import io.reactivex.android.MainThreadDisposable
+
+
 
 fun EditText.onChange(cb: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
@@ -50,6 +56,14 @@ fun BarcodeDetector.onDetect(cb: (Detector.Detections<Barcode>) -> Unit) {
             cb(detections)
         }
     })
+}
+
+fun BarcodeDetector.detections(): Observable<Detector.Detections<Barcode>> {
+    return Observable.create { observer ->
+        this.onDetect {
+            observer.onNext(it)
+        }
+    }
 }
 
 fun <T> Gson.fromJsonArray(json: String): List<T> {

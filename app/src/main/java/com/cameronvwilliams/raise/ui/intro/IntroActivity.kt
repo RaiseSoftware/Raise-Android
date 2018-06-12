@@ -25,9 +25,7 @@ open class IntroActivity : BaseActivity() {
         AppCenter.start(application, BuildConfig.APP_CENTER_KEY,
             Distribute::class.java, Analytics::class.java, Crashes::class.java)
 
-        if (savedInstanceState == null) {
-            navigator.goToIntro(false)
-        }
+        savedInstanceState?.let {} ?: navigator.goToIntro(false)
 
         intent.getStringExtra("gameId")?.let {
             navigator.goToJoinGame()

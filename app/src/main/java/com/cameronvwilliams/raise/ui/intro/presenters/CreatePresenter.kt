@@ -23,7 +23,6 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
 
     lateinit var view: CreateFragment
 
-    private val disposables = CompositeDisposable()
     private lateinit var createdPokerGame: PokerGame
     private lateinit var selectedUserName: String
 
@@ -77,11 +76,6 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
             })
 
         viewSubscriptions.addAll(gameRequests, backPresses)
-    }
-
-    override fun onViewDestroyed() {
-        super.onViewDestroyed()
-        disposables.clear()
     }
 
     private fun onCreateClicked(details: CreateDetails): Single<PokerGame> {

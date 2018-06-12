@@ -23,6 +23,7 @@ import com.cameronvwilliams.raise.ui.poker.views.PokerFragment
 import com.cameronvwilliams.raise.ui.scanner.ScannerActivity
 import com.cameronvwilliams.raise.ui.scanner.views.ScannerFragment
 import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import java.io.FileNotFoundException
@@ -32,13 +33,13 @@ import java.io.Serializable
 class Navigator(private val fm: FragmentManager, val context: Context) {
 
     private val scannerRequestCode = 1000
-    private val scannerRequestObservable: PublishSubject<PokerGame> = PublishSubject.create()
+    private val scannerRequestObservable: BehaviorSubject<PokerGame> = BehaviorSubject.createDefault(PokerGame())
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == scannerRequestCode) {
             if (resultCode == Activity.RESULT_OK) {
-                val gameId = data?.extras!!["POKER_GAME_ID"] as String
-                val passcode = data.extras!!["POKER_GAME_PASSCODE"] as String?
+                val gameId = data?.extras?.getString("POKER_GAME_ID")
+                val passcode = data?.extras?.getString("POKER_GAME_PASSCODE")
 
                 scannerRequestObservable.onNext(PokerGame(gameId = gameId, passcode = passcode, requiresPasscode = passcode != null))
             }
@@ -52,7 +53,6 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
     fun goToIntro(animate: Boolean = true) {
         fm.beginTransaction()
             .replace(R.id.layoutRoot, IntroFragment.newInstance())
-            .addToBackStack("intro")
             .commit()
     }
 
@@ -183,9 +183,9 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
 
     fun goToScannerView(): Observable<PokerGame> {
         val intent = Intent(context, ScannerActivity::class.java)
-
-        startActivityForResult(context as Activity, intent, scannerRequestCode, null)
-        return scannerRequestObservable
+        return scannerRequestObservable.doOnSubscribe {
+            startActivityForResult(context as Activity, intent, scannerRequestCode, null)
+        }
     }
 
     fun goToScanner() {

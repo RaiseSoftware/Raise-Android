@@ -27,12 +27,17 @@ import android.provider.Settings
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import com.cameronvwilliams.raise.di.ActivityContext
+import com.cameronvwilliams.raise.ui.scanner.ScannerPresenter
 import com.cameronvwilliams.raise.util.afterMeasured
+import com.cameronvwilliams.raise.util.detections
 import io.reactivex.disposables.CompositeDisposable
 import permissions.dispatcher.*
 
 @RuntimePermissions
 class ScannerFragment : BaseFragment() {
+
+    @Inject
+    lateinit var presenter: ScannerPresenter
 
     @Inject
     lateinit var gson: Gson
@@ -43,35 +48,19 @@ class ScannerFragment : BaseFragment() {
     private var cameraSource: CameraSource? = null
     private lateinit var barcodeDetector: BarcodeDetector
 
-    private var pokerGame: PokerGame? = null
-    private var disposables = CompositeDisposable()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
 
-        barcodeDetector = BarcodeDetector.Builder(activity)
+        barcodeDetector = BarcodeDetector.Builder(activityContext)
             .setBarcodeFormats(Barcode.QR_CODE)
             .build()
-
-        barcodeDetector.onDetect { detections ->
-            if (detections.detectedItems.size() != 0) {
-                try {
-                    val game = gson.fromJson(detections.detectedItems.valueAt(0).displayValue, PokerGame::class.java)
-                    val returnIntent = Intent()
-                    returnIntent.putExtra("POKER_GAME_ID", game.gameId)
-                    returnIntent.putExtra("POKER_GAME_PASSCODE", game.passcode)
-                    activity?.setResult(Activity.RESULT_OK, returnIntent)
-                    activity?.finish()
-                } catch (e: JsonSyntaxException) {
-                    Timber.e(e)
-                }
-            }
-        }
 
         return inflater.inflate(R.layout.scanner_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.onViewCreated(this)
 
         cameraView.afterMeasured {
             cameraSource = CameraSource.Builder(activityContext, barcodeDetector)
@@ -87,7 +76,11 @@ class ScannerFragment : BaseFragment() {
         }, {
             cameraSource?.release()
         })
+    }
 
+    override fun onDestroyView() {
+        barcodeDetector.release()
+        super.onDestroyView()
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")
@@ -95,6 +88,12 @@ class ScannerFragment : BaseFragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         onRequestPermissionsResult(requestCode, grantResults)
     }
+
+    override fun onBackPressed(): Boolean {
+        return presenter.onBackPressed()
+    }
+
+    fun onQrCodeDetections() = barcodeDetector.detections()
 
     @SuppressLint("MissingPermission")
     @NeedsPermission(Manifest.permission.CAMERA)
@@ -135,9 +134,16 @@ class ScannerFragment : BaseFragment() {
         Snackbar.make(scannerView, "Give permission in order to access the camera", Snackbar.LENGTH_LONG).show()
     }
 
-    override fun onDestroyView() {
-        barcodeDetector.release()
-        super.onDestroyView()
+    fun sendPokerGame(game: PokerGame) {
+        val returnIntent = Intent()
+        returnIntent.putExtra("POKER_GAME_ID", game.gameId)
+        returnIntent.putExtra("POKER_GAME_PASSCODE", game.passcode)
+        activity?.setResult(Activity.RESULT_OK, returnIntent)
+        activity?.finish()
+    }
+
+    fun close() {
+        activity?.finish()
     }
 
     companion object {
