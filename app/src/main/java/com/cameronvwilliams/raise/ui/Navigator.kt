@@ -53,9 +53,9 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         fm.beginTransaction()
             .setCustomAnimations(
                 R.anim.slide_in_left,
-                R.anim.slide_out_left,
                 R.anim.slide_out_right,
-                R.anim.slide_in_right
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
             )
             .replace(R.id.layoutRoot, SettingsFragment.newInstance())
             .addToBackStack(null)
@@ -66,9 +66,9 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         fm.beginTransaction()
             .setCustomAnimations(
                 R.anim.slide_in_left,
-                R.anim.slide_out_left,
                 R.anim.slide_out_right,
-                R.anim.slide_in_right
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
             )
             .replace(R.id.layoutRoot, JoinFragment.newInstance())
             .addToBackStack(null)
@@ -78,10 +78,10 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
     fun goToCreateGame() {
         fm.beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_out_right,
                 R.anim.slide_in_right,
+                R.anim.slide_out_left,
                 R.anim.slide_in_left,
-                R.anim.slide_out_left
+                R.anim.slide_out_right
             )
             .replace(R.id.layoutRoot, CreateFragment.newInstance())
             .addToBackStack(null)
@@ -101,8 +101,10 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
 
         fm.beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_in_left, R.anim.slide_out_left,
-                R.anim.slide_out_right, R.anim.slide_in_right
+                R.anim.slide_in_left,
+                R.anim.slide_out_right,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
             )
             .replace(R.id.layoutRoot, fragment)
             .addToBackStack(null)
@@ -136,8 +138,10 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
 
         fm.beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_in_left, R.anim.slide_out_left,
-                R.anim.slide_out_right, R.anim.slide_in_right
+                R.anim.slide_in_left,
+                R.anim.slide_out_right,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
             )
             .replace(R.id.layoutRoot, fragment)
             .commit()
