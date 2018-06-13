@@ -8,7 +8,9 @@ import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.views.CreateFragment
+import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.withLatestFrom
 import timber.log.Timber
@@ -36,7 +38,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
             view.passcodeChanges()
         ) { deckType: DeckType, userName: CharSequence, gameName: CharSequence, requirePasscode: Boolean ->
             CreateDetails(deckType, userName.toString(), gameName.toString(), requirePasscode)
-        }.doOnNext {
+        }.distinctUntilChanged().doOnNext {
             if (it.isValid()) {
                 view.enableCreateButton()
             } else {
@@ -45,44 +47,60 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
         }
 
         val gameRequests = view.createGameRequests()
-            .withLatestFrom(createFormDetails, { _, details ->
+            .withLatestFrom(createFormDetails) { _, details ->
                 details
-            })
+            }
             .flatMapSingle { onCreateClicked(it) }
             .doOnEach {
                 view.showLoadingView()
                 view.disableCreateButton()
             }
-            .subscribe({ pokerGame: PokerGame ->
-                view.hideLoadingView()
-                view.enableCreateButton()
-                if (view.shouldShowInterstitialAd()) {
-                    createdPokerGame = pokerGame
-                    //selectedUserName = player.name
-                    view.showInterstitialAd()
-                } else {
-                    //navigator.goToPendingView(pokerGame, player.name, true)
+            .subscribe({ result: Result ->
+                when (result.type) {
+                    CreatePresenter.ResultType.SUCCESS -> onCreateSuccess(result.data!!)
+                    CreatePresenter.ResultType.FAILURE -> onCreateFailure()
                 }
-            }, {
-                Timber.e(it)
-                view.hideLoadingView()
-                view.showDefaultErrorSnackBar()
+            }, { t ->
+                throw OnErrorNotImplementedException(t)
             })
 
         viewSubscriptions.addAll(gameRequests, backPresses)
-    }
-
-    private fun onCreateClicked(details: CreateDetails): Single<PokerGame> {
-        val game = PokerGame(details.gameName, details.deckType, details.requirePasscode)
-        val player = Player(details.userName)
-
-        return dm.createPokerGame(game, player)
     }
 
     override fun onBackPressed(): Boolean {
         navigator.goBack()
 
         return true
+    }
+
+    private fun onCreateClicked(details: CreateDetails): Single<Result>? {
+        val game = PokerGame(details.gameName, details.deckType, details.requirePasscode)
+        val player = Player(details.userName)
+
+        return dm.createPokerGame(game, player)
+            .map { pokerGame -> Result(ResultType.SUCCESS, pokerGame) }
+            .onErrorReturn { t ->
+                Timber.e(t)
+                Result(ResultType.FAILURE, null)
+            }
+    }
+
+    private fun onCreateSuccess(pokerGame: PokerGame) {
+        view.hideLoadingView()
+        view.enableCreateButton()
+        if (view.shouldShowInterstitialAd()) {
+            createdPokerGame = pokerGame
+            //selectedUserName = player.name
+            view.showInterstitialAd()
+        } else {
+            //navigator.goToPendingView(pokerGame, player.name, true)
+        }
+    }
+
+    private fun onCreateFailure() {
+        view.hideLoadingView()
+        view.enableCreateButton()
+        view.showDefaultErrorSnackBar()
     }
 
     fun onAdClosed() {
@@ -93,5 +111,12 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
         fun isValid(): Boolean {
             return deckType != DeckType.NONE && userName.isNotEmpty() && gameName.isNotEmpty()
         }
+    }
+
+    private data class Result(val type: ResultType, val data: PokerGame?)
+
+    private enum class ResultType {
+        SUCCESS,
+        FAILURE
     }
 }

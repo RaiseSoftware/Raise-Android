@@ -26,7 +26,7 @@ import io.reactivex.subjects.BehaviorSubject
 class Navigator(private val fm: FragmentManager, val context: Context) {
 
     private val scannerRequestCode = 1000
-    private val scannerRequestObservable: BehaviorSubject<PokerGame> = BehaviorSubject.createDefault(PokerGame())
+    private val scannerRequestObservable = BehaviorSubject.createDefault<Result<PokerGame>>(Result(ResultEnum.INITIAL, null))
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == scannerRequestCode) {
@@ -34,7 +34,13 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
                 val gameId = data?.extras?.getString("POKER_GAME_ID")
                 val passcode = data?.extras?.getString("POKER_GAME_PASSCODE")
 
-                scannerRequestObservable.onNext(PokerGame(gameId = gameId, passcode = passcode, requiresPasscode = passcode != null))
+                scannerRequestObservable.onNext(Result(ResultEnum.SUCCESS, PokerGame(
+                        gameId = gameId,
+                        passcode = passcode,
+                        requiresPasscode = passcode != null
+                    )))
+            } else {
+                scannerRequestObservable.onNext(Result(ResultEnum.CANCELLED, null))
             }
         }
     }
@@ -52,10 +58,10 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
     fun goToSettings() {
         fm.beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_in_left,
-                R.anim.slide_out_right,
                 R.anim.slide_in_right,
-                R.anim.slide_out_left
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
             )
             .replace(R.id.layoutRoot, SettingsFragment.newInstance())
             .addToBackStack(null)
@@ -65,10 +71,10 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
     fun goToJoinGame() {
         fm.beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_in_left,
-                R.anim.slide_out_right,
                 R.anim.slide_in_right,
-                R.anim.slide_out_left
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
             )
             .replace(R.id.layoutRoot, JoinFragment.newInstance())
             .addToBackStack(null)
@@ -78,10 +84,10 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
     fun goToCreateGame() {
         fm.beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left,
                 R.anim.slide_in_left,
-                R.anim.slide_out_right
+                R.anim.slide_out_right,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
             )
             .replace(R.id.layoutRoot, CreateFragment.newInstance())
             .addToBackStack(null)
@@ -101,10 +107,10 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
 
         fm.beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_in_left,
-                R.anim.slide_out_right,
                 R.anim.slide_in_right,
-                R.anim.slide_out_left
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
             )
             .replace(R.id.layoutRoot, fragment)
             .addToBackStack(null)
@@ -137,12 +143,6 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         fragment.arguments = bundle
 
         fm.beginTransaction()
-            .setCustomAnimations(
-                R.anim.slide_in_left,
-                R.anim.slide_out_right,
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
             .replace(R.id.layoutRoot, fragment)
             .commit()
     }
@@ -178,16 +178,27 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .commit()
     }
 
-    fun goToScannerView(): Observable<PokerGame> {
+    fun goToScannerView() {
         val intent = Intent(context, ScannerActivity::class.java)
-        return scannerRequestObservable.doOnSubscribe {
-            startActivityForResult(context as Activity, intent, scannerRequestCode, null)
-        }
+        startActivityForResult(context as Activity, intent, scannerRequestCode, null)
     }
 
     fun goToScanner() {
         fm.beginTransaction()
             .replace(R.id.layoutRoot, ScannerFragment.newInstance())
             .commit()
+    }
+
+    fun scannerResult(): Observable<Navigator.Result<PokerGame>> {
+        return scannerRequestObservable
+    }
+
+    data class Result<T>(val status: ResultEnum, val data: T?)
+
+    enum class ResultEnum {
+        SUCCESS,
+        FAILURE,
+        CANCELLED,
+        INITIAL
     }
 }

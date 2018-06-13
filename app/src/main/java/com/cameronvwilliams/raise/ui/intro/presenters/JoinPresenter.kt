@@ -8,7 +8,9 @@ import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.views.JoinFragment
+import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.withLatestFrom
 import timber.log.Timber
@@ -27,17 +29,17 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
             }
 
         val qrCodeRequests = view.qrCodeScanRequests()
-            .flatMap {
+            .subscribe {
                 navigator.goToScannerView()
             }
 
         val joinFormDetails = Observables.combineLatest(
             view.nameChanges(),
             view.gameIdChanges(),
-            qrCodeRequests
-        ) { name: CharSequence, passcode: CharSequence, g ->
-            JoinDetails(name.toString(), passcode.toString(), g)
-        }.doOnNext {
+            navigator.scannerResult()
+        ) { name: CharSequence, passcode: CharSequence, pokerGame: Navigator.Result<PokerGame> ->
+            JoinDetails(name.toString(), passcode.toString(), pokerGame.data)
+        }.distinctUntilChanged().doOnNext {
             when {
                 it.isValid() -> view.enableJoinButton()
                 it.hasSuccessfullyScanned() -> view.showQRCodeSuccessView()
@@ -46,37 +48,24 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
         }
 
         val joinRequests = view.joinGameRequests()
-            .withLatestFrom(joinFormDetails, { _, details ->
+            .withLatestFrom(joinFormDetails) { _, details ->
                 details
-            })
+            }
             .flatMapSingle { onJoinClicked(it) }
             .doOnEach {
                 view.showLoadingView()
                 view.disableJoinButton()
             }
-            .subscribe({ pokerGame ->
-                view.hideLoadingView()
-                view.enableJoinButton()
-                // navigator.goToPendingView(pokerGame, userName, false)
-            }, { error ->
-                Timber.e(error)
-                view.hideLoadingView()
-                view.enableJoinButton()
-                val errorMessage =
-                    (error as RetrofitException).getErrorBodyAs(ErrorResponse::class.java)
-                when (error.kind) {
-                    RetrofitException.Kind.HTTP -> {
-                        when (errorMessage?.statusCode) {
-                            //dm.CODE_FORBIDDEN -> navigator.goToPasscode(gameId, Player(userName))
-                            dm.CODE_NOT_FOUND -> view.showErrorSnackBar(errorMessage.message)
-                        }
-                    }
-                    RetrofitException.Kind.NETWORK -> view.showDefaultErrorSnackBar()
-                    RetrofitException.Kind.UNEXPECTED -> view.showDefaultErrorSnackBar()
+            .subscribe({ result: Result ->
+                when (result.type) {
+                    JoinPresenter.ResultType.SUCCESS -> onJoinSuccess(result.data!!)
+                    JoinPresenter.ResultType.FAILURE -> onJoinFailure(result.throwable!!)
                 }
+            }, { t ->
+                throw OnErrorNotImplementedException(t)
             })
 
-        viewSubscriptions.addAll(backPresses, joinRequests)
+        viewSubscriptions.addAll(backPresses, qrCodeRequests, joinRequests)
     }
 
     override fun onBackPressed(): Boolean {
@@ -84,10 +73,38 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
         return true
     }
 
-    private fun onJoinClicked(details: JoinDetails): Single<PokerGame> {
-        return details.pokerGame?.let {
+    private fun onJoinClicked(details: JoinDetails): Single<Result>? {
+        val request =  details.pokerGame?.let {
             dm.findPokerGame(details.gameId, details.name, it.passcode)
         } ?: dm.findPokerGame(details.gameId, details.name)
+
+        return request.map { Result(ResultType.SUCCESS, it) }
+            .onErrorReturn { t ->
+                Timber.e(t)
+                Result(ResultType.FAILURE, throwable = t)
+            }
+    }
+
+    private fun onJoinSuccess(pokerGame: PokerGame) {
+        view.hideLoadingView()
+        view.enableJoinButton()
+        // navigator.goToPendingView(pokerGame, userName, false)
+    }
+
+    private fun onJoinFailure(t: Throwable) {
+        view.hideLoadingView()
+        view.enableJoinButton()
+        val errorMessage = (t as RetrofitException).getErrorBodyAs(ErrorResponse::class.java)
+        when (t.kind) {
+            RetrofitException.Kind.HTTP -> {
+                when (errorMessage?.statusCode) {
+                //dm.CODE_FORBIDDEN -> navigator.goToPasscode(gameId, Player(userName))
+                    dm.CODE_NOT_FOUND -> view.showErrorSnackBar(errorMessage.message)
+                }
+            }
+            RetrofitException.Kind.NETWORK -> view.showDefaultErrorSnackBar()
+            RetrofitException.Kind.UNEXPECTED -> view.showDefaultErrorSnackBar()
+        }
     }
 
     private data class JoinDetails(val name: String, val gameId: String, val pokerGame: PokerGame?) {
@@ -108,5 +125,12 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
 
             return false
         }
+    }
+
+    private data class Result(val type: ResultType, val data: PokerGame? = null, val throwable: Throwable? = null)
+
+    private enum class ResultType {
+        SUCCESS,
+        FAILURE
     }
 }
