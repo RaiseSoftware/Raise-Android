@@ -28,10 +28,10 @@ class SettingsFragment : BaseFragment() {
         aboutRow.setOnClickListener {
             activity!!.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
-                    R.anim.slide_in_left,
+                    R.anim.slide_in_right,
                     R.anim.slide_out_left,
-                    R.anim.slide_out_right,
-                    R.anim.slide_in_right
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
                 )
                 .replace(R.id.layoutRoot, AboutFragment.newInstance())
                 .addToBackStack(null)
@@ -49,10 +49,10 @@ class SettingsFragment : BaseFragment() {
         feedbackRow.setOnClickListener {
             activity!!.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
-                    R.anim.slide_in_left,
+                    R.anim.slide_in_right,
                     R.anim.slide_out_left,
-                    R.anim.slide_out_right,
-                    R.anim.slide_in_right
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
                 )
                 .replace(R.id.layoutRoot, FeedbackFragment.newInstance())
                 .addToBackStack(null)
