@@ -102,7 +102,7 @@ class ScannerFragment : BaseFragment() {
         AlertDialog.Builder(activityContext)
             .setTitle(getString(R.string.unable_to_scan))
             .setMessage(getString(R.string.unable_to_scan_long))
-            .setPositiveButton(getString(R.string.go_to_settings), { dialog, _ ->
+            .setPositiveButton(getString(R.string.go_to_settings)) { dialog, _ ->
                 val intent =  Intent()
                 intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                 val uri = Uri.fromParts ("package", activityContext.packageName, null)
@@ -112,11 +112,11 @@ class ScannerFragment : BaseFragment() {
                 intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
                 startActivity(intent)
                 dialog.dismiss()
-            })
-            .setNegativeButton(getString(android.R.string.cancel), { dialog, _ ->
+            }
+            .setNegativeButton(getString(android.R.string.cancel)) { dialog, _ ->
                 dialog.dismiss()
                 activity?.finish()
-            })
+            }
             .show()
     }
 

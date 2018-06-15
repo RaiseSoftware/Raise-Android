@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import android.support.v4.content.ContextCompat.startActivity
+import com.cameronvwilliams.raise.BuildConfig
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
@@ -113,6 +115,40 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
                 R.anim.slide_out_right
             )
             .replace(R.id.layoutRoot, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    fun goToShareRaise() {
+        val sendIntent = Intent()
+        sendIntent.action = Intent.ACTION_SEND
+        sendIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.text_share_app, BuildConfig.APPLICATION_ID))
+        sendIntent.type = "text/plain"
+        startActivity(context, Intent.createChooser(sendIntent, context.getString(R.string.text_choose_app)), null)
+    }
+
+    fun goToAbout() {
+        fm.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+            .replace(R.id.layoutRoot, AboutFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
+    }
+
+    fun goToFeedback() {
+        fm.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+            .replace(R.id.layoutRoot, FeedbackFragment.newInstance())
             .addToBackStack(null)
             .commit()
     }
