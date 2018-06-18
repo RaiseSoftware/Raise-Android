@@ -29,7 +29,7 @@ abstract class PendingModule {
         @Provides
         @PerActivity
         @JvmStatic
-        fun provideNavigator(fm: FragmentManager, @ActivityContext context: Context):
-                Navigator = Navigator(fm, context)
+        fun provideNavigator(fm: FragmentManager, @ActivityContext context: Context): Navigator =
+            Navigator(fm, context)
     }
 }

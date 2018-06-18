@@ -14,7 +14,7 @@ class PlayerListAdapter(private var list: List<Player>) :
     }
 
     override fun onBindViewHolder(holder: PlayerListViewHolder, position: Int) {
-        holder?.bindPlayer(list[position])
+        holder.bindPlayer(list[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerListViewHolder {
