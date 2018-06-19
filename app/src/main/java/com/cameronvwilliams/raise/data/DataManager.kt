@@ -9,6 +9,7 @@ import com.cameronvwilliams.raise.data.model.api.StoryBody
 import com.cameronvwilliams.raise.data.remote.RaiseAPI
 import com.cameronvwilliams.raise.data.remote.SocketAPI
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -46,7 +47,7 @@ class DataManager @Inject constructor(
             .map{ response -> response.pokerGame }
     }
 
-    fun createUserStory(userStory: Story, gameUuid: String): Single<List<Story>> {
+    fun createUserStory(userStory: Story, gameUuid: String): Single<MutableList<Story>> {
         return raiseAPI.createUserStory(StoryBody(userStory, gameUuid))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -78,19 +79,19 @@ class DataManager @Inject constructor(
         socketClient.sendSubmitCardMessage(card)
     }
 
-    fun getPlayersInGame(): Observable<Pair<List<Player>, DiffUtil.DiffResult>> {
+    fun getPlayersInGame(): Flowable<Pair<List<Player>, DiffUtil.DiffResult>> {
         return socketClient.onPlayersInGameChange()
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getActivePlayersCards(): Observable<Pair<List<ActiveCard>, DiffUtil.DiffResult>> {
+    fun getActivePlayersCards(): Flowable<Pair<List<ActiveCard>, DiffUtil.DiffResult>> {
         return socketClient.onActiveCardSetChange()
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getGameStart(): Observable<String> {
+    fun getGameStart(): Completable {
         return socketClient.onGameStart()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

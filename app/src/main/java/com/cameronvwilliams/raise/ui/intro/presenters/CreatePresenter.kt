@@ -20,7 +20,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
     lateinit var view: CreateFragment
 
     private lateinit var createdPokerGame: PokerGame
-    private lateinit var selectedUserName: String
+    private var selectedUserName: String = ""
 
     override fun onViewCreated(v: BaseFragment) {
         super.onViewCreated(v)
@@ -64,7 +64,12 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
                 throw OnErrorNotImplementedException(t)
             })
 
-        viewSubscriptions.addAll(gameRequests, backPresses)
+        val adClosed = view.adClosed()
+            .subscribe {
+                navigator.goToPendingView(createdPokerGame, selectedUserName, true)
+            }
+
+        viewSubscriptions.addAll(gameRequests, backPresses, adClosed)
     }
 
     override fun onBackPressed(): Boolean {
@@ -101,10 +106,6 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
         view.hideLoadingView()
         view.enableCreateButton()
         view.showDefaultErrorSnackBar()
-    }
-
-    fun onAdClosed() {
-        navigator.goToPendingView(createdPokerGame, selectedUserName, true)
     }
 
     private data class CreateDetails(val deckType: DeckType?, val userName: String, val gameName: String, val requirePasscode: Boolean) {

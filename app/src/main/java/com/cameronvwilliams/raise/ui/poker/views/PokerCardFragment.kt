@@ -51,59 +51,43 @@ class PokerCardFragment : BaseFragment() {
         when (pokerGame.deckType) {
             DeckType.FIBONACCI -> cards = dm.getFibonacciCards()
             DeckType.T_SHIRT -> cards = dm.getTShirtCards()
+            else -> {} // no-op
         }
 
 
         layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        adapter = CardListAdapter(cards, { position, clickedView ->
-            var tempPosition: Int = -1
-            var tempCard: Card? = null
+        adapter = CardListAdapter(cards)
 
-            if (activeCardPosition > -1) {
-                tempPosition = activeCardPosition
-                tempCard = activeCard
+        adapter.cardClicks()
+            .subscribe {
+                var tempPosition: Int = -1
+                var tempCard: Card? = null
+
+                if (activeCardPosition > -1) {
+                    tempPosition = activeCardPosition
+                    tempCard = activeCard
+                }
+
+                activeCardPosition = it.first
+                activeCard = cards.removeAt(it.first)
+
+                if (tempPosition > -1) {
+                    cards.add(tempPosition, tempCard!!)
+                }
+
+                setActiveCardValue(activeCard)
+
+                val layoutParams = selectedCard.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.topMargin = originalY
+                layoutParams.leftMargin = originalX
+                selectedCard.layoutParams = layoutParams
+                selectedCard.visibility = View.VISIBLE
+
+                dm.submitCard(activeCard)
+
+                adapter.updateList(cards.toList())
+                adapter.notifyDataSetChanged()
             }
-
-            activeCardPosition = position
-            activeCard = cards.removeAt(position)
-
-            if (tempPosition > -1) {
-                cards.add(tempPosition, tempCard!!)
-            }
-
-            when (activeCard.value) {
-                CardValue.X_SMALL -> selectedCard.setImageResource(R.drawable.card_xs)
-                CardValue.SMALL -> selectedCard.setImageResource(R.drawable.card_s)
-                CardValue.MEDIUM -> selectedCard.setImageResource(R.drawable.card_m)
-                CardValue.LARGE -> selectedCard.setImageResource(R.drawable.card_l)
-                CardValue.X_LARGE -> selectedCard.setImageResource(R.drawable.card_xl)
-                CardValue.ZERO -> selectedCard.setImageResource(R.drawable.card_0)
-                CardValue.ONE_HALF -> selectedCard.setImageResource(R.drawable.card_half)
-                CardValue.ONE -> selectedCard.setImageResource(R.drawable.card_1)
-                CardValue.TWO -> selectedCard.setImageResource(R.drawable.card_2)
-                CardValue.THREE -> selectedCard.setImageResource(R.drawable.card_3)
-                CardValue.FIVE -> selectedCard.setImageResource(R.drawable.card_5)
-                CardValue.EIGHT -> selectedCard.setImageResource(R.drawable.card_8)
-                CardValue.THIRTEEN -> selectedCard.setImageResource(R.drawable.card_13)
-                CardValue.TWENTY -> selectedCard.setImageResource(R.drawable.card_20)
-                CardValue.FORTY -> selectedCard.setImageResource(R.drawable.card_40)
-                CardValue.ONE_HUNDRED -> selectedCard.setImageResource(R.drawable.card_100)
-                CardValue.INFINITY -> selectedCard.setImageResource(R.drawable.card_infinity)
-                CardValue.QUESTION_MARK -> selectedCard.setImageResource(R.drawable.card_question)
-                CardValue.COFFEE -> selectedCard.setImageResource(R.drawable.card_coffee)
-            }
-
-            val layoutParams = selectedCard.layoutParams as ConstraintLayout.LayoutParams
-            layoutParams.topMargin = originalY
-            layoutParams.leftMargin = originalX
-            selectedCard.layoutParams = layoutParams
-            selectedCard.visibility = View.VISIBLE
-
-            dm.submitCard(activeCard)
-
-            adapter.updateList(cards.toList())
-            adapter.notifyDataSetChanged()
-        })
 
         selectedCard.setOnTouchListener { v, event ->
             val y = event.rawY.toInt()
@@ -138,6 +122,30 @@ class PokerCardFragment : BaseFragment() {
 
         cardList.layoutManager = layoutManager
         cardList.adapter = adapter
+    }
+
+    fun setActiveCardValue(card: Card) {
+        when (card.value) {
+            CardValue.X_SMALL -> selectedCard.setImageResource(R.drawable.card_xs)
+            CardValue.SMALL -> selectedCard.setImageResource(R.drawable.card_s)
+            CardValue.MEDIUM -> selectedCard.setImageResource(R.drawable.card_m)
+            CardValue.LARGE -> selectedCard.setImageResource(R.drawable.card_l)
+            CardValue.X_LARGE -> selectedCard.setImageResource(R.drawable.card_xl)
+            CardValue.ZERO -> selectedCard.setImageResource(R.drawable.card_0)
+            CardValue.ONE_HALF -> selectedCard.setImageResource(R.drawable.card_half)
+            CardValue.ONE -> selectedCard.setImageResource(R.drawable.card_1)
+            CardValue.TWO -> selectedCard.setImageResource(R.drawable.card_2)
+            CardValue.THREE -> selectedCard.setImageResource(R.drawable.card_3)
+            CardValue.FIVE -> selectedCard.setImageResource(R.drawable.card_5)
+            CardValue.EIGHT -> selectedCard.setImageResource(R.drawable.card_8)
+            CardValue.THIRTEEN -> selectedCard.setImageResource(R.drawable.card_13)
+            CardValue.TWENTY -> selectedCard.setImageResource(R.drawable.card_20)
+            CardValue.FORTY -> selectedCard.setImageResource(R.drawable.card_40)
+            CardValue.ONE_HUNDRED -> selectedCard.setImageResource(R.drawable.card_100)
+            CardValue.INFINITY -> selectedCard.setImageResource(R.drawable.card_infinity)
+            CardValue.QUESTION_MARK -> selectedCard.setImageResource(R.drawable.card_question)
+            CardValue.COFFEE -> selectedCard.setImageResource(R.drawable.card_coffee)
+        }
     }
 
     companion object BundleOptions {

@@ -55,7 +55,7 @@ class CreateStoryFragment : BaseFragment() {
             val story = Story(titleEditText.text.toString().trim())
             dm.createUserStory(story, pokerGame.gameUuid!!)
                 .subscribe({ list ->
-                    val cb = arguments?.get("cb") as (List<Story>) -> Unit
+                    val cb = arguments?.get("cb") as (MutableList<Story>) -> Unit
                     cb(list)
                     navigator.goBack()
                 }, { error ->
@@ -70,7 +70,7 @@ class CreateStoryFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance(game: PokerGame, cb: (List<Story>) -> Unit): CreateStoryFragment {
+        fun newInstance(game: PokerGame, cb: (MutableList<Story>) -> Unit): CreateStoryFragment {
             val fragment = CreateStoryFragment()
             val args = Bundle()
             args.putParcelable("game", game)

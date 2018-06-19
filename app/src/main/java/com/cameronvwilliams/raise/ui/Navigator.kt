@@ -183,7 +183,7 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .commit()
     }
 
-    fun showCreateStory(pokerGame: PokerGame, cb: (List<Story>) -> Unit) {
+    fun showCreateStory(pokerGame: PokerGame, cb: (MutableList<Story>) -> Unit) {
         fm.beginTransaction()
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .add(R.id.layoutRoot, CreateStoryFragment.newInstance(pokerGame, cb))

@@ -9,9 +9,7 @@ import com.cameronvwilliams.raise.data.model.event.*
 import com.cameronvwilliams.raise.util.ActiveCardDiffCallback
 import com.cameronvwilliams.raise.util.PlayerDiffCallback
 import com.google.gson.Gson
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
+import io.reactivex.*
 import io.reactivex.subjects.BehaviorSubject
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -69,9 +67,9 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         socket.emit(END_GAME_EVENT)
     }
 
-    override fun onGameStart(): Observable<String> {
-        return startGameSubject.switchMapSingle { _ ->
-            Single.just("")
+    override fun onGameStart(): Completable {
+        return startGameSubject.flatMapCompletable { _ ->
+            Completable.complete()
         }
     }
 
@@ -79,7 +77,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         return Completable.complete()
     }
 
-    override fun onPlayersInGameChange(): Observable<Pair<List<Player>, DiffUtil.DiffResult>> {
+    override fun onPlayersInGameChange(): Flowable<Pair<List<Player>, DiffUtil.DiffResult>> {
         val emptyList: List<Player> = ArrayList()
         val initialPair: Pair<List<Player>, DiffUtil.DiffResult> = Pair.create(emptyList, null)
 
@@ -87,53 +85,55 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
             .map { event ->
                 (event as JoinLeaveEvent).data
             }
-            .scan(initialPair, { pair, next ->
+            .scan(initialPair) { pair, next ->
                 val callback = PlayerDiffCallback(pair.first!!, next)
                 val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(callback, false)
                 Pair.create(next, result)
-            })
+            }
             .skip(1)
+            .toFlowable(BackpressureStrategy.LATEST)
     }
 
-    override fun onActiveCardSetChange(): Observable<Pair<List<ActiveCard>, DiffUtil.DiffResult>> {
+    override fun onActiveCardSetChange(): Flowable<Pair<List<ActiveCard>, DiffUtil.DiffResult>> {
         val emptyList: List<ActiveCard> = ArrayList()
         val initialPair: Pair<List<ActiveCard>, DiffUtil.DiffResult> = Pair.create(emptyList, null)
 
         return cardSubmitSubject.switchMap { event ->
                 Observable.just((event as CardSubmitEvent).data)
             }
-            .scan(initialPair, { pair, next ->
+            .scan(initialPair) { pair, next ->
                 val callback = ActiveCardDiffCallback(pair.first!!, next)
                 val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(callback, false)
                 Pair.create(next, result)
-            })
+            }
             .skip(1)
+            .toFlowable(BackpressureStrategy.LATEST)
     }
 
     private fun initializeSocketListeners() {
-        socket.on(START_GAME_EVENT, { args ->
+        socket.on(START_GAME_EVENT) { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, StartGameEvent::class.java)
             startGameSubject.onNext(event)
-        })
+        }
 
-        socket.on(JOIN_LEAVE_EVENT, { args ->
+        socket.on(JOIN_LEAVE_EVENT) { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, JoinLeaveEvent::class.java)
             joinLeaveSubject.onNext(event)
-        })
+        }
 
-        socket.on(CARD_SUBMIT_EVENT, { args ->
+        socket.on(CARD_SUBMIT_EVENT) { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, CardSubmitEvent::class.java)
             cardSubmitSubject.onNext(event)
-        })
+        }
 
-        socket.on(END_GAME_EVENT, { args ->
+        socket.on(END_GAME_EVENT) { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, EndGameEvent::class.java)
             endGameSubject.onNext(event)
-        })
+        }
     }
 
     companion object {

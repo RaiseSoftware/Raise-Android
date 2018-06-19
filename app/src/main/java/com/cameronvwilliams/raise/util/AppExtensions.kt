@@ -3,6 +3,8 @@ package com.cameronvwilliams.raise.util
 import android.view.SurfaceHolder
 import android.view.View
 import android.view.ViewTreeObserver
+import com.cameronvwilliams.raise.data.model.Card
+import com.cameronvwilliams.raise.data.model.Story
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.vision.Detector
@@ -76,4 +78,10 @@ fun <T: View> T.afterMeasured(f: T.() -> Unit) {
             }
         }
     })
+}
+
+fun MutableList<Story>.swap(index1: Int, index2: Int) {
+    val tmp = this[index1]
+    this[index1] = this[index2]
+    this[index2] = tmp
 }
