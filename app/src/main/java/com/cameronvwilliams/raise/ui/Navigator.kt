@@ -3,6 +3,7 @@ package com.cameronvwilliams.raise.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.app.FragmentManager
@@ -24,6 +25,7 @@ import com.cameronvwilliams.raise.ui.scanner.ScannerActivity
 import com.cameronvwilliams.raise.ui.scanner.views.ScannerFragment
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import timber.log.Timber
 
 class Navigator(private val fm: FragmentManager, val context: Context) {
 
@@ -151,6 +153,58 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .replace(R.id.layoutRoot, FeedbackFragment.newInstance())
             .addToBackStack(null)
             .commit()
+    }
+
+    fun goToPrivacyPolicy() {
+        val fragment: HtmlFragment = with(HtmlFragment) {
+             newInstance(EXTRA_PRIVACY_POLICY)
+        }
+
+        fm.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+            .replace(R.id.layoutRoot, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    fun goToTerms() {
+        val fragment = with(HtmlFragment) {
+            newInstance(EXTRA_TERMS)
+        }
+
+        fm.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+            .replace(R.id.layoutRoot, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    fun goToPlayStore() {
+        try {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)))
+        } catch (e: android.content.ActivityNotFoundException) {
+            Timber.e(e)
+            context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID)
+                )
+            )
+        }
+    }
+
+    fun goToGithubIssues() {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/RaiseSoftware/Raise-Android/issues")))
     }
 
     fun goToPendingView(pokerGame: PokerGame, userName: String, moderatorMode: Boolean) {

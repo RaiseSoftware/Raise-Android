@@ -29,6 +29,11 @@ class SettingsFragment : BaseFragment() {
         toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_arrow_back_white_24dp, null)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.onViewDestroyed()
+    }
+
     override fun onBackPressed(): Boolean {
         return presenter.onBackPressed()
     }

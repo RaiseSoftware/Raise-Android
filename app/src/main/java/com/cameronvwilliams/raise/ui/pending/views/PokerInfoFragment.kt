@@ -41,9 +41,14 @@ class PokerInfoFragment : BaseFragment() {
             passcodeText.visibility = View.GONE
         }
 
-        val decodedString = Base64.decode(pokerGame.qrcode!!.split(',')[1], Base64.DEFAULT)
-        val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-        qrCodeImage.setImageBitmap(decodedByte)
+        pokerGame.qrcode?.let {
+            val base64Image = it.split(',').getOrNull(0)
+            base64Image?.let {
+                val decodedString = Base64.decode(it, Base64.DEFAULT)
+                val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                qrCodeImage.setImageBitmap(decodedByte)
+            }
+        }
 
         qrCodeImage.setOnLongClickListener {
             val share = Intent(Intent.ACTION_SEND)

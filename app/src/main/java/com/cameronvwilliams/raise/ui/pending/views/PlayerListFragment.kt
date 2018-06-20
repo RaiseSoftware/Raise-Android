@@ -36,8 +36,15 @@ class PlayerListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.onViewCreated(this)
+
         playerList.layoutManager = layoutManager
         playerList.adapter = adapter
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.onViewDestroyed()
     }
 
     override fun onBackPressed(): Boolean {

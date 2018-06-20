@@ -6,45 +6,51 @@ import com.cameronvwilliams.raise.data.model.ActiveCard
 import com.cameronvwilliams.raise.data.model.Card
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.event.SocketEvent
+import com.cameronvwilliams.raise.util.ActiveCardDiffCallback
 import io.reactivex.Completable
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import io.reactivex.subjects.BehaviorSubject
+import java.util.concurrent.TimeUnit
 
 class SocketClientMock: SocketAPI {
     override fun connect(token: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun disconnect() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun sendStartGameMessage() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun sendSubmitCardMessage(card: Card) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun sendEndGameMessage() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
-    override fun onGameStart(): Observable<String> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onGameStart(): Completable {
+        return Completable.complete().delay(5, TimeUnit.SECONDS)
     }
 
     override fun onGameEnd(): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Completable.complete().delay(15, TimeUnit.SECONDS)
     }
 
-    override fun onPlayersInGameChange(): Observable<Pair<List<Player>, DiffUtil.DiffResult>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onPlayersInGameChange(): Flowable<Pair<List<Player>, DiffUtil.DiffResult>> {
+        val callback = ActiveCardDiffCallback(mutableListOf(), mutableListOf())
+        val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(callback, false)
+        return Flowable.just(Pair(mutableListOf(), result))
     }
 
-    override fun onActiveCardSetChange(): Observable<Pair<List<ActiveCard>, DiffUtil.DiffResult>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onActiveCardSetChange(): Flowable<Pair<List<ActiveCard>, DiffUtil.DiffResult>> {
+        val callback = ActiveCardDiffCallback(mutableListOf(), mutableListOf())
+        val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(callback, false)
+        return Flowable.just(Pair(mutableListOf(), result))
     }
 
     private val joinLeaveSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()

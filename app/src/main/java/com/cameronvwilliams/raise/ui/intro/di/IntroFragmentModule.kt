@@ -34,5 +34,20 @@ abstract class IntroFragmentModule {
         @JvmStatic
         fun provideSettingsPresenter(navigator: Navigator): SettingsPresenter =
             SettingsPresenter(navigator)
+
+        @Provides
+        @JvmStatic
+        fun provideAboutPresenter(navigator: Navigator): AboutPresenter =
+            AboutPresenter(navigator)
+
+        @Provides
+        @JvmStatic
+        fun provideFeedbackPresenter(navigator: Navigator): FeedbackPresenter =
+            FeedbackPresenter(navigator)
+
+        @Provides
+        @JvmStatic
+        fun provideHtmlPresenter(navigator: Navigator): HtmlPresenter =
+            HtmlPresenter(navigator)
     }
 }

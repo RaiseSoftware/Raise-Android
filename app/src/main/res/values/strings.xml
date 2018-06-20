@@ -32,6 +32,7 @@
     <string name="text_about">About</string>
     <string name="text_share_app">Check out this awesome Scrum Poker app, Raise: http://play.google.com/store/apps/details?id=%1$s</string>
     <string name="text_choose_app">Choose an app to share a link to Raise!</string>
+    <string name="text_app_version">Version %s</string>
 
     <string name="text_feedback">Feedback</string>
     <string name="unable_to_scan">Unable to scan QR Code</string>
