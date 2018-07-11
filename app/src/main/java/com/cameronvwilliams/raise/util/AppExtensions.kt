@@ -3,7 +3,6 @@ package com.cameronvwilliams.raise.util
 import android.view.SurfaceHolder
 import android.view.View
 import android.view.ViewTreeObserver
-import com.cameronvwilliams.raise.data.model.Card
 import com.cameronvwilliams.raise.data.model.Story
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.InterstitialAd

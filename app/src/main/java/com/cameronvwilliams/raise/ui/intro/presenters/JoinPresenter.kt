@@ -9,7 +9,6 @@ import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.views.JoinFragment
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.rxkotlin.Observables

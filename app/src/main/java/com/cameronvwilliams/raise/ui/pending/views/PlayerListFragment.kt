@@ -8,14 +8,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.cameronvwilliams.raise.R
-import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.pending.presenter.PlayerListPresenter
 import com.cameronvwilliams.raise.ui.pending.views.adapter.PlayerListAdapter
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.pending_player_list_fragment.*
 import javax.inject.Inject
 

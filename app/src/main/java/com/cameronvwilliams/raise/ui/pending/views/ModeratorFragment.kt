@@ -4,6 +4,7 @@ package com.cameronvwilliams.raise.ui.pending.views
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,11 @@ import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.pending.views.adapter.StoryListAdapter
-import kotlinx.android.synthetic.main.pending_moderator_fragment.*
-import javax.inject.Inject
-import android.support.v7.widget.helper.ItemTouchHelper
 import com.cameronvwilliams.raise.ui.pending.views.adapter.StoryListAdapter.SimpleItemTouchHelperCallback
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
+import kotlinx.android.synthetic.main.pending_moderator_fragment.*
+import javax.inject.Inject
 
 
 class ModeratorFragment : BaseFragment() {

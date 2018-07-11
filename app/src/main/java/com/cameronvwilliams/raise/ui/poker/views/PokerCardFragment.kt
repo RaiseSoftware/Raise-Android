@@ -1,10 +1,18 @@
 package com.cameronvwilliams.raise.ui.poker.views
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.os.Bundle
+import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.Card
@@ -17,14 +25,6 @@ import com.cameronvwilliams.raise.ui.poker.views.adapter.CardListAdapter
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.poker_card_fragment.*
 import javax.inject.Inject
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.DecelerateInterpolator
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
-import android.support.v4.view.ViewPager
-import android.util.DisplayMetrics
 
 class PokerCardFragment : BaseFragment() {
 

@@ -1,14 +1,10 @@
 package com.cameronvwilliams.raise.ui.intro.views
 
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.cameronvwilliams.raise.BuildConfig
-
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.intro.presenters.FeedbackPresenter
@@ -16,7 +12,6 @@ import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
 import com.jakewharton.rxbinding2.view.clicks
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.intro_feedback_fragment.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class FeedbackFragment : BaseFragment() {

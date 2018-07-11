@@ -1,13 +1,13 @@
 package com.cameronvwilliams.raise.ui.pending.views.adapter
 
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.RecyclerView.ViewHolder
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.Story
 import com.cameronvwilliams.raise.ui.pending.views.viewholder.StoryListViewHolder
-import android.support.v7.widget.RecyclerView.ViewHolder
-import android.support.v7.widget.helper.ItemTouchHelper
 import com.cameronvwilliams.raise.util.swap
 
 class StoryListAdapter(private var list: MutableList<Story>) : RecyclerView.Adapter<StoryListViewHolder>() {

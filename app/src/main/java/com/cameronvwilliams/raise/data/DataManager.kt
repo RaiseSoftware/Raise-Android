@@ -10,7 +10,6 @@ import com.cameronvwilliams.raise.data.remote.RaiseAPI
 import com.cameronvwilliams.raise.data.remote.SocketAPI
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
