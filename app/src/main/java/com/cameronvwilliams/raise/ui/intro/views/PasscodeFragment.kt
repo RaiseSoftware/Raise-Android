@@ -79,6 +79,8 @@ class PasscodeFragment : BaseFragment() {
     fun passocdeChanges(): Observable<CharSequence> = passcodeEditText.textChanges()
         .map { it.trim() }
 
+    fun qrCodeScanRequests(): Observable<Unit> = barcodeText.clicks().share()
+
     fun submitRequests(): Observable<Unit> = submitButton.clicks()
 
     fun enableSubmitButton() {

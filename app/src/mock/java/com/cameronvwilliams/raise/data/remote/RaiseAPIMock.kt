@@ -1,5 +1,8 @@
 package com.cameronvwilliams.raise.data.remote
 
+import android.graphics.Color.BLACK
+import android.graphics.Color.WHITE
+import android.util.Base64
 import com.cameronvwilliams.raise.data.model.DeckType
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.data.model.Story
@@ -12,23 +15,35 @@ import okhttp3.MediaType
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
+import java.util.*
+import java.util.concurrent.TimeUnit
+import android.graphics.Bitmap
+import java.io.ByteArrayOutputStream
+
 
 class RaiseAPIMock(private val retrofit: Retrofit): RaiseAPI {
 
-    private val passcodeError = Response.error<String>(403, ResponseBody.create(MediaType.parse("application/json"), "{\"statusCode\":403}"))
-    private val notFoundError = Response.error<String>(403, ResponseBody.create(MediaType.parse("application/json"), "{\"statusCode\":404}"))
+    private val rand = Random(10)
 
     override fun findPokerGame(gameId: String, name: String, passcode: String?): Single<PokerGameResponse> {
+
+        val passcodeError = Response.error<String>(403,
+            ResponseBody.create(MediaType.parse("application/json"), "{\"statusCode\":403}")
+        )
+        val notFoundError = Response.error<String>(403,
+            ResponseBody.create(MediaType.parse("application/json"), "{\"statusCode\":404, \"message\": \"Test Failure\"}")
+        )
+
         return when {
             gameId.take(1).toInt() < 4 -> Single.just(
                 PokerGameResponse(PokerGame(deckType = DeckType.FIBONACCI, requiresPasscode = false, passcode = null), Token(1000,""))
-            )
-            gameId.take(1).toInt() < 7 -> Single.error(
+            ).delay(rand.nextLong(), TimeUnit.SECONDS)
+            gameId.take(1).toInt() < 7 -> Single.error<PokerGameResponse>(
                 RetrofitException("", "", passcodeError, RetrofitException.Kind.HTTP, null, retrofit)
-            )
-            else -> Single.error(
+            ).delay(rand.nextLong(), TimeUnit.SECONDS, true)
+            else -> Single.error<PokerGameResponse>(
                 RetrofitException("", "", notFoundError, RetrofitException.Kind.HTTP, null, retrofit)
-            )
+            ).delay(rand.nextLong(), TimeUnit.SECONDS, true)
         }
     }
 

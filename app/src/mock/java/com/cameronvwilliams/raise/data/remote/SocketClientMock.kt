@@ -34,7 +34,7 @@ class SocketClientMock: SocketAPI {
     }
 
     override fun onGameStart(): Completable {
-        return Completable.complete().delay(5, TimeUnit.SECONDS)
+        return Completable.complete()
     }
 
     override fun onGameEnd(): Completable {

@@ -65,6 +65,7 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
                     JoinPresenter.ResultType.FAILURE -> onJoinFailure(result.throwable!!, result.data!!.second.gameId, result.data.second.name)
                 }
             }, { t ->
+                Timber.e(t)
                 throw OnErrorNotImplementedException(t)
             })
 
@@ -77,13 +78,14 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
     }
 
     private fun onJoinClicked(details: JoinDetails): Single<Result>? {
-        val request =  details.pokerGame?.let {
+        val request = details.pokerGame?.let {
             dm.findPokerGame(details.gameId, details.name, it.passcode)
         } ?: dm.findPokerGame(details.gameId, details.name)
 
         return request.map { pokerGame ->
-            Result(ResultType.SUCCESS, Pair(pokerGame, details))
-        }.onErrorReturn { t ->
+                Result(ResultType.SUCCESS, Pair(pokerGame, details))
+            }
+            .onErrorReturn { t ->
                 Result(ResultType.FAILURE, Pair(null, details), t)
             }
     }
@@ -91,7 +93,9 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
     private fun onJoinSuccess(pokerGame: PokerGame, userName: String) {
         view.hideLoadingView()
         view.enableJoinButton()
-        navigator.goToPendingView(pokerGame, userName, false)
+        pokerGame.startDateTime?.let {
+            navigator.goToPokerGameView(pokerGame)
+        } ?: navigator.goToPendingView(pokerGame, userName, false)
     }
 
     private fun onJoinFailure(t: Throwable, gameId: String, userName: String) {
