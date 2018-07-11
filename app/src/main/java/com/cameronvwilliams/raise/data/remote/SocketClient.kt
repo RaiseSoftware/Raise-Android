@@ -22,8 +22,8 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
     private lateinit var socket: Socket
     private val joinLeaveSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
     private val cardSubmitSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
-    private val startGameSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
-    private val endGameSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
+    private var startGameSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
+    private var endGameSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
 
     init {
         IO.setDefaultOkHttpCallFactory(okHttpClient)
@@ -39,7 +39,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         opts.query = "token=$token"
         opts.secure = true
         opts.transports = arrayOf(WebSocket.NAME)
-        opts.path = "/socket/socket.io"
+        opts.path = "/api/socket.io"
 
         socket = IO.socket(url, opts)
         initializeSocketListeners()
@@ -74,7 +74,9 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
     }
 
     override fun onGameEnd(): Completable {
-        return Completable.complete()
+        return endGameSubject.flatMapCompletable { _ ->
+            Completable.complete()
+        }
     }
 
     override fun onPlayersInGameChange(): Flowable<Pair<List<Player>, DiffUtil.DiffResult>> {
@@ -115,6 +117,9 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, StartGameEvent::class.java)
             startGameSubject.onNext(event)
+            startGameSubject.onComplete()
+            startGameSubject = BehaviorSubject.create()
+            startGameSubject.replay(1).refCount()
         }
 
         socket.on(JOIN_LEAVE_EVENT) { args ->
@@ -133,6 +138,9 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, EndGameEvent::class.java)
             endGameSubject.onNext(event)
+            endGameSubject.onComplete()
+            endGameSubject = BehaviorSubject.create()
+            endGameSubject.replay(1).refCount()
         }
     }
 

@@ -1,5 +1,6 @@
 package com.cameronvwilliams.raise.ui.poker.views.adapter
 
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +13,9 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.poker_card_list_item.view.*
 
-class CardListAdapter(private var cards: List<Card>) : RecyclerView.Adapter<CardListAdapter.CardListViewHolder>() {
+class CardListAdapter(private var cards: MutableList<Card>) : RecyclerView.Adapter<CardListAdapter.CardListViewHolder>() {
 
-    private val clickSubject = PublishSubject.create<Pair<Int, Card>>()
+    private val clickSubject = PublishSubject.create<Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardListViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -31,21 +32,46 @@ class CardListAdapter(private var cards: List<Card>) : RecyclerView.Adapter<Card
         holder.bindCard(cards[position])
     }
 
-    fun updateList(list: List<Card>) {
-        this.cards = list
+    fun insertCardAt(index: Int, card: Card) {
+        cards[index] = card.also {
+            notifyItemInserted(index)
+        }
     }
 
-    fun cardClicks(): Observable<Pair<Int, Card>> = clickSubject
+    fun removeCardAt(index: Int): Card {
+        return cards.removeAt(index).also {
+            notifyItemRemoved(index)
+        }
+    }
+
+    fun updateList(newList: MutableList<Card>) {
+        val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(object: DiffUtil.Callback() {
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return cards[oldItemPosition].value == newList[newItemPosition].value
+            }
+
+            override fun getOldListSize() = cards.size
+
+
+            override fun getNewListSize() = newList.size
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return cards[oldItemPosition] == newList[newItemPosition]
+            }
+        })
+
+        result.dispatchUpdatesTo(this)
+        cards = newList
+    }
+
+    fun cardClicks(): Observable<Int> = clickSubject
 
     inner class CardListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
             itemView.card
                 .clicks()
-                .map {
-                    cards[layoutPosition]
-                }
-                .doOnNext {
-                    clickSubject.onNext(Pair(layoutPosition, it))
+                .subscribe {
+                    clickSubject.onNext(layoutPosition)
                 }
         }
 

@@ -32,17 +32,17 @@ class PokerFragment : BaseFragment() {
     private lateinit var closeButtonDialog: AlertDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        closeButtonDialog = AlertDialog.Builder(context!!)
+        closeButtonDialog = AlertDialog.Builder(activityContext)
             .setTitle(getString(R.string.text_exit_game))
             .setMessage(getString(R.string.text_sure_exit))
-            .setPositiveButton(android.R.string.yes, { dialog, _ ->
+            .setPositiveButton(android.R.string.yes) { dialog, _ ->
                 dm.endGame()
                 dialog.dismiss()
                 activity!!.finish()
-            })
-            .setNegativeButton(android.R.string.no, { dialog, _ ->
+            }
+            .setNegativeButton(android.R.string.no) { dialog, _ ->
                 dialog.dismiss()
-            })
+            }
             .create()
 
         return inflater.inflate(R.layout.poker_fragment, container, false)

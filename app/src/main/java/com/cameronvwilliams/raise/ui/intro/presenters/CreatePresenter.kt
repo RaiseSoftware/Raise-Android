@@ -98,7 +98,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
             //selectedUserName = player.name
             view.showInterstitialAd()
         } else {
-            //navigator.goToPendingView(pokerGame, player.name, true)
+            navigator.goToPendingView(pokerGame, "", true)
         }
     }
 
