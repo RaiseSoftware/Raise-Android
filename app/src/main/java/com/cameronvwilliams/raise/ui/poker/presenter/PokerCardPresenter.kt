@@ -22,10 +22,6 @@ class PokerCardPresenter(val dm: DataManager) : BasePresenter() {
         viewSubscriptions += cardClicks
     }
 
-    fun onPause() {
-        dm.leaveGame()
-    }
-
     fun onResume() {
         dm.joinGame()
     }

@@ -138,11 +138,6 @@ class PokerCardFragment : BaseFragment() {
         presenter.onViewDestroyed()
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.onPause()
-    }
-
     override fun onResume() {
         super.onResume()
         presenter.onResume()

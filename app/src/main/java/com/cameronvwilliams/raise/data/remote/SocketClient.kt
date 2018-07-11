@@ -22,7 +22,7 @@ import org.json.JSONObject
 
 class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: String): SocketAPI {
 
-    private lateinit var socket: Socket
+    private var socket: Socket? = null
     private val joinLeaveSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
     private val cardSubmitSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
     private var startGameSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
@@ -46,7 +46,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
 
         socket = IO.socket(url, opts)
         initializeSocketListeners()
-        socket.connect()
+        socket?.connect()
     }
 
     override fun disconnect() {
@@ -54,20 +54,20 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         cardSubmitSubject.onComplete()
         startGameSubject.onComplete()
         endGameSubject.onComplete()
-        socket.off()
-        socket.disconnect()
+        socket?.off()
+        socket?.disconnect()
     }
 
     override fun sendStartGameMessage() {
-        socket.emit(START_GAME_EVENT)
+        socket?.emit(START_GAME_EVENT)
     }
 
     override fun sendSubmitCardMessage(card: Card) {
-        socket.emit(CARD_SUBMIT_EVENT, JSONObject(gson.toJson(card)))
+        socket?.emit(CARD_SUBMIT_EVENT, JSONObject(gson.toJson(card)))
     }
 
     override fun sendEndGameMessage() {
-        socket.emit(END_GAME_EVENT)
+        socket?.emit(END_GAME_EVENT)
     }
 
     override fun onGameStart(): Completable {
@@ -116,7 +116,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
     }
 
     private fun initializeSocketListeners() {
-        socket.on(START_GAME_EVENT) { args ->
+        socket?.on(START_GAME_EVENT) { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, StartGameEvent::class.java)
             startGameSubject.onNext(event)
@@ -125,19 +125,19 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
             startGameSubject.replay(1).refCount()
         }
 
-        socket.on(JOIN_LEAVE_EVENT) { args ->
+        socket?.on(JOIN_LEAVE_EVENT) { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, JoinLeaveEvent::class.java)
             joinLeaveSubject.onNext(event)
         }
 
-        socket.on(CARD_SUBMIT_EVENT) { args ->
+        socket?.on(CARD_SUBMIT_EVENT) { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, CardSubmitEvent::class.java)
             cardSubmitSubject.onNext(event)
         }
 
-        socket.on(END_GAME_EVENT) { args ->
+        socket?.on(END_GAME_EVENT) { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, EndGameEvent::class.java)
             endGameSubject.onNext(event)
