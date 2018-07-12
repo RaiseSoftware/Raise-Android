@@ -38,7 +38,6 @@ class PokerFragment : BaseFragment() {
             .setPositiveButton(android.R.string.yes) { dialog, _ ->
                 dm.endGame()
                 dialog.dismiss()
-                activity!!.finish()
             }
             .setNegativeButton(android.R.string.no) { dialog, _ ->
                 dialog.dismiss()
@@ -59,15 +58,14 @@ class PokerFragment : BaseFragment() {
             arguments!!.getPokerGame()
         }
 
-        val adapter =
-            PokerAdapter((activityContext as PokerActivity).supportFragmentManager, pokerGame)
+        val adapter = PokerAdapter((activityContext as PokerActivity).supportFragmentManager, pokerGame)
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager, true)
 
-//        dm.getGameEnd()
-//            .subscribe { game ->
-//                navigator.goToIntro(false)
-//            }
+        dm.getGameEnd()
+            .subscribe {
+                activity?.finish()
+            }
     }
 
     companion object BundleOptions {

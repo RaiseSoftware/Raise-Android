@@ -34,7 +34,15 @@ class PlayerCardFragment : BaseFragment() {
         layoutManager = LinearLayoutManager(activity)
         activeCardList.layoutManager = layoutManager
         activeCardList.adapter = adapter
+    }
 
+    override fun onPause() {
+        super.onPause()
+        subscriptions.clear()
+    }
+
+    override fun onResume() {
+        super.onResume()
         val subscription = dm.getActivePlayersCards()
             .subscribe { result ->
                 adapter.updateActiveCardList(result.first!!)
@@ -42,11 +50,6 @@ class PlayerCardFragment : BaseFragment() {
             }
 
         subscriptions.add(subscription)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        subscriptions.clear()
     }
 
     companion object {

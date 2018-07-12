@@ -108,7 +108,10 @@ class PendingFragment : BaseFragment() {
         closeButton.setOnClickListener {
             closeButtonDialog.show()
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         dm.joinGame()
 
         subscriptions.add(dm.getPlayersInGame()

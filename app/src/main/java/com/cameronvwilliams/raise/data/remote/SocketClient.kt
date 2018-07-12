@@ -23,37 +23,31 @@ import org.json.JSONObject
 class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: String): SocketAPI {
 
     private var socket: Socket? = null
-    private val joinLeaveSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
-    private val cardSubmitSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
-    private var startGameSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
-    private var endGameSubject: BehaviorSubject<SocketEvent> = BehaviorSubject.create()
+    private var joinLeaveSubject: BehaviorSubject<SocketEvent>? = null
+    private var cardSubmitSubject: BehaviorSubject<SocketEvent>? = null
+    private var startGameSubject: BehaviorSubject<SocketEvent>? = null
+    private var endGameSubject: BehaviorSubject<SocketEvent>? = null
 
     init {
         IO.setDefaultOkHttpCallFactory(okHttpClient)
         IO.setDefaultOkHttpWebSocketFactory(okHttpClient)
-        joinLeaveSubject.replay(1).refCount()
-        cardSubmitSubject.replay(1).refCount()
-        startGameSubject.replay(1).refCount()
-        endGameSubject.replay(1).refCount()
     }
 
     override fun connect(token: String) {
-        val opts = IO.Options()
-        opts.query = "token=$token"
-        opts.secure = true
-        opts.transports = arrayOf(WebSocket.NAME)
-        opts.path = "/api/socket.io"
+        if (socket == null || !socket!!.connected()) {
+            val opts = IO.Options()
+            opts.query = "token=$token"
+            opts.secure = true
+            opts.transports = arrayOf(WebSocket.NAME)
+            opts.path = "/api/socket.io"
 
-        socket = IO.socket(url, opts)
-        initializeSocketListeners()
-        socket?.connect()
+            socket = IO.socket(url, opts)
+            initializeSocketListeners()
+            socket?.connect()
+        }
     }
 
     override fun disconnect() {
-        joinLeaveSubject.onComplete()
-        cardSubmitSubject.onComplete()
-        startGameSubject.onComplete()
-        endGameSubject.onComplete()
         socket?.off()
         socket?.disconnect()
     }
@@ -71,13 +65,13 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
     }
 
     override fun onGameStart(): Completable {
-        return startGameSubject.flatMapCompletable { _ ->
+        return startGameSubject!!.flatMapCompletable { _ ->
             Completable.complete()
         }
     }
 
     override fun onGameEnd(): Completable {
-        return endGameSubject.flatMapCompletable { _ ->
+        return endGameSubject!!.flatMapCompletable { _ ->
             Completable.complete()
         }
     }
@@ -86,7 +80,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         val emptyList: List<Player> = ArrayList()
         val initialPair: Pair<List<Player>, DiffUtil.DiffResult> = Pair.create(emptyList, null)
 
-        return joinLeaveSubject.hide()
+        return joinLeaveSubject!!.hide()
             .map { event ->
                 (event as JoinLeaveEvent).data
             }
@@ -103,7 +97,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         val emptyList: List<ActiveCard> = ArrayList()
         val initialPair: Pair<List<ActiveCard>, DiffUtil.DiffResult> = Pair.create(emptyList, null)
 
-        return cardSubmitSubject.switchMap { event ->
+        return cardSubmitSubject!!.switchMap { event ->
                 Observable.just((event as CardSubmitEvent).data)
             }
             .scan(initialPair) { pair, next ->
@@ -116,34 +110,45 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
     }
 
     private fun initializeSocketListeners() {
+
+        joinLeaveSubject = BehaviorSubject.create()
+        cardSubmitSubject = BehaviorSubject.create()
+        startGameSubject = BehaviorSubject.create()
+        endGameSubject = BehaviorSubject.create()
+
+        joinLeaveSubject!!.replay(1).refCount()
+        cardSubmitSubject!!.replay(1).refCount()
+        startGameSubject!!.replay(1).refCount()
+        endGameSubject!!.replay(1).refCount()
+
         socket?.on(START_GAME_EVENT) { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, StartGameEvent::class.java)
-            startGameSubject.onNext(event)
-            startGameSubject.onComplete()
+            startGameSubject!!.onNext(event)
+            startGameSubject!!.onComplete()
             startGameSubject = BehaviorSubject.create()
-            startGameSubject.replay(1).refCount()
+            startGameSubject!!.replay(1).refCount()
         }
 
         socket?.on(JOIN_LEAVE_EVENT) { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, JoinLeaveEvent::class.java)
-            joinLeaveSubject.onNext(event)
+            joinLeaveSubject!!.onNext(event)
         }
 
         socket?.on(CARD_SUBMIT_EVENT) { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, CardSubmitEvent::class.java)
-            cardSubmitSubject.onNext(event)
+            cardSubmitSubject!!.onNext(event)
         }
 
         socket?.on(END_GAME_EVENT) { args ->
             val jsonString = args[0] as String
             val event = gson.fromJson(jsonString, EndGameEvent::class.java)
-            endGameSubject.onNext(event)
-            endGameSubject.onComplete()
+            endGameSubject!!.onNext(event)
+            endGameSubject!!.onComplete()
             endGameSubject = BehaviorSubject.create()
-            endGameSubject.replay(1).refCount()
+            endGameSubject!!.replay(1).refCount()
         }
     }
 

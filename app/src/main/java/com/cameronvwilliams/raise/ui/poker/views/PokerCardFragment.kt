@@ -114,14 +114,15 @@ class PokerCardFragment : BaseFragment() {
             oa1.addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
                     super.onAnimationEnd(animation)
-                    if (flipped) {
-                        activeCard?.let {
-                            flipped = false
+
+                    activeCard?.let {
+                        if (it.faceUp == true) {
+                            it.faceUp = false
+                            selectedCard.setImageResource(R.drawable.card_back)
+                        } else {
+                            it.faceUp = true
                             setSelectedCardImage(it)
                         }
-                    } else {
-                        flipped = true
-                        selectedCard.setImageResource(R.drawable.card_back)
                     }
                     oa2.start()
                 }
@@ -166,6 +167,7 @@ class PokerCardFragment : BaseFragment() {
         activeCard?.let {
             setSelectedCardImage(it)
             selectedCard.visibility = View.VISIBLE
+            it.faceUp = true
         }
 
         adapter.updateList(cards)
