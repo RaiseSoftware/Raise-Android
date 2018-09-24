@@ -1,10 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/joinGameView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.intro.views.JoinFragment">
+    android:background="@color/pure_orange">
 
     <ImageButton
         android:id="@+id/backButton"
@@ -18,138 +17,142 @@
         android:scaleType="fitCenter"
         android:src="@drawable/ic_arrow_left_white_24dp" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/fillFormText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/text_enter_name_id"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_normal"
+        app:layout_constraintBottom_toTopOf="@id/userNameEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <View
+        android:id="@+id/joinForm"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_medium"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/background_white_rounded"
+        app:layout_constraintBottom_toTopOf="@id/orDividerText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fillFormText" />
+
+    <EditText
+        android:id="@+id/userNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:hint="@string/text_enter_name"
+        android:inputType="textCapWords"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:textCursorDrawable="@null"
+        android:textSize="@dimen/textsize_normal"
+        app:layout_constraintBottom_toTopOf="@id/formDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fillFormText" />
+
+    <View
+        android:id="@+id/formDivider"
+        android:layout_width="0dp"
+        android:layout_height=".5dp"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginStart="@dimen/margin_large"
+        android:background="@color/trolley_grey"
+        app:layout_constraintBottom_toTopOf="@id/gameIdEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userNameEditText" />
+
+    <EditText
+        android:id="@+id/gameIdEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:hint="@string/text_game_id"
+        android:inputType="number"
+        android:maxLength="7"
+        android:paddingBottom="16dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:textCursorDrawable="@null"
+        android:textSize="@dimen/textsize_normal"
+        app:layout_constraintBottom_toTopOf="@id/orDividerText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/formDivider" />
+
+    <TextView
+        android:id="@+id/orDividerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/margin_small"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/text_or_divider"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_normal"
+        app:layout_constraintBottom_toTopOf="@id/barcodeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gameIdEditText" />
+
+    <TextView
+        android:id="@+id/barcodeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/text_scan_qrcode"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/orDividerText" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:paddingBottom="65dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:color="@color/white"
+        android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/inputWrapper"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/fillFormText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/margin_medium"
-                android:gravity="center"
-                android:text="@string/text_enter_name_id"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_normal" />
-
-            <TextView
-                android:id="@+id/scanQRCodeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/margin_medium"
-                android:gravity="center"
-                android:text="@string/text_name_qrcode"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_normal"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:id="@+id/joinForm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_medium"
-                android:background="@drawable/background_white_rounded"
-                android:orientation="vertical">
-
-                <EditText
-                    android:id="@+id/userNameEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/text_enter_name"
-                    android:inputType="textCapWords"
-                    android:padding="16dp"
-                    android:textCursorDrawable="@null"
-                    android:textSize="@dimen/textsize_normal" />
-
-                <View
-                    android:id="@+id/formDivider"
-                    android:layout_width="match_parent"
-                    android:layout_height=".5dp"
-                    android:layout_marginEnd="@dimen/margin_medium"
-                    android:layout_marginStart="@dimen/margin_medium"
-                    android:background="@color/trolley_grey" />
-
-                <EditText
-                    android:id="@+id/gameIdEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/text_game_id"
-                    android:inputType="number"
-                    android:maxLength="7"
-                    android:padding="16dp"
-                    android:textCursorDrawable="@null"
-                    android:textSize="@dimen/textsize_normal" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/orDividerText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/text_or_divider"
-                android:layout_margin="@dimen/margin_small"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_normal" />
-
-            <TextView
-                android:id="@+id/barcodeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/text_scan_qrcode"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_normal" />
-
-            <ImageView
-                android:id="@+id/checkMark"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_check_white_24dp"
-                android:contentDescription="@string/qr_code_success_check_mark"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/qrCodeSuccessText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/text_qrcode_success"
-                android:textColor="@color/white"
-                android:textSize="@dimen/textsize_normal"
-                android:visibility="gone" />
-
-        </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:color="@color/white"
-            android:visibility="gone" />
-
-    </LinearLayout>
+    <android.support.constraint.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="selectDeckText,fillFormText,joinForm" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/colorAccent"
         android:gravity="center"
         android:orientation="horizontal">
@@ -161,4 +164,4 @@
             android:text="@string/text_join_game" />
     </LinearLayout>
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

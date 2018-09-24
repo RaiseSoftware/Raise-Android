@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.app.SharedElementCallback
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.AppCompatTextView
 import android.text.Editable
@@ -111,13 +112,17 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         userNameEditText: View,
         formDivider: View,
         gameNameText: View,
-        requirePasscodeCheckbox: View
+        requirePasscodeCheckbox: View,
+        createGameView: View
     ) {
         val createFragment = CreateFragment.newInstance()
 
         val t = ChangeBounds()
-        t.duration = 10000L
+        t.duration = 300L
         t.interpolator = AccelerateDecelerateInterpolator()
+
+        createFragment.enterTransition = t
+        createFragment.exitTransition = t
 
         createFragment.sharedElementEnterTransition = Transition()
         createFragment.sharedElementReturnTransition = Transition()
@@ -189,6 +194,8 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .addSharedElement(formDivider, "formDivider")
             .addSharedElement(gameNameText, "gameNameText")
             .addSharedElement(requirePasscodeCheckbox, "requirePasscodeCheckbox")
+            .addSharedElement(createGameView, "createGameView")
+            .setReorderingAllowed(true)
             .replace(R.id.layoutRoot, createFragment)
             .addToBackStack(null)
             .commit()
@@ -417,7 +424,7 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         init {
             ordering = ORDERING_TOGETHER
             addTransition(ChangeBounds())
-                .addTransition(ChangeTransform())
+            addTransition(ChangeTransform())
 
         }
     }

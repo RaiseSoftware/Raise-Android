@@ -50,12 +50,10 @@ class JoinFragment : BaseFragment() {
         .map { it.trim() }
 
     fun showLoadingView() {
-        inputWrapper.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
     }
 
     fun hideLoadingView() {
-        inputWrapper.visibility = View.VISIBLE
         progressBar.visibility = View.GONE
     }
 
@@ -76,10 +74,6 @@ class JoinFragment : BaseFragment() {
     }
 
     fun showQRCodeSuccessView() {
-        qrCodeSuccessText.visibility = View.VISIBLE
-        checkMark.visibility = View.VISIBLE
-        scanQRCodeText.visibility = View.VISIBLE
-
         orDividerText.visibility = View.GONE
         fillFormText.visibility = View.GONE
         formDivider.visibility = View.GONE
