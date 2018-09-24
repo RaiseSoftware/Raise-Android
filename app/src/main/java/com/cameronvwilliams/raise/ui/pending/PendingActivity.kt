@@ -5,7 +5,6 @@ import android.os.Bundle
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseActivity
-import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.pending_activity.*
 
 class PendingActivity : BaseActivity() {
@@ -46,6 +45,5 @@ class PendingActivity : BaseActivity() {
         with(PendingActivity.IntentOptions) {
             navigator.goToPending(intent.getPokerGame(), intent.getUserName(), intent.getModeratorMode())
         }
-        adView.loadAd(AdRequest.Builder().build())
     }
 }

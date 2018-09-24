@@ -27,7 +27,7 @@
         <activity
             android:name=".ui.intro.IntroActivity"
             android:theme="@style/Intro.AppTheme"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.scanner.ScannerActivity"
             android:screenOrientation="portrait"
@@ -55,18 +55,24 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
+                <data android:scheme="http" />
+                <data android:scheme="https" />
                 <data android:host="@string/DEEPLINK_URL" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="raise" android:host="invite-link"/>
+
+                <data
+                    android:host="invite-link"
+                    android:scheme="raise" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.offline.OfflineActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Poker.AppTheme"/>
     </application>
 
 </manifest>

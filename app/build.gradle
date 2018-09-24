@@ -39,6 +39,13 @@ android {
             shrinkResources false
             debuggable true
         }
+        debugMini {
+            initWith debug
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            matchingFallbacks = ['debug']
+        }
         release {
             minifyEnabled true
             shrinkResources true
@@ -92,6 +99,15 @@ android {
             includeAndroidResources = true
         }
     }
+
+    variantFilter { variant ->
+        def needed = variant.name in [
+                'localRelease',
+                'mockRelease',
+                'stagingRelease'
+        ]
+        variant.setIgnore(needed)
+    }
 }
 
 jacoco {
@@ -103,12 +119,11 @@ dependencies {
     def okhttpVersion = '3.10.0'
     def supportVersion = '27.1.1'
     def playVisionVersion = '15.0.2'
-    def fbCoreVersion = '16.0.0'
-    def fbAdsVersion = '15.0.1'
+    def fbCoreVersion = '16.0.1'
     def gsonVersion = '2.8.2'
     def daggerVersion = '2.16'
     def rxjavaVersion = '2.1.5'
-    def rxAndroidVersion = '2.0.1'
+    def rxAndroidVersion = '2.0.2'
     def socketIOVersion = '1.0.0'
     def timberVersion = '4.6.0'
     def appCenterSdkVersion = '1.5.1'
@@ -119,19 +134,23 @@ dependencies {
     implementation "com.android.support:customtabs:$supportVersion"
     implementation "com.android.support:recyclerview-v7:$supportVersion"
     implementation "com.android.support:design:$supportVersion"
+    implementation "com.android.support:support-dynamic-animation:$supportVersion"
+    implementation 'com.android.support:cardview-v7:27.1.1'
     implementation "com.android.support:support-fragment:$supportVersion"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     //Play Services Libraries
     implementation "com.google.android.gms:play-services-vision:$playVisionVersion"
 
     implementation "android.arch.lifecycle:runtime:1.1.1"
     implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation 'com.android.support:support-v4:27.1.1'
     kapt "android.arch.lifecycle:compiler:1.1.1"
 
     // Firebase
     implementation "com.google.firebase:firebase-core:$fbCoreVersion"
-    implementation "com.google.firebase:firebase-ads:$fbAdsVersion"
+    implementation 'com.google.firebase:firebase-firestore:17.1.0'
+    implementation 'com.github.FrangSierra:RxFirebase:1.5.0'
 
     // App Center
     implementation "com.microsoft.appcenter:appcenter-distribute:$appCenterSdkVersion"
@@ -169,6 +188,8 @@ dependencies {
 
     //Timber
     implementation "com.jakewharton.timber:timber:$timberVersion"
+
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 
     // Permission Dispatcher
     implementation "com.github.hotchemi:permissionsdispatcher:$permissionDispatcherVersion"

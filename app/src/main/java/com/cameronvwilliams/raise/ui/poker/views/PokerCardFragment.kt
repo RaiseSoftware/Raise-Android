@@ -47,11 +47,11 @@ class PokerCardFragment : BaseFragment() {
 
         pager = container as ViewPager
 
-        val pokerGame = with(PokerCardFragment.BundleOptions) {
-            arguments!!.getPokerGame()
+        val deckType = with(PokerCardFragment.BundleOptions) {
+            arguments!!.getDeckType()
         }
 
-        when (pokerGame.deckType) {
+        when (deckType) {
             DeckType.FIBONACCI -> cards = dm.getFibonacciCards()
             DeckType.T_SHIRT -> cards = dm.getTShirtCards()
             else -> {
@@ -199,18 +199,18 @@ class PokerCardFragment : BaseFragment() {
     }
 
     companion object BundleOptions {
-        private const val EXTRA_POKER_GAME = "poker_game"
+        private const val EXTRA_DECK_TYPE = "deck_type"
 
         fun newInstance(): PokerCardFragment {
             return PokerCardFragment()
         }
 
-        fun Bundle.getPokerGame(): PokerGame {
-            return getParcelable(PokerCardFragment.EXTRA_POKER_GAME)
+        fun Bundle.getDeckType(): DeckType {
+            return getSerializable(PokerCardFragment.EXTRA_DECK_TYPE) as DeckType
         }
 
-        fun Bundle.setPokerGame(game: PokerGame) {
-            putParcelable(PokerCardFragment.EXTRA_POKER_GAME, game)
+        fun Bundle.setDeckType(deckType: DeckType) {
+            putSerializable(PokerCardFragment.EXTRA_DECK_TYPE, deckType)
         }
     }
 }

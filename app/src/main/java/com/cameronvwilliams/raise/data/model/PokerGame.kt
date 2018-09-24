@@ -9,7 +9,7 @@ data class PokerGame(
     val deckType: DeckType? = null,
     val requiresPasscode: Boolean = false,
     val gameId: String? = "",
-    val qrcode: String? = "",
+    var qrcode: String? = "",
     val passcode: String? = "",
     val gameUuid: String? = "",
     val createdDateTime: Date? = null,

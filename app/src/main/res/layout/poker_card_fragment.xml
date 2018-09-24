@@ -41,10 +41,21 @@
         android:layout_height="48dp"
         android:background="@null"
         android:scaleType="fitCenter"
-        android:contentDescription="@string/send_card"
+        android:contentDescription="@string/flip_card"
         android:src="@drawable/ic_rotate_right_white_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sendCard" />
+
+    <ImageButton
+        android:id="@+id/viewStory"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/view_story"
+        android:src="@drawable/ic_user_story_white_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flipCard" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cardList"

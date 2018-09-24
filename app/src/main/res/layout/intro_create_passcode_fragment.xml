@@ -1,0 +1,56 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/margin_small"
+        android:src="@drawable/ic_arrow_left_white_24dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/back_button" />
+
+    <EditText
+        android:id="@+id/passcodeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_medium"
+        android:background="@drawable/background_white_rounded"
+        android:textSize="@dimen/textsize_normal"
+        android:padding="16dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/text_passcode"
+        android:inputType="textCapCharacters" />
+
+    <TextView
+        android:id="@+id/barcodeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/passcodeEditText"
+        android:textColor="@color/white"
+        android:textSize="@dimen/textsize_normal"
+        android:text="@string/text_scan_qrcode"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/submitButton"
+            style="@style/BottomBarButton"
+            android:enabled="false"
+            android:text="@string/text_submit" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

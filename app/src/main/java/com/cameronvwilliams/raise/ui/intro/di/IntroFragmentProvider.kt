@@ -19,6 +19,9 @@ abstract class IntroFragmentProvider {
     abstract fun providePasscodeFragment(): PasscodeFragment
 
     @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
+    abstract fun provideOfflineFragment(): OfflineFragment
+
+    @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
     abstract fun provideSettingsFragment(): SettingsFragment
 
     @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
@@ -29,4 +32,13 @@ abstract class IntroFragmentProvider {
 
     @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
     abstract fun provideFeedbackFragment(): FeedbackFragment
+
+    @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
+    abstract fun provideCreateCardFragment(): CreateCardFragment
+
+    @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
+    abstract fun provideJoinCardFragment(): JoinCardFragment
+
+    @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
+    abstract fun provideOfflineCardFragment(): OfflineCardFragment
 }

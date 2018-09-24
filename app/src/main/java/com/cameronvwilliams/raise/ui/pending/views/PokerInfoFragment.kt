@@ -42,12 +42,9 @@ class PokerInfoFragment : BaseFragment() {
         }
 
         pokerGame.qrcode?.let {
-            val base64Image = it.split(',').getOrNull(1)
-            base64Image?.let {
-                val decodedString = Base64.decode(it, Base64.DEFAULT)
-                val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                qrCodeImage.setImageBitmap(decodedByte)
-            }
+            val decodedString = Base64.decode(it, Base64.DEFAULT)
+            val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+            qrCodeImage.setImageBitmap(decodedByte)
         }
 
         qrCodeImage.setOnLongClickListener {

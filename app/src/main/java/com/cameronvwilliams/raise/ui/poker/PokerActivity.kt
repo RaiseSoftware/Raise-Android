@@ -3,9 +3,10 @@ package com.cameronvwilliams.raise.ui.poker
 import android.content.Intent
 import android.os.Bundle
 import com.cameronvwilliams.raise.R
+import com.cameronvwilliams.raise.data.model.DeckType
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseActivity
-import com.google.android.gms.ads.AdRequest
+import com.cameronvwilliams.raise.util.notNull
 import kotlinx.android.synthetic.main.poker_activity.*
 
 class PokerActivity : BaseActivity() {
@@ -17,7 +18,6 @@ class PokerActivity : BaseActivity() {
         with(PokerActivity.IntentOptions) {
             navigator.goToPoker(intent.getPokerGame())
         }
-        adView.loadAd(AdRequest.Builder().build())
     }
 
     companion object IntentOptions {

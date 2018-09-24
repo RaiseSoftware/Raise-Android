@@ -17,7 +17,7 @@ class PokerAdapter(fm: FragmentManager, pokerGame: PokerGame) : FragmentPagerAda
         val bundle = Bundle()
 
         with(PokerCardFragment.BundleOptions) {
-            bundle.setPokerGame(pokerGame)
+            bundle.setDeckType(pokerGame.deckType!!)
         }
 
         pokerCardFragment.arguments = bundle

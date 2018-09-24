@@ -5,6 +5,7 @@ import android.support.v7.util.DiffUtil
 import com.cameronvwilliams.raise.data.model.ActiveCard
 import com.cameronvwilliams.raise.data.model.Card
 import com.cameronvwilliams.raise.data.model.Player
+import com.cameronvwilliams.raise.data.model.Story
 import com.cameronvwilliams.raise.data.model.event.*
 import com.cameronvwilliams.raise.util.ActiveCardDiffCallback
 import com.cameronvwilliams.raise.util.PlayerDiffCallback
@@ -27,6 +28,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
     private var cardSubmitSubject: BehaviorSubject<SocketEvent>? = null
     private var startGameSubject: BehaviorSubject<SocketEvent>? = null
     private var endGameSubject: BehaviorSubject<SocketEvent>? = null
+    private var userStorySubject: BehaviorSubject<SocketEvent>? = null
 
     init {
         IO.setDefaultOkHttpCallFactory(okHttpClient)
@@ -109,17 +111,25 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
             .toFlowable(BackpressureStrategy.LATEST)
     }
 
+    override fun onNextUserStory(): Flowable<Story> {
+        return userStorySubject!!.map {
+            (it as UserStoryEvent).data
+        }.toFlowable(BackpressureStrategy.LATEST)
+    }
+
     private fun initializeSocketListeners() {
 
         joinLeaveSubject = BehaviorSubject.create()
         cardSubmitSubject = BehaviorSubject.create()
         startGameSubject = BehaviorSubject.create()
         endGameSubject = BehaviorSubject.create()
+        userStorySubject = BehaviorSubject.create()
 
         joinLeaveSubject!!.replay(1).refCount()
         cardSubmitSubject!!.replay(1).refCount()
         startGameSubject!!.replay(1).refCount()
         endGameSubject!!.replay(1).refCount()
+        userStorySubject!!.replay(1).refCount()
 
         socket?.on(START_GAME_EVENT) { args ->
             val jsonString = args[0] as String
@@ -150,6 +160,12 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
             endGameSubject = BehaviorSubject.create()
             endGameSubject!!.replay(1).refCount()
         }
+
+        socket?.on(USER_STORY_EVENT) { args ->
+            val jsonString = args[0] as String
+            val event = gson.fromJson(jsonString, UserStoryEvent::class.java)
+            userStorySubject!!.onNext(event)
+        }
     }
 
     companion object {
@@ -157,5 +173,6 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
         const val CARD_SUBMIT_EVENT = "card-submit"
         const val START_GAME_EVENT = "start-game"
         const val END_GAME_EVENT = "end-game"
+        const val USER_STORY_EVENT = "user-story"
     }
 }

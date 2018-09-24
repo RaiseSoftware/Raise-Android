@@ -13,15 +13,15 @@ class IntroPresenter(private val navigator: Navigator): BasePresenter() {
         super.onViewCreated(v)
         view = v as IntroFragment
 
-        viewSubscriptions.add(view.createButtonClicks()
-            .subscribe {
-                navigator.goToCreateGame()
-            })
-
-        viewSubscriptions.add(view.joinButtonClicks()
-            .subscribe {
-                navigator.goToJoinGame()
-            })
+//        viewSubscriptions.add(view.createButtonClicks()
+//            .subscribe {
+//                navigator.goToCreateGame()
+//            })
+//
+//        viewSubscriptions.add(view.joinButtonClicks()
+//            .subscribe {
+//                navigator.goToJoinGame()
+//            })
 
         viewSubscriptions.add(view.settingsButtonClicks()
             .subscribe {

@@ -4,14 +4,16 @@ import android.view.SurfaceHolder
 import android.view.View
 import android.view.ViewTreeObserver
 import com.cameronvwilliams.raise.data.model.Story
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Observable
+
+fun Any.notNull(): Boolean {
+    return this != null
+}
 
 fun SurfaceHolder.callbacks(
     onCreated: (SurfaceHolder?) -> Unit,
@@ -50,22 +52,6 @@ fun BarcodeDetector.detections(): Observable<Detector.Detections<Barcode>> {
 
 fun <T> Gson.fromJsonArray(json: String): List<T> {
     return this.fromJson<List<T>>(json, object : TypeToken<List<T>>() {}.type)
-}
-
-fun InterstitialAd.onAdClosed(cb: () -> Unit) {
-    this.adListener = object: AdListener() {
-        override fun onAdLoaded() {}
-
-        override fun onAdFailedToLoad(errorCode: Int) {}
-
-        override fun onAdOpened() {}
-
-        override fun onAdLeftApplication() {}
-
-        override fun onAdClosed() {
-            cb()
-        }
-    }
 }
 
 fun <T: View> T.afterMeasured(f: T.() -> Unit) {

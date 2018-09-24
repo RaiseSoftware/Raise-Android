@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.PokerGame
+import com.cameronvwilliams.raise.data.model.Story
 import com.cameronvwilliams.raise.di.ActivityContext
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.Navigator
@@ -30,6 +31,7 @@ class PokerFragment : BaseFragment() {
     lateinit var activityContext: Context
 
     private lateinit var closeButtonDialog: AlertDialog
+    private lateinit var storyDialog: AlertDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         closeButtonDialog = AlertDialog.Builder(activityContext)
@@ -62,10 +64,27 @@ class PokerFragment : BaseFragment() {
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager, true)
 
+        dm.getUserStoriesForGame()
+            .subscribe {
+                showNextStory(it)
+            }
+
         dm.getGameEnd()
             .subscribe {
                 activity?.finish()
             }
+    }
+
+    private fun showNextStory(story: Story) {
+        storyDialog = AlertDialog.Builder(activityContext)
+            .setTitle("Current Story")
+            .setMessage(story.title)
+            .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        storyDialog.show()
     }
 
     companion object BundleOptions {

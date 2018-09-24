@@ -5,6 +5,7 @@ import android.support.v7.util.DiffUtil
 import com.cameronvwilliams.raise.data.model.ActiveCard
 import com.cameronvwilliams.raise.data.model.Card
 import com.cameronvwilliams.raise.data.model.Player
+import com.cameronvwilliams.raise.data.model.Story
 import io.reactivex.Completable
 import io.reactivex.Flowable
 
@@ -22,6 +23,8 @@ interface SocketAPI {
     fun onGameStart(): Completable
 
     fun onGameEnd(): Completable
+
+    fun onNextUserStory(): Flowable<Story>
 
     fun onPlayersInGameChange(): Flowable<Pair<List<Player>, DiffUtil.DiffResult>>
 

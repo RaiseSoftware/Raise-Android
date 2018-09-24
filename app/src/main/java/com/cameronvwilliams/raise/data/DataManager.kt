@@ -15,6 +15,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
+import com.google.firebase.firestore.FirebaseFirestore
+import durdinapps.rxfirebase2.RxFirestore
+
 
 @Singleton
 class DataManager @Inject constructor(
@@ -34,6 +37,18 @@ class DataManager @Inject constructor(
                 setGameToken(response.token.token)
             }
             .map{ response -> response.pokerGame }
+    }
+
+    fun createGame(game: PokerGame, player: Player): Single<PokerGame> {
+        val db = FirebaseFirestore.getInstance()
+
+        return RxFirestore.addDocument(db.collection("game"), game)
+            .flatMapMaybe {
+                RxFirestore.getDocument(it)
+            }
+            .flatMapSingle {
+                Single.just(it.toObject(PokerGame::class.java))
+            }
     }
 
     fun findPokerGame(gameId: String, name: String, passcode: String? = null): Single<PokerGame> {
@@ -98,6 +113,12 @@ class DataManager @Inject constructor(
 
     fun getGameEnd(): Completable {
         return socketClient.onGameEnd()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getUserStoriesForGame(): Flowable<Story> {
+        return socketClient.onNextUserStory()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

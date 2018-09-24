@@ -5,7 +5,6 @@ import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.di.DaggerRaiseComponent
 import com.cameronvwilliams.raise.di.RaiseComponent
 import com.cameronvwilliams.raise.util.Analytics
-import com.google.android.gms.ads.MobileAds
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
 import com.cameronvwilliams.raise.util.AppLifeCycleObserver
@@ -27,7 +26,6 @@ open class RaiseApplication : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        MobileAds.initialize(this, BuildConfig.ADMOB_APP_ID)
         Analytics.initialize(this)
 
         val lifeCycleObserver = AppLifeCycleObserver(dm)

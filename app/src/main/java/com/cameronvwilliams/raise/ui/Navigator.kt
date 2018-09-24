@@ -5,21 +5,39 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.transition.ChangeBounds
+import android.support.transition.ChangeTransform
+import android.support.transition.Transition
+import android.support.transition.TransitionSet
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import android.support.v4.app.SharedElementCallback
 import android.support.v4.content.ContextCompat.startActivity
+import android.support.v7.widget.AppCompatTextView
+import android.text.Editable
+import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.TextView
 import com.cameronvwilliams.raise.BuildConfig
 import com.cameronvwilliams.raise.R
+import com.cameronvwilliams.raise.data.model.DeckType
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.data.model.Story
 import com.cameronvwilliams.raise.ui.intro.IntroActivity
 import com.cameronvwilliams.raise.ui.intro.views.*
+import com.cameronvwilliams.raise.ui.offline.OfflineActivity
+import com.cameronvwilliams.raise.ui.offline.view.OfflineGameFragment
+import com.cameronvwilliams.raise.ui.offline.view.OfflineSettingsFragment
 import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.ui.pending.views.CreateStoryFragment
 import com.cameronvwilliams.raise.ui.pending.views.PendingFragment
 import com.cameronvwilliams.raise.ui.poker.PokerActivity
+import com.cameronvwilliams.raise.ui.poker.views.PokerCardFragment
 import com.cameronvwilliams.raise.ui.poker.views.PokerFragment
 import com.cameronvwilliams.raise.ui.scanner.ScannerActivity
 import com.cameronvwilliams.raise.ui.scanner.views.ScannerFragment
@@ -50,7 +68,7 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
     }
 
     fun goBack() {
-        fm.popBackStackImmediate()
+        fm.popBackStack()
     }
 
     fun goToIntro(animate: Boolean = true) {
@@ -85,15 +103,93 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .commit()
     }
 
-    fun goToCreateGame() {
+    fun goToCreateGame(
+        selectDeckText: View,
+        fibonacciRadio: View,
+        tshirtRadio: View,
+        joinForm: View,
+        userNameEditText: View,
+        formDivider: View,
+        gameNameText: View,
+        requirePasscodeCheckbox: View
+    ) {
+        val createFragment = CreateFragment.newInstance()
+
+        val t = ChangeBounds()
+        t.duration = 10000L
+        t.interpolator = AccelerateDecelerateInterpolator()
+
+        createFragment.sharedElementEnterTransition = Transition()
+        createFragment.sharedElementReturnTransition = Transition()
+        createFragment.setEnterSharedElementCallback(object : SharedElementCallback() {
+
+            val state: MutableMap<String, Any> = mutableMapOf()
+            var opened = false
+
+            override fun onSharedElementEnd(
+                sharedElementNames: MutableList<String>?,
+                sharedElements: MutableList<View>?,
+                sharedElementSnapshots: MutableList<View>?
+            ) {
+                sharedElementNames?.forEachIndexed { index, name ->
+                    when (name) {
+                        "fibonacciRadio" -> {
+                            (sharedElements?.get(index) as RadioButton).isChecked = state[name] as Boolean
+                            (sharedElements[index] as RadioButton).jumpDrawablesToCurrentState()
+                        }
+                        "requirePasscodeCheckbox" -> {
+                            (sharedElements?.get(index) as CheckBox).isChecked = state[name] as Boolean
+                            (sharedElements[index] as CheckBox).jumpDrawablesToCurrentState()
+                        }
+                        "tshirtRadio" -> {
+                            (sharedElements?.get(index) as RadioButton).isChecked = state[name] as Boolean
+                            (sharedElements[index] as RadioButton).jumpDrawablesToCurrentState()
+                        }
+                        "userNameEditText" -> {
+                            (sharedElements?.get(index) as EditText).text = state[name] as Editable
+                            (sharedElements[index] as EditText).isFocusableInTouchMode = true
+                        }
+                        "gameNameText" -> {
+                            (sharedElements?.get(index) as EditText).text = state[name] as Editable
+                        }
+
+                    }
+                }
+
+                opened = true
+            }
+
+            override fun onSharedElementStart(
+                sharedElementNames: MutableList<String>?,
+                sharedElements: MutableList<View>?,
+                sharedElementSnapshots: MutableList<View>?
+            ) {
+                sharedElementNames?.forEachIndexed { index, name ->
+                    when (name) {
+                        "fibonacciRadio" -> state[name] = (sharedElements?.get(index) as RadioButton).isChecked
+                        "requirePasscodeCheckbox" -> state[name] = (sharedElements?.get(index) as CheckBox).isChecked
+                        "tshirtRadio" -> state[name] = if (opened) (sharedElements?.get(index) as RadioButton).isChecked else false
+                        "userNameEditText" -> {
+                            state[name] = (sharedElements?.get(index) as EditText).text
+                            state["$name-focus"] = (sharedElements[index] as EditText).hasFocus()
+                        }
+                        "gameNameText" -> state[name] = (sharedElements?.get(index) as EditText).text
+
+                    }
+                }
+            }
+        })
+
         fm.beginTransaction()
-            .setCustomAnimations(
-                R.anim.slide_in_left,
-                R.anim.slide_out_right,
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
-            .replace(R.id.layoutRoot, CreateFragment.newInstance())
+            .addSharedElement(selectDeckText, "selectDeckText")
+            .addSharedElement(fibonacciRadio, "fibonacciRadio")
+            .addSharedElement(tshirtRadio, "tshirtRadio")
+            .addSharedElement(joinForm, "joinForm")
+            .addSharedElement(userNameEditText, "userNameEditText")
+            .addSharedElement(formDivider, "formDivider")
+            .addSharedElement(gameNameText, "gameNameText")
+            .addSharedElement(requirePasscodeCheckbox, "requirePasscodeCheckbox")
+            .replace(R.id.layoutRoot, createFragment)
             .addToBackStack(null)
             .commit()
     }
@@ -253,6 +349,12 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         context.startActivity(intent)
     }
 
+    fun goToOfflineView(deckType: DeckType) {
+        val intent = Intent(context, OfflineActivity::class.java)
+
+        context.startActivity(intent)
+    }
+
     fun goToPoker(pokerGame: PokerGame) {
         val fragment = PokerFragment.newInstance()
         val bundle = Bundle()
@@ -265,6 +367,34 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
 
         fm.beginTransaction()
             .replace(R.id.layoutRoot, fragment)
+            .commit()
+    }
+
+    fun goToOffline(deckType: DeckType) {
+        val fragment = OfflineGameFragment.newInstance()
+        val bundle = Bundle()
+
+//        with(OfflineCardFragment.BundleOptions) {
+//            bundle.setDeckType(deckType)
+//        }
+
+        fragment.arguments = bundle
+
+        fm.beginTransaction()
+            .replace(R.id.layoutRoot, fragment)
+            .commit()
+    }
+
+    fun goToOfflineSettings() {
+        fm.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+            .replace(R.id.layoutRoot, OfflineSettingsFragment.newInstance())
+            .addToBackStack(null)
             .commit()
     }
 
@@ -281,6 +411,15 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
 
     fun scannerResult(): Observable<Navigator.Result<PokerGame>> {
         return scannerRequestObservable
+    }
+
+    inner class Transition : TransitionSet() {
+        init {
+            ordering = ORDERING_TOGETHER
+            addTransition(ChangeBounds())
+                .addTransition(ChangeTransform())
+
+        }
     }
 
     data class Result<T>(val status: ResultEnum, val data: T?)
