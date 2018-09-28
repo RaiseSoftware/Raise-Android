@@ -1,4 +1,4 @@
-package com.cameronvwilliams.raise.ui.intro.views
+package com.cameronvwilliams.raise.ui.intro.create
 
 import android.os.Bundle
 import androidx.transition.ChangeBounds

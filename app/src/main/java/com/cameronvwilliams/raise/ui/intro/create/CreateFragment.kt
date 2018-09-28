@@ -1,4 +1,4 @@
-package com.cameronvwilliams.raise.ui.intro.views
+package com.cameronvwilliams.raise.ui.intro.create
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -47,6 +47,7 @@ class CreateFragment : BaseFragment() {
             }
 
             override fun onTransitionStart(p0: Transition) {
+                createCardView.radius = 36F
                 val animator = ObjectAnimator
                     .ofFloat(createCardView, "radius", 0F)
                 animator.duration = 300

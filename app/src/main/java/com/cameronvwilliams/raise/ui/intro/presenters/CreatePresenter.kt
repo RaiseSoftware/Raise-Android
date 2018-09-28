@@ -9,7 +9,7 @@ import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
-import com.cameronvwilliams.raise.ui.intro.views.CreateFragment
+import com.cameronvwilliams.raise.ui.intro.create.CreateFragment
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -68,7 +68,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
                 when (result.type) {
                     CreatePresenter.ResultType.SUCCESS -> onCreateSuccess(result.data!!)
                     CreatePresenter.ResultType.FAILURE -> onCreateFailure()
-                    CreatePresenter.ResultType.PASSCODE -> TODO()
+                    CreatePresenter.ResultType.PASSCODE -> navigator.goToCreatePasscode()
                 }
             }, { t ->
                 throw OnErrorNotImplementedException(t)

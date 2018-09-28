@@ -26,6 +26,8 @@ import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.data.model.Story
 import com.cameronvwilliams.raise.ui.intro.IntroActivity
+import com.cameronvwilliams.raise.ui.intro.create.CreateFragment
+import com.cameronvwilliams.raise.ui.intro.create.CreatePasscodeFragment
 import com.cameronvwilliams.raise.ui.intro.views.*
 import com.cameronvwilliams.raise.ui.offline.OfflineActivity
 import com.cameronvwilliams.raise.ui.offline.view.OfflineGameFragment
@@ -240,6 +242,24 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .addSharedElement(createCardView, "createCardView")
             .setReorderingAllowed(true)
             .replace(R.id.layoutRoot, createFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    fun goToCreatePasscode() {
+        val fragment = CreatePasscodeFragment.newInstance()
+        val bundle = Bundle()
+
+        fragment.arguments = bundle
+
+        fm.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+            .replace(R.id.layoutRoot, fragment)
             .addToBackStack(null)
             .commit()
     }

@@ -5,7 +5,7 @@
     android:transitionName="createCardView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="0dp"
     app:cardBackgroundColor="@color/pistachio">
 
     <androidx.constraintlayout.widget.ConstraintLayout
