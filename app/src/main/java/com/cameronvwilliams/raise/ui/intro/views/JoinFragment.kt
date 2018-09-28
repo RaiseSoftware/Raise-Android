@@ -1,12 +1,16 @@
 package com.cameronvwilliams.raise.ui.intro.views
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.support.design.widget.Snackbar
+import com.google.android.material.snackbar.Snackbar
+import androidx.transition.Transition
+import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
+import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.presenters.JoinPresenter
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.textChanges
@@ -20,6 +24,31 @@ class JoinFragment : BaseFragment() {
     lateinit var presenter: JoinPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.strong_orange)
+        (sharedElementEnterTransition as Navigator.Transition).addListener(object : Transition.TransitionListener {
+            override fun onTransitionEnd(p0: Transition) {
+
+            }
+
+            override fun onTransitionResume(p0: Transition) {
+
+            }
+
+            override fun onTransitionPause(p0: Transition) {
+
+            }
+
+            override fun onTransitionCancel(p0: Transition) {
+
+            }
+
+            override fun onTransitionStart(p0: Transition) {
+                val animator = ObjectAnimator
+                    .ofFloat(joinCardView, "radius", 0F)
+                animator.duration = 300
+                animator.start()
+            }
+        })
         return inflater.inflate(R.layout.intro_join_fragment, container, false)
     }
 

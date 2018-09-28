@@ -3,7 +3,7 @@ package com.cameronvwilliams.raise.ui.poker.views
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

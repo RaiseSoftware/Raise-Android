@@ -1,6 +1,6 @@
 package com.cameronvwilliams.raise.ui.poker.views.viewholder
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.ActiveCard

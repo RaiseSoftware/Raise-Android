@@ -1,6 +1,6 @@
 package com.cameronvwilliams.raise.data.remote;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;

@@ -1,7 +1,7 @@
 package com.cameronvwilliams.raise.ui.offline.di
 
 import android.content.Context
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.FragmentManager
 import com.cameronvwilliams.raise.di.ActivityContext
 import com.cameronvwilliams.raise.di.PerActivity
 import com.cameronvwilliams.raise.ui.Navigator

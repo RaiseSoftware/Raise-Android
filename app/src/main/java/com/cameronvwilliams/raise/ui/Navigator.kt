@@ -5,24 +5,20 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.transition.ChangeBounds
-import android.support.transition.ChangeTransform
-import android.support.transition.Transition
-import android.support.transition.TransitionSet
-import android.support.v4.app.ActivityCompat.startActivityForResult
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
-import android.support.v4.app.SharedElementCallback
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.ContextCompat.startActivity
-import android.support.v7.widget.AppCompatTextView
+import androidx.transition.ChangeBounds
+import androidx.transition.ChangeTransform
+import androidx.transition.TransitionSet
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.core.app.SharedElementCallback
+import androidx.core.content.ContextCompat.startActivity
 import android.text.Editable
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
-import android.widget.TextView
 import com.cameronvwilliams.raise.BuildConfig
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.DeckType
@@ -38,7 +34,6 @@ import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.ui.pending.views.CreateStoryFragment
 import com.cameronvwilliams.raise.ui.pending.views.PendingFragment
 import com.cameronvwilliams.raise.ui.poker.PokerActivity
-import com.cameronvwilliams.raise.ui.poker.views.PokerCardFragment
 import com.cameronvwilliams.raise.ui.poker.views.PokerFragment
 import com.cameronvwilliams.raise.ui.scanner.ScannerActivity
 import com.cameronvwilliams.raise.ui.scanner.views.ScannerFragment
@@ -91,15 +86,63 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .commit()
     }
 
-    fun goToJoinGame() {
+    fun goToJoinGame(
+        joinCardView: View,
+        fillFormText: View,
+        joinForm: View,
+        userNameEditText: View,
+        formDivider: View,
+        gameIdEditText: View,
+        orDividerText: View,
+        barcodeText: View
+    ) {
+
+        val joinFragment = JoinFragment.newInstance()
+
+        val t = ChangeBounds()
+        t.duration = 300L
+        t.interpolator = AccelerateDecelerateInterpolator()
+
+        joinFragment.enterTransition = t
+        joinFragment.exitTransition = t
+        joinFragment.sharedElementEnterTransition = Transition()
+        joinFragment.sharedElementReturnTransition = Transition()
+
         fm.beginTransaction()
-            .setCustomAnimations(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left,
-                R.anim.slide_in_left,
-                R.anim.slide_out_right
-            )
-            .replace(R.id.layoutRoot, JoinFragment.newInstance())
+            .addSharedElement(joinCardView, "joinCardView")
+            .addSharedElement(fillFormText, "fillFormText")
+            .addSharedElement(joinForm, "joinForm")
+            .addSharedElement(userNameEditText, "userNameEditText")
+            .addSharedElement(formDivider, "formDivider")
+            .addSharedElement(gameIdEditText, "gameIdEditText")
+            .addSharedElement(orDividerText, "orDividerText")
+            .addSharedElement(barcodeText, "barcodeText")
+            .setReorderingAllowed(true)
+            .replace(R.id.layoutRoot, joinFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    fun goToOffline(offlineCardView: View, selectDeckText: View, fibonacciRadio: View, tshirtRadio: View) {
+
+        val offlineFragment = OfflineFragment.newInstance()
+
+        val t = ChangeBounds()
+        t.duration = 300L
+        t.interpolator = AccelerateDecelerateInterpolator()
+
+        offlineFragment.enterTransition = t
+        offlineFragment.exitTransition = t
+        offlineFragment.sharedElementEnterTransition = Transition()
+        offlineFragment.sharedElementReturnTransition = Transition()
+
+        fm.beginTransaction()
+            .addSharedElement(offlineCardView, "offlineCardView")
+            .addSharedElement(selectDeckText, "selectDeckText")
+            .addSharedElement(fibonacciRadio, "fibonacciRadio")
+            .addSharedElement(tshirtRadio, "tshirtRadio")
+            .setReorderingAllowed(true)
+            .replace(R.id.layoutRoot, offlineFragment)
             .addToBackStack(null)
             .commit()
     }
@@ -113,7 +156,7 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         formDivider: View,
         gameNameText: View,
         requirePasscodeCheckbox: View,
-        createGameView: View
+        createCardView: View
     ) {
         val createFragment = CreateFragment.newInstance()
 
@@ -194,7 +237,7 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .addSharedElement(formDivider, "formDivider")
             .addSharedElement(gameNameText, "gameNameText")
             .addSharedElement(requirePasscodeCheckbox, "requirePasscodeCheckbox")
-            .addSharedElement(createGameView, "createGameView")
+            .addSharedElement(createCardView, "createCardView")
             .setReorderingAllowed(true)
             .replace(R.id.layoutRoot, createFragment)
             .addToBackStack(null)
@@ -425,7 +468,7 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             ordering = ORDERING_TOGETHER
             addTransition(ChangeBounds())
             addTransition(ChangeTransform())
-
+            duration = 300L
         }
     }
 

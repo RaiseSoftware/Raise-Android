@@ -1,6 +1,6 @@
 package com.cameronvwilliams.raise
 
-import android.arch.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.di.DaggerRaiseComponent
 import com.cameronvwilliams.raise.di.RaiseComponent

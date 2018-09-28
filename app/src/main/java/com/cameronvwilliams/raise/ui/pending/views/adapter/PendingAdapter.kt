@@ -1,7 +1,7 @@
 package com.cameronvwilliams.raise.ui.pending.views.adapter
 
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.pending.views.ModeratorFragment

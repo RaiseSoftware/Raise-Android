@@ -2,7 +2,7 @@ package com.cameronvwilliams.raise.ui.offline.view
 
 
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +33,11 @@ class OfflineGameFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         cards = dm.getFibonacciCards()
-        layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        layoutManager = LinearLayoutManager(
+            activity,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
         adapter = CardListAdapter(cards)
 
         return inflater.inflate(R.layout.offline_game_fragment, container, false)

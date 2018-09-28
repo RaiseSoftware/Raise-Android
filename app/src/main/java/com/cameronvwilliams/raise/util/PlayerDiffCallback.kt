@@ -1,6 +1,6 @@
 package com.cameronvwilliams.raise.util
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import com.cameronvwilliams.raise.data.model.Player
 
 class PlayerDiffCallback(private val current: List<Player>, private val next: List<Player>) :

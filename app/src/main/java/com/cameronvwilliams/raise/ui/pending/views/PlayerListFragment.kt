@@ -2,9 +2,9 @@ package com.cameronvwilliams.raise.ui.pending.views
 
 
 import android.os.Bundle
-import android.support.v4.util.Pair
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.LinearLayoutManager
+import androidx.core.util.Pair
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

@@ -1,7 +1,7 @@
 package com.cameronvwilliams.raise.data
 
-import android.support.v4.util.Pair
-import android.support.v7.util.DiffUtil
+import androidx.core.util.Pair
+import androidx.recyclerview.widget.DiffUtil
 import com.cameronvwilliams.raise.data.local.RaisePreferences
 import com.cameronvwilliams.raise.data.model.*
 import com.cameronvwilliams.raise.data.model.api.PokerGameBody

@@ -3,13 +3,13 @@ package com.cameronvwilliams.raise.ui.custom
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.GradientDrawable
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.*
 import android.widget.LinearLayout
 import android.widget.ImageView
 import com.cameronvwilliams.raise.R
-import android.support.annotation.ColorRes
+import androidx.annotation.ColorRes
 import android.view.Gravity
 import android.view.LayoutInflater
 

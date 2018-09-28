@@ -3,8 +3,8 @@ package com.cameronvwilliams.raise.ui.offline.view
 
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.ArrayRes
-import android.support.annotation.LayoutRes
+import androidx.annotation.ArrayRes
+import androidx.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

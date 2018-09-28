@@ -59,11 +59,11 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
             .withLatestFrom(createFormDetails) { _, details ->
                 details
             }
-            .flatMapSingle { onCreateClicked(it) }
             .doOnEach {
                 view.showLoadingView()
                 view.disableCreateButton()
             }
+            .flatMapSingle { onCreateClicked(it) }
             .subscribe({ result: Result ->
                 when (result.type) {
                     CreatePresenter.ResultType.SUCCESS -> onCreateSuccess(result.data!!)

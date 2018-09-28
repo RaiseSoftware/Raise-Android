@@ -5,8 +5,8 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +18,6 @@ import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.Card
 import com.cameronvwilliams.raise.data.model.CardValue
 import com.cameronvwilliams.raise.data.model.DeckType
-import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.poker.presenter.PokerCardPresenter
 import com.cameronvwilliams.raise.ui.poker.views.adapter.CardListAdapter
@@ -58,7 +57,11 @@ class PokerCardFragment : BaseFragment() {
             } // no-op
         }
 
-        layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        layoutManager = LinearLayoutManager(
+            activity,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
         adapter = CardListAdapter(cards)
 
         return inflater.inflate(R.layout.poker_card_fragment, container, false)

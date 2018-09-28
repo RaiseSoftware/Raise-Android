@@ -1,7 +1,7 @@
 package com.cameronvwilliams.raise.ui.intro.views
 
 import android.os.Bundle
-import android.support.transition.ChangeBounds
+import androidx.transition.ChangeBounds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +42,7 @@ class CreateCardFragment: BaseFragment() {
                 formDivider,
                 gameNameText,
                 requirePasscodeCheckbox,
-                createGameView
+                createCardView
             )
         }
 
@@ -57,7 +57,7 @@ class CreateCardFragment: BaseFragment() {
                     formDivider,
                     gameNameText,
                     requirePasscodeCheckbox,
-                    createGameView
+                    createCardView
                 )
             }
         }
@@ -73,7 +73,7 @@ class CreateCardFragment: BaseFragment() {
                     formDivider,
                     gameNameText,
                     requirePasscodeCheckbox,
-                    createGameView
+                    createCardView
                 )
             }
         }
@@ -89,7 +89,7 @@ class CreateCardFragment: BaseFragment() {
                     formDivider,
                     gameNameText,
                     requirePasscodeCheckbox,
-                    createGameView
+                    createCardView
                 )
             }
         }
@@ -105,7 +105,7 @@ class CreateCardFragment: BaseFragment() {
                     formDivider,
                     gameNameText,
                     requirePasscodeCheckbox,
-                    createGameView
+                    createCardView
                 )
             }
         }
@@ -120,7 +120,7 @@ class CreateCardFragment: BaseFragment() {
                 formDivider,
                 gameNameText,
                 requirePasscodeCheckbox,
-                createGameView
+                createCardView
             )
         }
     }
