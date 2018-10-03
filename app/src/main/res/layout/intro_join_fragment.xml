@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/joinCardView"
     android:transitionName="joinCardView"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="0dp"
     app:cardBackgroundColor="@color/pure_orange">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -91,7 +91,7 @@
             android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
-            android:hint="@string/text_game_id"
+            android:hint="@string/text_game_name"
             android:inputType="number"
             android:maxLength="7"
             android:paddingBottom="16dp"

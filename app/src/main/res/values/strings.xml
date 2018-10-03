@@ -45,6 +45,7 @@
     <string name="text_sure_end">Are you sure you want to end this game? This will close the game for all other players</string>
     <string name="text_start">Start</string>
     <string name="text_enter_passcode">Enter the passcode required to join your game</string>
+    <string name="text_set_passcode">Set Passcode</string>
 
     <string-array name="text_deck_types">
        <item>Standard</item>

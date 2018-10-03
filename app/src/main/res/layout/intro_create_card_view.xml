@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/createCardView"
-    android:transitionName="createCardView"
+    android:transitionName="qcreateCardView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:cardCornerRadius="10dp"
@@ -10,14 +10,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/createGameView"
-        android:transitionName="createGameView"
+        android:transitionName="qcreateGameView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/pistachio">
 
         <TextView
             android:id="@+id/selectDeckText"
-            android:transitionName="selectDeckText"
+            android:transitionName="qselectDeckText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -50,7 +50,7 @@
 
             <RadioButton
                 android:id="@+id/fibonacciRadio"
-                android:transitionName="fibonacciRadio"
+                android:transitionName="qfibonacciRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/white"
@@ -61,7 +61,7 @@
 
             <RadioButton
                 android:id="@+id/tshirtRadio"
-                android:transitionName="tshirtRadio"
+                android:transitionName="qtshirtRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/white"
@@ -73,7 +73,7 @@
 
         <View
             android:id="@+id/joinForm"
-            android:transitionName="joinForm"
+            android:transitionName="qjoinForm"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/margin_medium"
@@ -89,7 +89,7 @@
 
         <EditText
             android:id="@+id/userNameEditText"
-            android:transitionName="userNameEditText"
+            android:transitionName="quserNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -111,7 +111,7 @@
 
         <View
             android:id="@+id/formDivider"
-            android:transitionName="formDivider"
+            android:transitionName="qformDivider"
             android:layout_width="0dp"
             android:layout_height=".5dp"
             android:layout_marginEnd="@dimen/margin_large"
@@ -124,7 +124,7 @@
 
         <EditText
             android:id="@+id/gameNameText"
-            android:transitionName="gameNameText"
+            android:transitionName="qgameNameText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -146,7 +146,7 @@
 
         <CheckBox
             android:id="@+id/requirePasscodeCheckbox"
-            android:transitionName="requirePasscodeCheckbox"
+            android:transitionName="qrequirePasscodeCheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -161,12 +161,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gameNameText" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="selectDeckText,deckTypeRadioGroup,joinForm" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

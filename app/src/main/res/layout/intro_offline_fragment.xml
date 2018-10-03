@@ -5,7 +5,7 @@
     android:transitionName="offlineCardView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="0dp"
     app:cardBackgroundColor="@color/light_blue">
 
     <androidx.constraintlayout.widget.ConstraintLayout

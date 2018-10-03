@@ -91,7 +91,7 @@
             android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
-            android:hint="@string/text_game_id"
+            android:hint="@string/text_game_name"
             android:inputType="number"
             android:maxLength="7"
             android:paddingBottom="16dp"

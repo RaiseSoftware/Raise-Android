@@ -16,6 +16,7 @@ import javax.inject.Inject
 import androidx.transition.Transition
 import com.cameronvwilliams.raise.ui.Navigator
 import android.animation.ObjectAnimator
+import androidx.transition.ChangeBounds
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import com.jakewharton.rxbinding2.widget.textChanges
@@ -28,33 +29,6 @@ class CreateFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.strong_pistachio)
-
-        (sharedElementEnterTransition as Navigator.Transition).addListener(object : Transition.TransitionListener {
-            override fun onTransitionEnd(p0: Transition) {
-
-            }
-
-            override fun onTransitionResume(p0: Transition) {
-
-            }
-
-            override fun onTransitionPause(p0: Transition) {
-
-            }
-
-            override fun onTransitionCancel(p0: Transition) {
-
-            }
-
-            override fun onTransitionStart(p0: Transition) {
-                createCardView.radius = 36F
-                val animator = ObjectAnimator
-                    .ofFloat(createCardView, "radius", 0F)
-                animator.duration = 300
-                animator.start()
-            }
-        })
-
         return inflater.inflate(R.layout.intro_create_fragment, container, false)
     }
 
@@ -96,9 +70,6 @@ class CreateFragment : BaseFragment() {
 
     fun passcodeChanges(): Observable<Boolean> = requirePasscodeCheckbox.checkedChanges()
 
-    fun adClosed(): Observable<Unit> = Observable.create {
-    }
-
     fun showLoadingView() {
         group.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
@@ -120,6 +91,14 @@ class CreateFragment : BaseFragment() {
     fun showDefaultErrorSnackBar() {
         Snackbar.make(createGameView, getString(R.string.error_network), Snackbar.LENGTH_LONG)
             .show()
+    }
+
+    fun updateButtonTextPasscode() {
+        createButton.setText(R.string.text_set_passcode)
+    }
+
+    fun updateButtonTextCreate() {
+        createButton.setText(R.string.text_create_game)
     }
 
     companion object {

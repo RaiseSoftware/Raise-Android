@@ -7,10 +7,10 @@ import java.util.*
 data class PokerGame(
     val gameName: String? = "",
     val deckType: DeckType? = null,
-    val requiresPasscode: Boolean = false,
+    var requiresPasscode: Boolean = false,
     val gameId: String? = "",
     var qrcode: String? = "",
-    val passcode: String? = "",
+    var passcode: String? = "",
     val gameUuid: String? = "",
     val createdDateTime: Date? = null,
     val startDateTime: Date? = null

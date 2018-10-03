@@ -20,6 +20,8 @@
 
     <EditText
         android:id="@+id/passcodeEditText"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_medium"
@@ -29,7 +31,9 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:hint="@string/text_passcode"
-        android:inputType="textCapCharacters" />
+        android:inputType="textCapCharacters">
+        <requestFocus />
+    </EditText>
 
     <TextView
         android:id="@+id/barcodeText"

@@ -28,9 +28,6 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
 
     lateinit var view: CreateFragment
 
-    private lateinit var createdPokerGame: PokerGame
-    private var selectedUserName: String = ""
-
     override fun onViewCreated(v: BaseFragment) {
         super.onViewCreated(v)
         view = v as CreateFragment
@@ -40,11 +37,22 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
                 onBackPressed()
             }
 
+        val passcodeChanges = view.passcodeChanges()
+            .doOnEach { event ->
+                event.value?.let { checked ->
+                    if (checked) {
+                        view.updateButtonTextPasscode()
+                    } else {
+                        view.updateButtonTextCreate()
+                    }
+                }
+            }
+
         val createFormDetails = Observables.combineLatest(
             view.deckTypeChanges(),
             view.nameChanges(),
             view.gameNameChanges(),
-            view.passcodeChanges()
+            passcodeChanges
         ) { deckType: DeckType, userName: CharSequence, gameName: CharSequence, requirePasscode: Boolean ->
             CreateDetails(deckType, userName.toString(), gameName.toString(), requirePasscode)
         }.distinctUntilChanged().doOnNext {
@@ -68,18 +76,13 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
                 when (result.type) {
                     CreatePresenter.ResultType.SUCCESS -> onCreateSuccess(result.data!!)
                     CreatePresenter.ResultType.FAILURE -> onCreateFailure()
-                    CreatePresenter.ResultType.PASSCODE -> navigator.goToCreatePasscode()
+                    CreatePresenter.ResultType.PASSCODE -> navigator.goToCreatePasscode(result.data!!)
                 }
             }, { t ->
                 throw OnErrorNotImplementedException(t)
             })
 
-        val adClosed = view.adClosed()
-            .subscribe {
-                navigator.goToPendingView(createdPokerGame, selectedUserName, true)
-            }
-
-        viewSubscriptions.addAll(gameRequests, backPresses, adClosed)
+        viewSubscriptions.addAll(gameRequests, backPresses)
     }
 
     override fun onBackPressed(): Boolean {
@@ -89,19 +92,19 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
     }
 
     private fun onCreateClicked(details: CreateDetails): Single<Result>? {
+        val game = PokerGame(details.gameName, details.deckType, details.requirePasscode)
+        val player = Player(details.userName)
+        val qrBitmap = encodeAsBitmap("{ gameName: ${details.gameName} }", BarcodeFormat.QR_CODE, 300, 300)
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        qrBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+        game.qrcode = encoded
+
         return if (details.requiresPassode()) {
-            Single.just(Result(ResultType.PASSCODE, null))
+            Single.just(Result(ResultType.PASSCODE, game))
         } else {
-            val game = PokerGame(details.gameName, details.deckType, details.requirePasscode)
-            val player = Player(details.userName)
-            val qrBitmap = encodeAsBitmap("{ gameName: ${details.gameName} }", BarcodeFormat.QR_CODE, 300, 300)
-            val byteArrayOutputStream = ByteArrayOutputStream()
-            qrBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-            val byteArray = byteArrayOutputStream.toByteArray()
-            val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
-
-            game.qrcode = encoded
-
             dm.createGame(game, player)
                 .map { pokerGame -> Result(ResultType.SUCCESS, pokerGame) }
                 .onErrorReturn { t ->
@@ -123,7 +126,6 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
         view.showDefaultErrorSnackBar()
     }
 
-    // val x = encodeAsBitmap("{}", BarcodeFormat.QR_CODE, 500, 500)
     private fun encodeAsBitmap(contents: String, format: BarcodeFormat, desiredWidth: Int, desiredHeight: Int): Bitmap {
         val hints: Hashtable<EncodeHintType, Any> = Hashtable(2)
         hints[EncodeHintType.CHARACTER_SET] = "UTF-8"

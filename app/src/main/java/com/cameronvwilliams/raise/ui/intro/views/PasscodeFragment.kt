@@ -29,7 +29,7 @@ class PasscodeFragment : BaseFragment() {
         }
 
         fun Bundle.getGameId(): String {
-            return getString(EXTRA_GAME_ID)
+            return getString(EXTRA_GAME_ID, "")
         }
 
         fun Bundle.setGameId(gameId: String) {

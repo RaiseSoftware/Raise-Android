@@ -119,7 +119,6 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .addSharedElement(gameIdEditText, "gameIdEditText")
             .addSharedElement(orDividerText, "orDividerText")
             .addSharedElement(barcodeText, "barcodeText")
-            .setReorderingAllowed(true)
             .replace(R.id.layoutRoot, joinFragment)
             .addToBackStack(null)
             .commit()
@@ -143,7 +142,6 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .addSharedElement(selectDeckText, "selectDeckText")
             .addSharedElement(fibonacciRadio, "fibonacciRadio")
             .addSharedElement(tshirtRadio, "tshirtRadio")
-            .setReorderingAllowed(true)
             .replace(R.id.layoutRoot, offlineFragment)
             .addToBackStack(null)
             .commit()
@@ -164,7 +162,6 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
 
         val t = ChangeBounds()
         t.duration = 300L
-        t.interpolator = AccelerateDecelerateInterpolator()
 
         createFragment.enterTransition = t
         createFragment.exitTransition = t
@@ -231,24 +228,24 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         })
 
         fm.beginTransaction()
-            .addSharedElement(selectDeckText, "selectDeckText")
-            .addSharedElement(fibonacciRadio, "fibonacciRadio")
-            .addSharedElement(tshirtRadio, "tshirtRadio")
-            .addSharedElement(joinForm, "joinForm")
-            .addSharedElement(userNameEditText, "userNameEditText")
-            .addSharedElement(formDivider, "formDivider")
-            .addSharedElement(gameNameText, "gameNameText")
-            .addSharedElement(requirePasscodeCheckbox, "requirePasscodeCheckbox")
-            .addSharedElement(createCardView, "createCardView")
-            .setReorderingAllowed(true)
+            .addSharedElement(selectDeckText, "qselectDeckText")
+            .addSharedElement(fibonacciRadio, "qfibonacciRadio")
+            .addSharedElement(tshirtRadio, "qtshirtRadio")
+            .addSharedElement(joinForm, "qjoinForm")
+            .addSharedElement(userNameEditText, "quserNameEditText")
+            .addSharedElement(formDivider, "qformDivider")
+            .addSharedElement(gameNameText, "qgameNameText")
+            .addSharedElement(requirePasscodeCheckbox, "qrequirePasscodeCheckbox")
+            .addSharedElement(createCardView, "qcreateCardView")
             .replace(R.id.layoutRoot, createFragment)
             .addToBackStack(null)
             .commit()
     }
 
-    fun goToCreatePasscode() {
+    fun goToCreatePasscode(game: PokerGame) {
         val fragment = CreatePasscodeFragment.newInstance()
         val bundle = Bundle()
+        bundle.putParcelable("game", game)
 
         fragment.arguments = bundle
 

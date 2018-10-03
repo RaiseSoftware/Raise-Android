@@ -25,30 +25,6 @@ class JoinFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.strong_orange)
-        (sharedElementEnterTransition as Navigator.Transition).addListener(object : Transition.TransitionListener {
-            override fun onTransitionEnd(p0: Transition) {
-
-            }
-
-            override fun onTransitionResume(p0: Transition) {
-
-            }
-
-            override fun onTransitionPause(p0: Transition) {
-
-            }
-
-            override fun onTransitionCancel(p0: Transition) {
-
-            }
-
-            override fun onTransitionStart(p0: Transition) {
-                val animator = ObjectAnimator
-                    .ofFloat(joinCardView, "radius", 0F)
-                animator.duration = 300
-                animator.start()
-            }
-        })
         return inflater.inflate(R.layout.intro_join_fragment, container, false)
     }
 
