@@ -53,6 +53,10 @@ class CreatePasscodePresenter @Inject constructor(val navigator: Navigator, val 
             .subscribe({ result ->
                 view.hideLoadingView()
                 view.enableSubmitButton()
+                when (result.type) {
+                    ResultType.SUCCESS -> onCreateSuccess(result.data!!)
+                    ResultType.FAILURE -> onCreateFailure()
+                }
             }, { t ->
                 throw OnErrorNotImplementedException(t)
             })
@@ -70,6 +74,14 @@ class CreatePasscodePresenter @Inject constructor(val navigator: Navigator, val 
                 Timber.e(t)
                 Result(ResultType.FAILURE, null)
             }
+    }
+
+    private fun onCreateSuccess(pokerGame: PokerGame) {
+        navigator.goToPendingView(pokerGame, "", true)
+    }
+
+    private fun onCreateFailure() {
+        view.hideLoadingView()
     }
 
     override fun onBackPressed(): Boolean {

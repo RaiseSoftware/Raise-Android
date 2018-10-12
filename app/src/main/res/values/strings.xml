@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="StringFormatInvalid">
     <string name="app_name">Raise</string>
     <string name="text_create_game">Create game</string>
     <string name="text_join_game">Join game</string>

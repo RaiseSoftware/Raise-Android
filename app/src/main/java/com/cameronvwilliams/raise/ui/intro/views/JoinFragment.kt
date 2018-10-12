@@ -1,16 +1,13 @@
 package com.cameronvwilliams.raise.ui.intro.views
 
-import android.animation.ObjectAnimator
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
-import androidx.transition.Transition
 import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
-import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.presenters.JoinPresenter
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.textChanges

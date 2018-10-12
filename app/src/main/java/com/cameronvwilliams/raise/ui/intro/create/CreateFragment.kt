@@ -68,37 +68,12 @@ class CreateFragment : BaseFragment() {
     fun nameChanges(): Observable<CharSequence> = userNameEditText.textChanges()
         .map { it.trim() }
 
-    fun passcodeChanges(): Observable<Boolean> = requirePasscodeCheckbox.checkedChanges()
-
-    fun showLoadingView() {
-        group.visibility = View.GONE
-        progressBar.visibility = View.VISIBLE
-    }
-
-    fun hideLoadingView() {
-        joinForm.visibility = View.VISIBLE
-        progressBar.visibility = View.GONE
-    }
-
     fun enableCreateButton() {
         createButton.isEnabled = true
     }
 
     fun disableCreateButton() {
         createButton.isEnabled = false
-    }
-
-    fun showDefaultErrorSnackBar() {
-        Snackbar.make(createGameView, getString(R.string.error_network), Snackbar.LENGTH_LONG)
-            .show()
-    }
-
-    fun updateButtonTextPasscode() {
-        createButton.setText(R.string.text_set_passcode)
-    }
-
-    fun updateButtonTextCreate() {
-        createButton.setText(R.string.text_create_game)
     }
 
     companion object {

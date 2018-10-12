@@ -32,6 +32,10 @@ class CardListAdapter(private var cards: MutableList<Card>) : RecyclerView.Adapt
         holder.bindCard(cards[position])
     }
 
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+    }
+
     fun insertCardAt(index: Int, card: Card) {
         cards[index] = card.also {
             notifyItemInserted(index)
@@ -70,7 +74,7 @@ class CardListAdapter(private var cards: MutableList<Card>) : RecyclerView.Adapt
         init {
             itemView.card
                 .clicks()
-                .subscribe {
+                .doOnNext {
                     clickSubject.onNext(layoutPosition)
                 }
         }

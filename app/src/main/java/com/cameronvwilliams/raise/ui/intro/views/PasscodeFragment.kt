@@ -28,11 +28,11 @@ class PasscodeFragment : BaseFragment() {
             return PasscodeFragment()
         }
 
-        fun Bundle.getGameId(): String {
+        fun Bundle.getGameName(): String {
             return getString(EXTRA_GAME_ID, "")
         }
 
-        fun Bundle.setGameId(gameId: String) {
+        fun Bundle.setGameName(gameId: String) {
             putString(EXTRA_GAME_ID, gameId)
         }
 
@@ -54,14 +54,14 @@ class PasscodeFragment : BaseFragment() {
         presenter.onViewCreated(this)
 
         submitButton.setOnClickListener {
-            var gameId = ""
+            var gameName = ""
             var player: Player? = null
             with(BundleOptions) {
-                gameId = arguments!!.getGameId()
+                gameName = arguments!!.getGameName()
                 player = arguments!!.getPlayer()
             }
 
-            presenter.onSubmitButtonClick(gameId, passcodeEditText.text.toString(), player!!.name)
+            presenter.onSubmitButtonClick(gameName, passcodeEditText.text.toString(), player!!.name!!)
         }
     }
 

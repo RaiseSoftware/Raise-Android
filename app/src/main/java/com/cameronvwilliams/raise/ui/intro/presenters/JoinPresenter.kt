@@ -51,18 +51,8 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
             .withLatestFrom(joinFormDetails) { _, details ->
                 details
             }
-            .flatMapSingle {
-                onJoinClicked(it)
-            }
-            .doOnEach {
-                view.showLoadingView()
-                view.disableJoinButton()
-            }
-            .subscribe({ result: Result ->
-                when (result.type) {
-                    JoinPresenter.ResultType.SUCCESS -> onJoinSuccess(result.data!!.first!!, result.data.second.name)
-                    JoinPresenter.ResultType.FAILURE -> onJoinFailure(result.throwable!!, result.data!!.second.gameId, result.data.second.name)
-                }
+            .subscribe({ details ->
+                navigator.goToPasscode(details.gameName, Player(details.name))
             }, { t ->
                 Timber.e(t)
                 throw OnErrorNotImplementedException(t)
@@ -78,8 +68,8 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
 
     private fun onJoinClicked(details: JoinDetails): Single<Result>? {
         val request = details.pokerGame?.let {
-            dm.findPokerGame(details.gameId, details.name, it.passcode)
-        } ?: dm.findPokerGame(details.gameId, details.name)
+            dm.findGame(details.name, details.pokerGame.passcode)
+        } ?: dm.findGame(details.gameName)
 
         return request.map { pokerGame ->
                 Result(ResultType.SUCCESS, Pair(pokerGame, details))
@@ -100,22 +90,12 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
     private fun onJoinFailure(t: Throwable, gameId: String, userName: String) {
         view.hideLoadingView()
         view.enableJoinButton()
-        val errorMessage = (t as RetrofitException).getErrorBodyAs(ErrorResponse::class.java)
-        when (t.kind) {
-            RetrofitException.Kind.HTTP -> {
-                when (errorMessage?.statusCode) {
-                    dm.CODE_FORBIDDEN -> navigator.goToPasscode(gameId, Player(userName))
-                    dm.CODE_NOT_FOUND -> view.showErrorSnackBar(errorMessage.message)
-                }
-            }
-            RetrofitException.Kind.NETWORK -> view.showDefaultErrorSnackBar()
-            RetrofitException.Kind.UNEXPECTED -> view.showDefaultErrorSnackBar()
+        when (t) {
+            else -> view.showDefaultErrorSnackBar()
         }
     }
 
-    private data class JoinDetails(val name: String, val gameId: String, val pokerGame: PokerGame?) {
-        private val minimumGameIdLength = 5
-
+    private data class JoinDetails(val name: String, val gameName: String, val pokerGame: PokerGame?) {
         fun hasSuccessfullyScanned(): Boolean {
             return pokerGame != null
         }
@@ -125,7 +105,7 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
                 if (name.isNotEmpty()) {
                     return true
                 }
-            } ?: if (name.isNotEmpty() && gameId.isNotEmpty() && gameId.length >= minimumGameIdLength) {
+            } ?: if (name.isNotEmpty() && gameName.isNotEmpty()) {
                 return true
             }
 

@@ -3,6 +3,8 @@ package com.cameronvwilliams.raise.ui.intro.di
 import com.cameronvwilliams.raise.ui.intro.create.CreateCardFragment
 import com.cameronvwilliams.raise.ui.intro.create.CreateFragment
 import com.cameronvwilliams.raise.ui.intro.create.CreatePasscodeFragment
+import com.cameronvwilliams.raise.ui.intro.offline.OfflineCardFragment
+import com.cameronvwilliams.raise.ui.intro.offline.OfflineFragment
 import com.cameronvwilliams.raise.ui.intro.views.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

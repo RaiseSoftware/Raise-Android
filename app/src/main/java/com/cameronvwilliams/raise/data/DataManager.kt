@@ -1,5 +1,6 @@
 package com.cameronvwilliams.raise.data
 
+import androidx.annotation.NonNull
 import androidx.core.util.Pair
 import androidx.recyclerview.widget.DiffUtil
 import com.cameronvwilliams.raise.data.local.RaisePreferences
@@ -8,6 +9,8 @@ import com.cameronvwilliams.raise.data.model.api.PokerGameBody
 import com.cameronvwilliams.raise.data.model.api.StoryBody
 import com.cameronvwilliams.raise.data.remote.RaiseAPI
 import com.cameronvwilliams.raise.data.remote.SocketAPI
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -17,7 +20,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import com.google.firebase.firestore.FirebaseFirestore
 import durdinapps.rxfirebase2.RxFirestore
-
 
 @Singleton
 class DataManager @Inject constructor(
@@ -42,6 +44,8 @@ class DataManager @Inject constructor(
     fun createGame(game: PokerGame, player: Player): Single<PokerGame> {
         val db = FirebaseFirestore.getInstance()
 
+        game.players?.add(player)
+
         return RxFirestore.addDocument(db.collection("game"), game)
             .flatMapMaybe {
                 RxFirestore.getDocument(it)
@@ -59,6 +63,26 @@ class DataManager @Inject constructor(
                 setGameToken(response.token.token)
             }
             .map{ response -> response.pokerGame }
+    }
+
+    fun findGame(name: String, passcode: String? = ""): Single<PokerGame> {
+        val db = FirebaseFirestore.getInstance()
+
+        val query = passcode?.let {
+            db.collection("game")
+                .whereEqualTo("gameName", name)
+                .whereEqualTo("passcode", passcode)
+        } ?: db.collection("game")
+                .whereEqualTo("gameName", name)
+                .whereEqualTo("passcode", passcode)
+
+        return RxFirestore.getCollection(query)
+            .map {
+                it.documents[0]
+            }
+            .flatMapSingle {
+                Single.just(it.toObject(PokerGame::class.java))
+            }
     }
 
     fun createUserStory(userStory: Story, gameUuid: String): Single<MutableList<Story>> {

@@ -37,24 +37,12 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
                 onBackPressed()
             }
 
-        val passcodeChanges = view.passcodeChanges()
-            .doOnEach { event ->
-                event.value?.let { checked ->
-                    if (checked) {
-                        view.updateButtonTextPasscode()
-                    } else {
-                        view.updateButtonTextCreate()
-                    }
-                }
-            }
-
         val createFormDetails = Observables.combineLatest(
             view.deckTypeChanges(),
             view.nameChanges(),
-            view.gameNameChanges(),
-            passcodeChanges
-        ) { deckType: DeckType, userName: CharSequence, gameName: CharSequence, requirePasscode: Boolean ->
-            CreateDetails(deckType, userName.toString(), gameName.toString(), requirePasscode)
+            view.gameNameChanges()
+        ) { deckType: DeckType, userName: CharSequence, gameName: CharSequence ->
+            CreateDetails(deckType, userName.toString(), gameName.toString())
         }.distinctUntilChanged().doOnNext {
             if (it.isValid()) {
                 view.enableCreateButton()
@@ -67,17 +55,9 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
             .withLatestFrom(createFormDetails) { _, details ->
                 details
             }
-            .doOnEach {
-                view.showLoadingView()
-                view.disableCreateButton()
-            }
             .flatMapSingle { onCreateClicked(it) }
-            .subscribe({ result: Result ->
-                when (result.type) {
-                    CreatePresenter.ResultType.SUCCESS -> onCreateSuccess(result.data!!)
-                    CreatePresenter.ResultType.FAILURE -> onCreateFailure()
-                    CreatePresenter.ResultType.PASSCODE -> navigator.goToCreatePasscode(result.data!!)
-                }
+            .subscribe({ game ->
+                navigator.goToCreatePasscode(game)
             }, { t ->
                 throw OnErrorNotImplementedException(t)
             })
@@ -91,9 +71,8 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
         return true
     }
 
-    private fun onCreateClicked(details: CreateDetails): Single<Result>? {
-        val game = PokerGame(details.gameName, details.deckType, details.requirePasscode)
-        val player = Player(details.userName)
+    private fun onCreateClicked(details: CreateDetails): Single<PokerGame> {
+        val game = PokerGame(details.gameName, details.deckType)
         val qrBitmap = encodeAsBitmap("{ gameName: ${details.gameName} }", BarcodeFormat.QR_CODE, 300, 300)
         val byteArrayOutputStream = ByteArrayOutputStream()
         qrBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
@@ -102,28 +81,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
 
         game.qrcode = encoded
 
-        return if (details.requiresPassode()) {
-            Single.just(Result(ResultType.PASSCODE, game))
-        } else {
-            dm.createGame(game, player)
-                .map { pokerGame -> Result(ResultType.SUCCESS, pokerGame) }
-                .onErrorReturn { t ->
-                    Timber.e(t)
-                    Result(ResultType.FAILURE, null)
-                }
-        }
-    }
-
-    private fun onCreateSuccess(pokerGame: PokerGame) {
-        view.hideLoadingView()
-        view.enableCreateButton()
-        navigator.goToPendingView(pokerGame, "", true)
-    }
-
-    private fun onCreateFailure() {
-        view.hideLoadingView()
-        view.enableCreateButton()
-        view.showDefaultErrorSnackBar()
+        return Single.just(game)
     }
 
     private fun encodeAsBitmap(contents: String, format: BarcodeFormat, desiredWidth: Int, desiredHeight: Int): Bitmap {
@@ -149,21 +107,9 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
         return bitmap
     }
 
-    private data class CreateDetails(val deckType: DeckType?, val userName: String, val gameName: String, val requirePasscode: Boolean) {
+    private data class CreateDetails(val deckType: DeckType?, val userName: String, val gameName: String) {
         fun isValid(): Boolean {
             return deckType != DeckType.NONE && userName.isNotEmpty() && gameName.isNotEmpty()
         }
-
-        fun requiresPassode(): Boolean {
-            return requirePasscode
-        }
-    }
-
-    private data class Result(val type: ResultType, val data: PokerGame?)
-
-    private enum class ResultType {
-        SUCCESS,
-        FAILURE,
-        PASSCODE
     }
 }

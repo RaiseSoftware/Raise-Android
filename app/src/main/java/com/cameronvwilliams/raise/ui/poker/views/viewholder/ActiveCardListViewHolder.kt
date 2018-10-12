@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.poker_active_card_row_item.view.*
 
 class ActiveCardListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bindPlayer(activeCard: ActiveCard) {
-        itemView.playerIcon.text = activeCard.player.name[0].toUpperCase().toString()
+        itemView.playerIcon.text = activeCard.player.name!![0].toUpperCase().toString()
         itemView.userName.text = activeCard.player.name
 
         activeCard.card?.let {

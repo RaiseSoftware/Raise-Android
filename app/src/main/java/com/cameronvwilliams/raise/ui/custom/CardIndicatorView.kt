@@ -88,11 +88,6 @@ class CardIndicatorView
         setCurrentItem(initialPosition)
     }
 
-    private fun buildIndicator(@ColorRes colorRes: Int, selected: Boolean) {
-        val indicator = LayoutInflater.from(context).inflate(R.layout.circle_indicator, this, false)
-        addView(indicator)
-    }
-
     private fun setCurrentItem(item: Int) {
         viewPager?.let {
             currentIndex = item

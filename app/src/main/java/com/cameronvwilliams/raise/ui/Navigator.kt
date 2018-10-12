@@ -28,6 +28,7 @@ import com.cameronvwilliams.raise.data.model.Story
 import com.cameronvwilliams.raise.ui.intro.IntroActivity
 import com.cameronvwilliams.raise.ui.intro.create.CreateFragment
 import com.cameronvwilliams.raise.ui.intro.create.CreatePasscodeFragment
+import com.cameronvwilliams.raise.ui.intro.offline.OfflineFragment
 import com.cameronvwilliams.raise.ui.intro.views.*
 import com.cameronvwilliams.raise.ui.offline.OfflineActivity
 import com.cameronvwilliams.raise.ui.offline.view.OfflineGameFragment
@@ -155,7 +156,6 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         userNameEditText: View,
         formDivider: View,
         gameNameText: View,
-        requirePasscodeCheckbox: View,
         createCardView: View
     ) {
         val createFragment = CreateFragment.newInstance()
@@ -235,7 +235,6 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .addSharedElement(userNameEditText, "quserNameEditText")
             .addSharedElement(formDivider, "qformDivider")
             .addSharedElement(gameNameText, "qgameNameText")
-            .addSharedElement(requirePasscodeCheckbox, "qrequirePasscodeCheckbox")
             .addSharedElement(createCardView, "qcreateCardView")
             .replace(R.id.layoutRoot, createFragment)
             .addToBackStack(null)
@@ -261,12 +260,12 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .commit()
     }
 
-    fun goToPasscode(gameId: String, player: Player) {
+    fun goToPasscode(gameName: String, player: Player) {
         val fragment = PasscodeFragment.newInstance()
         val bundle = Bundle()
 
         with(PasscodeFragment.BundleOptions) {
-            bundle.setGameId(gameId)
+            bundle.setGameName(gameName)
             bundle.setPlayer(player)
         }
 

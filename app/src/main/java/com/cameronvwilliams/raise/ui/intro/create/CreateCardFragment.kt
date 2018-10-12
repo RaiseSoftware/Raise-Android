@@ -41,7 +41,6 @@ class CreateCardFragment: BaseFragment() {
                 userNameEditText,
                 formDivider,
                 gameNameText,
-                requirePasscodeCheckbox,
                 createCardView
             )
         }
@@ -56,7 +55,6 @@ class CreateCardFragment: BaseFragment() {
                     userNameEditText,
                     formDivider,
                     gameNameText,
-                    requirePasscodeCheckbox,
                     createCardView
                 )
             }
@@ -72,7 +70,6 @@ class CreateCardFragment: BaseFragment() {
                     userNameEditText,
                     formDivider,
                     gameNameText,
-                    requirePasscodeCheckbox,
                     createCardView
                 )
             }
@@ -88,7 +85,6 @@ class CreateCardFragment: BaseFragment() {
                     userNameEditText,
                     formDivider,
                     gameNameText,
-                    requirePasscodeCheckbox,
                     createCardView
                 )
             }
@@ -104,24 +100,9 @@ class CreateCardFragment: BaseFragment() {
                     userNameEditText,
                     formDivider,
                     gameNameText,
-                    requirePasscodeCheckbox,
                     createCardView
                 )
             }
-        }
-
-        requirePasscodeCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            navigator.goToCreateGame(
-                selectDeckText,
-                fibonacciRadio,
-                tshirtRadio,
-                joinForm,
-                userNameEditText,
-                formDivider,
-                gameNameText,
-                requirePasscodeCheckbox,
-                createCardView
-            )
         }
     }
 

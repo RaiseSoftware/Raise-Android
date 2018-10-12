@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.cameronvwilliams.raise.ui.intro.create.CreateCardFragment
+import com.cameronvwilliams.raise.ui.intro.offline.OfflineCardFragment
 
 class IntroFragment : BaseFragment() {
 
