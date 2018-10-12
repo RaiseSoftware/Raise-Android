@@ -1,9 +1,8 @@
-package com.cameronvwilliams.analytics
+package com.cameronvwilliams.raise.util
 
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import com.google.firebase.FirebaseException
 import com.google.firebase.analytics.FirebaseAnalytics
 
 class Analytics {

@@ -1,18 +1,29 @@
 package com.cameronvwilliams.raise.ui.poker.views.viewholder
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.ActiveCard
+import com.cameronvwilliams.raise.data.model.Card
 import com.cameronvwilliams.raise.data.model.CardValue
 import kotlinx.android.synthetic.main.poker_active_card_row_item.view.*
 
 class ActiveCardListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bindPlayer(activeCard: ActiveCard) {
-        itemView.playerIcon.text = activeCard.player.name[0].toUpperCase().toString()
+        itemView.playerIcon.text = activeCard.player.name!![0].toUpperCase().toString()
         itemView.userName.text = activeCard.player.name
 
-        when (activeCard.card?.value) {
+        activeCard.card?.let {
+            if (it.faceUp != null && it.faceUp!!) {
+                setCardImage(activeCard.card)
+            } else if (it.faceUp != null && !it.faceUp!!) {
+                itemView.pokerCard.setImageResource(R.drawable.card_back)
+            }
+        }
+    }
+
+    private fun setCardImage(card: Card) {
+        when (card.value) {
             CardValue.X_SMALL -> itemView.pokerCard.setImageResource(R.drawable.card_xs)
             CardValue.SMALL -> itemView.pokerCard.setImageResource(R.drawable.card_s)
             CardValue.MEDIUM -> itemView.pokerCard.setImageResource(R.drawable.card_m)

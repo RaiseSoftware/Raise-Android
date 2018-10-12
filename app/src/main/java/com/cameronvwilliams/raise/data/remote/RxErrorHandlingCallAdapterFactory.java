@@ -1,6 +1,6 @@
 package com.cameronvwilliams.raise.data.remote;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -9,7 +9,6 @@ import java.lang.reflect.Type;
 import javax.annotation.Nullable;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
@@ -41,7 +40,7 @@ public class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
         private final Retrofit retrofit;
         private final CallAdapter<?, ?> wrapped;
 
-        public RxCallAdapterWrapper(Retrofit retrofit, CallAdapter<?, ?> wrapped) {
+        RxCallAdapterWrapper(Retrofit retrofit, CallAdapter<?, ?> wrapped) {
             this.retrofit = retrofit;
             this.wrapped = wrapped;
         }
@@ -55,7 +54,7 @@ public class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
         public Object adapt(@NonNull Call call) {
             return ((Single) wrapped.adapt(call)).onErrorResumeNext(new Function<Throwable, SingleSource>() {
                 @Override
-                public SingleSource apply(Throwable throwable) throws Exception {
+                public SingleSource apply(Throwable throwable) {
                     return Single.error(asRetrofitException(throwable));
                 }
             });

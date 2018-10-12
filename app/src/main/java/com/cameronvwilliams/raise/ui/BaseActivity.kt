@@ -2,11 +2,11 @@ package com.cameronvwilliams.raise.ui
 
 import android.app.ActivityManager.TaskDescription
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.TypedValue
 import com.cameronvwilliams.raise.R
 import dagger.android.support.DaggerAppCompatActivity
-import android.graphics.BitmapFactory
-import android.util.TypedValue
 import javax.inject.Inject
 
 abstract class BaseActivity : DaggerAppCompatActivity() {

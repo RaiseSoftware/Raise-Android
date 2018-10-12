@@ -1,29 +1,73 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
     android:orientation="vertical"
     tools:context=".ui.poker.PokerActivity">
 
     <ImageView
         android:id="@+id/selectedCard"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="108dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="@string/poker_card"
+        android:padding="0dp"
         android:visibility="invisible"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintWidth_default="percent"
-        app:layout_constraintWidth_percent=".75" />
+        app:layout_constraintWidth_max="500dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardList"
+        app:layout_constraintEnd_toEndOf="@id/flipCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.RecyclerView
+    <ImageButton
+        android:id="@+id/sendCard"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/send_card"
+        android:src="@drawable/ic_file_upload_white_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/selectedCard" />
+
+    <ImageButton
+        android:id="@+id/flipCard"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/flip_card"
+        android:src="@drawable/ic_rotate_right_white_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sendCard" />
+
+    <ImageButton
+        android:id="@+id/viewStory"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/view_story"
+        android:src="@drawable/ic_user_story_white_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flipCard" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cardList"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:clipToPadding="false"
         android:overScrollMode="never"
-        app:layout_constraintBottom_toBottomOf="@id/root" />
+        app:layout_constraintBottom_toBottomOf="@id/root"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

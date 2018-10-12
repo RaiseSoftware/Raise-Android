@@ -1,6 +1,6 @@
 package com.cameronvwilliams.raise.util
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import com.cameronvwilliams.raise.data.model.ActiveCard
 
 class ActiveCardDiffCallback(private val current: List<ActiveCard>, private val next: List<ActiveCard>) : DiffUtil.Callback() {

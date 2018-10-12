@@ -1,160 +1,189 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/createGameView"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/createCardView"
+    android:transitionName="qcreateCardView"
+    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.intro.views.CreateFragment">
+    app:cardCornerRadius="0dp"
+    app:cardBackgroundColor="@color/pistachio">
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/createGameView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/createButtonWrapper">
+        android:background="@color/pistachio"
+        android:transitionName="qcreateGameView">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/selectDeckText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/select_poker_deck_type"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_large"
+            android:transitionName="qselectDeckText"
+            app:layout_constraintBottom_toTopOf="@id/deckTypeRadioGroup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <RadioGroup
+            android:id="@+id/deckTypeRadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/userNameEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectDeckText">
 
-            <LinearLayout
-                android:id="@+id/createGameForm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/select_poker_deck_type"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/textsize_large" />
-
-                <RadioGroup
-                    android:id="@+id/deckTypeRadioGroup"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_medium"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/fibonacciRadio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
-                        android:text="@string/text_fibonacci"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/textsize_medium" />
-
-                    <RadioButton
-                        android:id="@+id/tshirtRadio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:buttonTint="@color/white"
-                        android:text="@string/text_tshirt_sizes"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/textsize_medium" />
-                </RadioGroup>
-
-                <LinearLayout
-                    android:id="@+id/joinForm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_medium"
-                    android:background="@drawable/background_white_rounded"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/userNameEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/text_enter_name"
-                        android:inputType="textCapWords"
-                        android:padding="16dp"
-                        android:textCursorDrawable="@null"
-                        android:textSize="@dimen/textsize_normal" />
-
-                    <View
-                        android:id="@+id/formDivider"
-                        android:layout_width="match_parent"
-                        android:layout_height=".5dp"
-                        android:layout_marginEnd="@dimen/margin_medium"
-                        android:layout_marginStart="@dimen/margin_medium"
-                        android:background="@color/trolley_grey" />
-
-                    <EditText
-                        android:id="@+id/gameNameText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/text_game_name"
-                        android:inputType="text"
-                        android:padding="16dp"
-                        android:textCursorDrawable="@null"
-                        android:textSize="@dimen/textsize_normal" />
-
-                </LinearLayout>
-
-                <CheckBox
-                    android:id="@+id/requirePasscodeCheckbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/textsize_medium"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:textColor="@color/white"
-                    android:buttonTint="@color/white"
-                    android:text="@string/text_require_passcode"/>
-
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyleLarge"
-                android:color="@color/white"
+            <RadioButton
+                android:id="@+id/fibonacciRadio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:visibility="gone"/>
+                android:buttonTint="@color/white"
+                android:text="@string/text_fibonacci"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_medium"
+                android:transitionName="qfibonacciRadio" />
 
+            <RadioButton
+                android:id="@+id/tshirtRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/white"
+                android:text="@string/text_tshirt_sizes"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_medium"
+                android:transitionName="qtshirtRadio" />
+        </RadioGroup>
 
-        </RelativeLayout>
+        <View
+            android:id="@+id/joinForm"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_medium"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_white_rounded"
+            android:transitionName="qjoinForm"
+            app:layout_constraintBottom_toBottomOf="@id/gameNameText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deckTypeRadioGroup" />
 
-    </ScrollView>
+        <EditText
+            android:id="@+id/userNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/text_enter_name"
+            android:inputType="textCapWords"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/textsize_normal"
+            android:transitionName="quserNameEditText"
+            app:layout_constraintBottom_toTopOf="@id/formDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/deckTypeRadioGroup" />
 
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleX="-1"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/margin_small"
-        android:background="@null"
-        android:contentDescription="@string/back_button"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_arrow_left_white_24dp" />
+        <View
+            android:id="@+id/formDivider"
+            android:layout_width="0dp"
+            android:layout_height=".5dp"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_large"
+            android:background="@color/trolley_grey"
+            android:transitionName="qformDivider"
+            app:layout_constraintBottom_toTopOf="@id/gameNameText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/userNameEditText" />
 
-    <LinearLayout
-        android:id="@+id/createButtonWrapper"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorAccent"
-        android:gravity="center"
-        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/gameNameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/text_game_name"
+            android:inputType="text"
+            android:paddingBottom="16dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/textsize_normal"
+            android:transitionName="qgameNameText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/formDivider" />
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/margin_small"
+            android:background="@null"
+            android:contentDescription="@string/back_button"
+            android:scaleType="fitCenter"
+            android:scaleX="-1"
+            android:src="@drawable/ic_close_white_24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/createButton"
             style="@style/BottomBarButton"
             android:enabled="false"
-            android:text="@string/text_create_game" />
-    </LinearLayout>
+            android:text="@string/text_set_passcode"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-</RelativeLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:color="@color/white"
+            android:visibility="gone" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="selectDeckText,deckTypeRadioGroup,joinForm,userNameEditText,formDivider,gameNameText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

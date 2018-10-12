@@ -8,12 +8,10 @@ import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseActivity
 import com.cameronvwilliams.raise.util.deeplink.AppDeepLink
 import com.cameronvwilliams.raise.util.deeplink.WebDeepLink
-import com.google.android.gms.ads.AdRequest
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
 import com.microsoft.appcenter.distribute.Distribute
-import kotlinx.android.synthetic.main.intro_activity.*
 
 open class IntroActivity : BaseActivity() {
 
@@ -21,14 +19,13 @@ open class IntroActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.intro_activity)
 
-        adView.loadAd(AdRequest.Builder().build())
         AppCenter.start(application, BuildConfig.APP_CENTER_KEY,
-                Distribute::class.java, Analytics::class.java, Crashes::class.java)
+            Distribute::class.java, Analytics::class.java, Crashes::class.java)
 
-        navigator.goToIntro()
+        savedInstanceState?.let {} ?: navigator.goToIntro(false)
 
         intent.getStringExtra("gameId")?.let {
-            navigator.goToJoinGame()
+            //navigator.goToJoinGame()
         }
     }
 

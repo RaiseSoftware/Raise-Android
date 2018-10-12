@@ -6,4 +6,7 @@
     <string name="poker_card">poker card</string>
     <string name="close_button">Close Button</string>
     <string name="settings">Settings</string>
+    <string name="send_card">Send Card</string>
+    <string name="flip_card">Flip Card</string>
+    <string name="view_story">View Story</string>
 </resources>

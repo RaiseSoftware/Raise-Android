@@ -1,28 +1,18 @@
 package com.cameronvwilliams.raise.util
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.SurfaceHolder
 import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.EditText
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.InterstitialAd
+import com.cameronvwilliams.raise.data.model.Story
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.reactivex.Observable
 
-fun EditText.onChange(cb: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-            cb(s.toString())
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-    })
+fun Any.notNull(): Boolean {
+    return this != null
 }
 
 fun SurfaceHolder.callbacks(
@@ -52,24 +42,16 @@ fun BarcodeDetector.onDetect(cb: (Detector.Detections<Barcode>) -> Unit) {
     })
 }
 
-fun <T> Gson.fromJsonArray(json: String): List<T> {
-    return this.fromJson<List<T>>(json, object : TypeToken<List<T>>() {}.type)
-}
-
-fun InterstitialAd.onAdClosed(cb: () -> Unit) {
-    this.adListener = object: AdListener() {
-        override fun onAdLoaded() {}
-
-        override fun onAdFailedToLoad(errorCode: Int) {}
-
-        override fun onAdOpened() {}
-
-        override fun onAdLeftApplication() {}
-
-        override fun onAdClosed() {
-            cb()
+fun BarcodeDetector.detections(): Observable<Detector.Detections<Barcode>> {
+    return Observable.create { observer ->
+        this.onDetect {
+            observer.onNext(it)
         }
     }
+}
+
+fun <T> Gson.fromJsonArray(json: String): List<T> {
+    return this.fromJson<List<T>>(json, object : TypeToken<List<T>>() {}.type)
 }
 
 fun <T: View> T.afterMeasured(f: T.() -> Unit) {
@@ -81,4 +63,10 @@ fun <T: View> T.afterMeasured(f: T.() -> Unit) {
             }
         }
     })
+}
+
+fun MutableList<Story>.swap(index1: Int, index2: Int) {
+    val tmp = this[index1]
+    this[index1] = this[index2]
+    this[index2] = tmp
 }

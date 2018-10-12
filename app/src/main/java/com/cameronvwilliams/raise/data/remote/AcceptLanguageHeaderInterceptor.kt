@@ -2,7 +2,7 @@ package com.cameronvwilliams.raise.data.remote
 
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.util.Locale
+import java.util.*
 
 class AcceptLanguageHeaderInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {

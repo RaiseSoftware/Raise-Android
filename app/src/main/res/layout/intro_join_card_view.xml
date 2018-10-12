@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/joinCardView"
+    android:transitionName="joinCardView"
+    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/pure_orange">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/pure_orange">
+
+        <TextView
+            android:id="@+id/fillFormText"
+            android:transitionName="fillFormText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/text_enter_name_id"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/userNameEditText"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <View
+            android:id="@+id/joinForm"
+            android:transitionName="joinForm"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_medium"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_white_rounded"
+            app:layout_constraintBottom_toTopOf="@id/orDividerText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fillFormText" />
+
+        <EditText
+            android:id="@+id/userNameEditText"
+            android:transitionName="userNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/text_enter_name"
+            android:inputType="textCapWords"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/textsize_normal"
+            app:layout_constraintBottom_toTopOf="@id/formDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fillFormText" />
+
+        <View
+            android:id="@+id/formDivider"
+            android:transitionName="formDivider"
+            android:layout_width="0dp"
+            android:layout_height=".5dp"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_large"
+            android:background="@color/trolley_grey"
+            app:layout_constraintBottom_toTopOf="@id/gameIdEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/userNameEditText" />
+
+        <EditText
+            android:id="@+id/gameIdEditText"
+            android:transitionName="gameIdEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/text_game_name"
+            android:inputType="number"
+            android:maxLength="7"
+            android:paddingBottom="16dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/textsize_normal"
+            app:layout_constraintBottom_toTopOf="@id/orDividerText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/formDivider" />
+
+        <TextView
+            android:id="@+id/orDividerText"
+            android:transitionName="orDividerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/text_or_divider"
+            android:layout_margin="@dimen/margin_small"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_normal"
+            app:layout_constraintBottom_toTopOf="@id/barcodeText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gameIdEditText" />
+
+        <TextView
+            android:id="@+id/barcodeText"
+            android:transitionName="barcodeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/text_scan_qrcode"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orDividerText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,7 +1,7 @@
 package com.cameronvwilliams.raise.ui.pending.di
 
 import android.content.Context
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.FragmentManager
 import com.cameronvwilliams.raise.di.ActivityContext
 import com.cameronvwilliams.raise.di.PerActivity
 import com.cameronvwilliams.raise.ui.Navigator
@@ -29,7 +29,7 @@ abstract class PendingModule {
         @Provides
         @PerActivity
         @JvmStatic
-        fun provideNavigator(fm: FragmentManager, @ActivityContext context: Context):
-                Navigator = Navigator(fm, context)
+        fun provideNavigator(fm: FragmentManager, @ActivityContext context: Context): Navigator =
+            Navigator(fm, context)
     }
 }

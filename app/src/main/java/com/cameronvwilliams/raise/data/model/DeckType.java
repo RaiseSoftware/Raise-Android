@@ -6,5 +6,6 @@ public enum DeckType {
     @SerializedName("fibonacci")
     FIBONACCI,
     @SerializedName("t-shirt")
-    T_SHIRT
+    T_SHIRT,
+    NONE
 }

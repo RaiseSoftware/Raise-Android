@@ -1,14 +1,20 @@
 package com.cameronvwilliams.raise
 
-import com.cameronvwilliams.analytics.Analytics
+import androidx.lifecycle.ProcessLifecycleOwner
+import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.di.DaggerRaiseComponent
 import com.cameronvwilliams.raise.di.RaiseComponent
-import com.google.android.gms.ads.MobileAds
+import com.cameronvwilliams.raise.util.Analytics
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
-import timber.log.Timber
+import com.cameronvwilliams.raise.util.AppLifeCycleObserver
+import javax.inject.Inject
+
 
 open class RaiseApplication : DaggerApplication() {
+
+    @Inject
+    lateinit var dm: DataManager
 
     private lateinit var raiseComponent: RaiseComponent
 
@@ -20,7 +26,11 @@ open class RaiseApplication : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        MobileAds.initialize(this, BuildConfig.ADMOB_APP_ID)
         Analytics.initialize(this)
+
+        val lifeCycleObserver = AppLifeCycleObserver(dm)
+        ProcessLifecycleOwner.get()
+            .lifecycle
+            .addObserver(lifeCycleObserver)
     }
 }

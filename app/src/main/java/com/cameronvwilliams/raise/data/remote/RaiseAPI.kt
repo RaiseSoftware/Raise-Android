@@ -17,7 +17,7 @@ interface RaiseAPI {
     fun createPokerGame(@Body pokerGame: PokerGameBody): Single<PokerGameResponse>
 
     @POST("user-story")
-    fun createUserStory(@Body story: StoryBody): Single<List<Story>>
+    fun createUserStory(@Body story: StoryBody): Single<MutableList<Story>>
 
     @GET("user-story")
     fun findUserStoriesForGame(@Query("gameUuid") gameUuid: String): Single<List<Story>>

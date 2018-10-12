@@ -1,20 +1,25 @@
 package com.cameronvwilliams.raise.data
 
-import android.support.v4.util.Pair
-import android.support.v7.util.DiffUtil
+import androidx.annotation.NonNull
+import androidx.core.util.Pair
+import androidx.recyclerview.widget.DiffUtil
 import com.cameronvwilliams.raise.data.local.RaisePreferences
 import com.cameronvwilliams.raise.data.model.*
 import com.cameronvwilliams.raise.data.model.api.PokerGameBody
 import com.cameronvwilliams.raise.data.model.api.StoryBody
 import com.cameronvwilliams.raise.data.remote.RaiseAPI
 import com.cameronvwilliams.raise.data.remote.SocketAPI
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import io.reactivex.Completable
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
+import com.google.firebase.firestore.FirebaseFirestore
+import durdinapps.rxfirebase2.RxFirestore
 
 @Singleton
 class DataManager @Inject constructor(
@@ -36,6 +41,20 @@ class DataManager @Inject constructor(
             .map{ response -> response.pokerGame }
     }
 
+    fun createGame(game: PokerGame, player: Player): Single<PokerGame> {
+        val db = FirebaseFirestore.getInstance()
+
+        game.players?.add(player)
+
+        return RxFirestore.addDocument(db.collection("game"), game)
+            .flatMapMaybe {
+                RxFirestore.getDocument(it)
+            }
+            .flatMapSingle {
+                Single.just(it.toObject(PokerGame::class.java))
+            }
+    }
+
     fun findPokerGame(gameId: String, name: String, passcode: String? = null): Single<PokerGame> {
         return raiseAPI.findPokerGame(gameId, name, passcode)
             .subscribeOn(Schedulers.io())
@@ -46,7 +65,27 @@ class DataManager @Inject constructor(
             .map{ response -> response.pokerGame }
     }
 
-    fun createUserStory(userStory: Story, gameUuid: String): Single<List<Story>> {
+    fun findGame(name: String, passcode: String? = ""): Single<PokerGame> {
+        val db = FirebaseFirestore.getInstance()
+
+        val query = passcode?.let {
+            db.collection("game")
+                .whereEqualTo("gameName", name)
+                .whereEqualTo("passcode", passcode)
+        } ?: db.collection("game")
+                .whereEqualTo("gameName", name)
+                .whereEqualTo("passcode", passcode)
+
+        return RxFirestore.getCollection(query)
+            .map {
+                it.documents[0]
+            }
+            .flatMapSingle {
+                Single.just(it.toObject(PokerGame::class.java))
+            }
+    }
+
+    fun createUserStory(userStory: Story, gameUuid: String): Single<MutableList<Story>> {
         return raiseAPI.createUserStory(StoryBody(userStory, gameUuid))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -78,19 +117,19 @@ class DataManager @Inject constructor(
         socketClient.sendSubmitCardMessage(card)
     }
 
-    fun getPlayersInGame(): Observable<Pair<List<Player>, DiffUtil.DiffResult>> {
+    fun getPlayersInGame(): Flowable<Pair<List<Player>, DiffUtil.DiffResult>> {
         return socketClient.onPlayersInGameChange()
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getActivePlayersCards(): Observable<Pair<List<ActiveCard>, DiffUtil.DiffResult>> {
+    fun getActivePlayersCards(): Flowable<Pair<List<ActiveCard>, DiffUtil.DiffResult>> {
         return socketClient.onActiveCardSetChange()
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getGameStart(): Observable<String> {
+    fun getGameStart(): Completable {
         return socketClient.onGameStart()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -98,6 +137,12 @@ class DataManager @Inject constructor(
 
     fun getGameEnd(): Completable {
         return socketClient.onGameEnd()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getUserStoriesForGame(): Flowable<Story> {
+        return socketClient.onNextUserStory()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

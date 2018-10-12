@@ -2,17 +2,19 @@ package com.cameronvwilliams.raise.data.model
 
 import android.os.Parcel
 import com.cameronvwilliams.raise.util.*
-import java.util.Date
+import java.util.*
 
 data class PokerGame(
     val gameName: String? = "",
     val deckType: DeckType? = null,
-    val requiresPasscode: Boolean = false,
+    var requiresPasscode: Boolean = false,
     val gameId: String? = "",
-    val qrcode: String? = "",
-    val passcode: String? = "",
+    var qrcode: String? = "",
+    var passcode: String? = "",
     val gameUuid: String? = "",
-    val createdDateTime: Date? = null
+    val createdDateTime: Date? = null,
+    val startDateTime: Date? = null,
+    val players: MutableList<Player>? = mutableListOf()
 ) : Parcelable {
 
     private constructor(parcel: Parcel) : this(
@@ -23,7 +25,11 @@ data class PokerGame(
         qrcode = parcel.readString(),
         passcode = parcel.readString(),
         gameUuid = parcel.readString(),
-        createdDateTime = parcel.readDate()
+        createdDateTime = parcel.readDate(),
+        startDateTime = parcel.readDate(),
+        players = ArrayList<Player>().apply {
+            parcel.readList(this, Player::class.java.classLoader)
+        }
     )
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
@@ -35,6 +41,8 @@ data class PokerGame(
         writeString(passcode)
         writeString(gameUuid)
         writeDate(createdDateTime)
+        writeDate(startDateTime)
+        writeList(players)
     }
 
     override fun describeContents(): Int = 0

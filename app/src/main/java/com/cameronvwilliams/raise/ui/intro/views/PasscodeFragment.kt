@@ -1,22 +1,24 @@
 package com.cameronvwilliams.raise.ui.intro.views
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
+import com.google.android.material.snackbar.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.ui.BaseFragment
-import com.cameronvwilliams.raise.ui.intro.IntroContract
-import com.cameronvwilliams.raise.util.onChange
+import com.cameronvwilliams.raise.ui.intro.presenters.PasscodePresenter
+import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding2.widget.textChanges
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.intro_passcode_fragment.*
 import javax.inject.Inject
 
-class PasscodeFragment : BaseFragment(), IntroContract.PasscodeViewActions {
+class PasscodeFragment : BaseFragment() {
 
     @Inject
-    lateinit var actions: IntroContract.PasscodeUserActions
+    lateinit var presenter: PasscodePresenter
 
     companion object BundleOptions {
         private const val EXTRA_GAME_ID = "game_id"
@@ -26,11 +28,11 @@ class PasscodeFragment : BaseFragment(), IntroContract.PasscodeViewActions {
             return PasscodeFragment()
         }
 
-        fun Bundle.getGameId(): String {
-            return getString(EXTRA_GAME_ID)
+        fun Bundle.getGameName(): String {
+            return getString(EXTRA_GAME_ID, "")
         }
 
-        fun Bundle.setGameId(gameId: String) {
+        fun Bundle.setGameName(gameId: String) {
             putString(EXTRA_GAME_ID, gameId)
         }
 
@@ -43,57 +45,66 @@ class PasscodeFragment : BaseFragment(), IntroContract.PasscodeViewActions {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.intro_passcode_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        actions.onViewCreated(this)
-
-        backButton.setOnClickListener {
-            activity!!.onBackPressed()
-        }
-
-        passcodeEditText.onChange { s -> actions.onPasscodeTextChanged(s) }
+        presenter.onViewCreated(this)
 
         submitButton.setOnClickListener {
-            var gameId = ""
+            var gameName = ""
             var player: Player? = null
             with(BundleOptions) {
-                gameId = arguments!!.getGameId()
+                gameName = arguments!!.getGameName()
                 player = arguments!!.getPlayer()
             }
 
-            actions.onSubmitButtonClick(gameId, passcodeEditText.text.toString(), player!!.name)
+            presenter.onSubmitButtonClick(gameName, passcodeEditText.text.toString(), player!!.name!!)
         }
     }
 
-    override fun enableSubmitButton() {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.onViewDestroyed()
+    }
+
+    override fun onBackPressed(): Boolean {
+        return presenter.onBackPressed()
+    }
+
+    fun backPresses(): Observable<Unit> = backButton.clicks()
+
+    fun passocdeChanges(): Observable<CharSequence> = passcodeEditText.textChanges()
+        .map { it.trim() }
+
+    fun qrCodeScanRequests(): Observable<Unit> = barcodeText.clicks().share()
+
+    fun submitRequests(): Observable<Unit> = submitButton.clicks()
+
+    fun enableSubmitButton() {
         submitButton.isEnabled = true
     }
 
-    override fun disableSubmitButton() {
+    fun disableSubmitButton() {
         submitButton.isEnabled = false
     }
 
-    override fun showLoadingView() {
+    fun showLoadingView() {
 
     }
 
-    override fun hideLoadingView() {
+    fun hideLoadingView() {
 
     }
 
-    override fun showDefaultErrorSnackBar() {
+    fun showDefaultErrorSnackBar() {
         Snackbar.make(passcodeView, getString(R.string.error_try_again), Snackbar.LENGTH_LONG)
             .show()
     }
 
-    override fun showErrorSnackBar(message: String) {
+    fun showErrorSnackBar(message: String) {
         Snackbar.make(passcodeView, message, Snackbar.LENGTH_LONG).show()
     }
 }

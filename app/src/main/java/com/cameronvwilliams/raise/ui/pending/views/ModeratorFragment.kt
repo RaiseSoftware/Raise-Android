@@ -2,19 +2,23 @@ package com.cameronvwilliams.raise.ui.pending.views
 
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.PokerGame
-import com.cameronvwilliams.raise.data.model.Story
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.pending.views.adapter.StoryListAdapter
+import com.cameronvwilliams.raise.ui.pending.views.adapter.StoryListAdapter.SimpleItemTouchHelperCallback
+import com.jakewharton.rxbinding2.view.clicks
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.pending_moderator_fragment.*
 import javax.inject.Inject
+
 
 class ModeratorFragment : BaseFragment() {
 
@@ -23,31 +27,34 @@ class ModeratorFragment : BaseFragment() {
 
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: StoryListAdapter
+    private lateinit var touchHelper: ItemTouchHelper
 
-    override fun onCreateView(
-        inflater: LayoutInflater?, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         layoutManager = LinearLayoutManager(activity)
-        adapter = StoryListAdapter(listOf())
+        adapter = StoryListAdapter(mutableListOf())
+        val callback = SimpleItemTouchHelperCallback(adapter)
+        touchHelper = ItemTouchHelper(callback)
 
-        return inflater!!.inflate(R.layout.pending_moderator_fragment, container, false)
+        return inflater.inflate(R.layout.pending_moderator_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         storyList.layoutManager = layoutManager
         storyList.adapter = adapter
+        touchHelper.attachToRecyclerView(storyList)
 
         addStoryButton.setOnClickListener {
-            navigator.showCreateStory(arguments?.get("game") as PokerGame, { items ->
+            navigator.showCreateStory(arguments?.get("game") as PokerGame) { items ->
                 if (items.isNotEmpty()) {
-                    heading.background = ContextCompat.getDrawable(context, R.drawable.background_grey_top_rounded)
+                    heading.background = ContextCompat.getDrawable(context!!, R.drawable.background_grey_top_rounded)
                 }
-                adapter.updateStoryList(items)
-            })
+                adapter.onItemAdded(items.first())
+            }
         }
     }
+
+    fun addStoryClicks(): Observable<Unit> = addStoryButton.clicks()
 
     companion object {
         fun newInstance(game: PokerGame): ModeratorFragment {

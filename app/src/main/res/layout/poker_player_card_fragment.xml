@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.poker.views.PlayerCardFragment">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activeCardList"
         android:overScrollMode="never"
         android:layout_width="match_parent"

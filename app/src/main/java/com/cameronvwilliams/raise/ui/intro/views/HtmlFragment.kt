@@ -11,33 +11,39 @@ import android.view.ViewGroup
 
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
+import com.cameronvwilliams.raise.ui.intro.presenters.HtmlPresenter
+import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.intro_html_fragment.*
+import javax.inject.Inject
 
 class HtmlFragment : BaseFragment() {
 
+    @Inject
+    lateinit var presenter: HtmlPresenter
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.intro_html_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.intro_html_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.onViewCreated(this, arguments?.getDocName())
+
         toolbar.title = getString(R.string.text_about)
         toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_arrow_back_white_24dp, null)
-        toolbar.setNavigationOnClickListener {
-            activity.supportFragmentManager.popBackStackImmediate()
-        }
-
-        var docName = ""
-        with(BundleOptions) {
-            docName = arguments!!.getDocName()
-        }
-
-        when(docName) {
-            "privacy_policy" -> initializeText("Privacy Policy", Html.fromHtml(getString(R.string.html_privacy_policy)))
-            "terms_and_conditions" -> initializeText("Terms and Conditions", Html.fromHtml(getString(R.string.html_terms_conditions)))
-        }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.onViewDestroyed()
+    }
+
+    fun toolBarNavigationClicks(): Observable<Unit> = toolbar.navigationClicks()
+
+    fun setPrivacyPolicy() = initializeText("Privacy Policy", Html.fromHtml(getString(R.string.html_privacy_policy)))
+
+    fun setTerms() = initializeText("Terms and Conditions", Html.fromHtml(getString(R.string.html_terms_conditions)))
 
     private fun initializeText(title: String, body: Spanned) {
         toolbar.title = title
@@ -45,18 +51,26 @@ class HtmlFragment : BaseFragment() {
         text.movementMethod = LinkMovementMethod.getInstance()
     }
 
-    companion object BundleOptions {
+    companion object {
         private const val EXTRA_DOC_NAME = "doc_name"
+        const val EXTRA_PRIVACY_POLICY = "privacy_policy"
+        const val EXTRA_TERMS = "terms_and_conditions"
 
-        fun newInstance(): HtmlFragment {
-            return HtmlFragment()
+        fun newInstance(docName: String): HtmlFragment {
+            val b = Bundle()
+            b.setDocName(docName)
+
+            val fragment = HtmlFragment()
+            fragment.arguments = b
+
+            return fragment
         }
 
         fun Bundle.getDocName(): String {
             return getString(EXTRA_DOC_NAME)
         }
 
-        fun Bundle.setDocName(docName: String) {
+        private fun Bundle.setDocName(docName: String) {
             putString(EXTRA_DOC_NAME, docName)
         }
     }

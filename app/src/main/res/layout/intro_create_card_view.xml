@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/createCardView"
+    android:transitionName="qcreateCardView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/pistachio">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/createGameView"
+        android:transitionName="qcreateGameView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/pistachio">
+
+        <TextView
+            android:id="@+id/selectDeckText"
+            android:transitionName="qselectDeckText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/select_poker_deck_type"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/deckTypeRadioGroup"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <RadioGroup
+            android:id="@+id/deckTypeRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selectDeckText"
+            app:layout_constraintBottom_toTopOf="@id/userNameEditText">
+
+            <RadioButton
+                android:id="@+id/fibonacciRadio"
+                android:transitionName="qfibonacciRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/white"
+                android:saveEnabled="false"
+                android:text="@string/text_fibonacci"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_medium" />
+
+            <RadioButton
+                android:id="@+id/tshirtRadio"
+                android:transitionName="qtshirtRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/white"
+                android:saveEnabled="false"
+                android:text="@string/text_tshirt_sizes"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_medium" />
+        </RadioGroup>
+
+        <View
+            android:id="@+id/joinForm"
+            android:transitionName="qjoinForm"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_medium"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_white_rounded"
+            app:layout_constraintBottom_toTopOf="@id/placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deckTypeRadioGroup" />
+
+        <EditText
+            android:id="@+id/userNameEditText"
+            android:transitionName="quserNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/text_enter_name"
+            android:inputType="textCapWords"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/textsize_normal"
+            app:layout_constraintBottom_toTopOf="@id/formDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/deckTypeRadioGroup" />
+
+        <View
+            android:id="@+id/formDivider"
+            android:transitionName="qformDivider"
+            android:layout_width="0dp"
+            android:layout_height=".5dp"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_large"
+            android:background="@color/trolley_grey"
+            app:layout_constraintBottom_toTopOf="@id/gameNameText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/userNameEditText" />
+
+        <EditText
+            android:id="@+id/gameNameText"
+            android:transitionName="qgameNameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/text_game_name"
+            android:inputType="text"
+            android:paddingBottom="16dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/textsize_normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/formDivider" />
+
+        <View
+            android:id="@+id/placeholder"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gameNameText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

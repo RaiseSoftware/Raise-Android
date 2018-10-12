@@ -3,7 +3,7 @@ package com.cameronvwilliams.raise.ui.pending.views
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -108,7 +108,10 @@ class PendingFragment : BaseFragment() {
         closeButton.setOnClickListener {
             closeButtonDialog.show()
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         dm.joinGame()
 
         subscriptions.add(dm.getPlayersInGame()
@@ -119,7 +122,12 @@ class PendingFragment : BaseFragment() {
         subscriptions.add(dm.getGameStart()
             .subscribe {
                 navigator.goToPokerGameView(pokerGame)
-                activity.finish()
+                activity?.finish()
+            })
+
+        subscriptions.add(dm.getGameEnd()
+            .subscribe {
+                activity?.finish()
             })
     }
 
@@ -140,26 +148,26 @@ class PendingFragment : BaseFragment() {
                 closeButtonDialog = AlertDialog.Builder(activityContext)
                     .setTitle(getString(R.string.text_end_game))
                     .setMessage(getString(R.string.text_sure_end))
-                    .setPositiveButton(android.R.string.yes, { dialog, _ ->
+                    .setPositiveButton(android.R.string.yes) { dialog, _ ->
                         dm.endGame()
-                    })
-                    .setNegativeButton(android.R.string.no, { dialog, _ ->
+                    }
+                    .setNegativeButton(android.R.string.no) { dialog, _ ->
                         dialog.dismiss()
-                    })
+                    }
                     .create()
             }
             false -> {
                 closeButtonDialog = AlertDialog.Builder(activityContext)
                     .setTitle(getString(R.string.text_exit_game))
                     .setMessage(getString(R.string.text_sure_exit))
-                    .setPositiveButton(android.R.string.yes, { dialog, _ ->
+                    .setPositiveButton(android.R.string.yes) { dialog, _ ->
                         dm.leaveGame()
                         dialog.dismiss()
-                        activity.finish()
-                    })
-                    .setNegativeButton(android.R.string.no, { dialog, _ ->
+                        activity!!.finish()
+                    }
+                    .setNegativeButton(android.R.string.no) { dialog, _ ->
                         dialog.dismiss()
-                    })
+                    }
                     .create()
             }
         }

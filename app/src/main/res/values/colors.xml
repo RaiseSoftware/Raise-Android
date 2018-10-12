@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="introColorPrimary">@color/pistachio</color>
-    <color name="introColorPrimaryDark">@color/strong_pistachio</color>
+    <color name="introColorPrimary">@color/black_russian</color>
+    <color name="introColorPrimaryDark">@color/blacker_russian</color>
     <color name="pendingColorPrimary">@color/pure_orange</color>
     <color name="pendingColorPrimaryDark">@color/strong_orange</color>
     <color name="pokerColorPrimary">@color/light_blue</color>
@@ -17,6 +17,9 @@
 
     <color name="pistachio">#76c23b</color>
     <color name="strong_pistachio">#63b42d</color>
+
+    <color name="black_russian">#131822</color>
+    <color name="blacker_russian">#0e1119</color>
 
     <color name="pure_orange">#ff9800</color>
     <color name="strong_orange">#ff8500</color>

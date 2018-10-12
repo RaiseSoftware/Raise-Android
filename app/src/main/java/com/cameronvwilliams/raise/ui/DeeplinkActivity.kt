@@ -1,7 +1,7 @@
-package com.cameronvwilliams.raise
+package com.cameronvwilliams.raise.ui
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.deeplinkdispatch.DeepLinkHandler
 import com.cameronvwilliams.raise.util.deeplink.RaiseDeepLinkModule
 import com.cameronvwilliams.raise.util.deeplink.RaiseDeepLinkModuleLoader

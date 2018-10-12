@@ -1,71 +1,68 @@
 package com.cameronvwilliams.raise.ui.intro.presenters
 
+import android.graphics.Bitmap
+import android.util.Base64
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.DeckType
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
+import com.cameronvwilliams.raise.ui.BaseFragment
+import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
-import com.cameronvwilliams.raise.ui.intro.IntroContract
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import com.cameronvwilliams.raise.ui.intro.create.CreateFragment
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.MultiFormatWriter
+import io.reactivex.Single
+import io.reactivex.exceptions.OnErrorNotImplementedException
+import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.withLatestFrom
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
+import java.util.*
 
-class CreatePresenter(private val navigator: Navigator, private val dm: DataManager) :
-    IntroContract.CreateUserActions {
+private const val WHITE = -0x1
+private const val BLACK = -0x1000000
 
-    override lateinit var actions: IntroContract.CreateViewActions
+class CreatePresenter(private val navigator: Navigator, private val dm: DataManager): BasePresenter() {
 
-    private val disposables = CompositeDisposable()
-    private lateinit var createdPokerGame: PokerGame
-    private lateinit var selectedUserName: String
+    lateinit var view: CreateFragment
 
-    override fun onViewDestroyed() {
-        disposables.clear()
-    }
+    override fun onViewCreated(v: BaseFragment) {
+        super.onViewCreated(v)
+        view = v as CreateFragment
 
-    override fun onCreateButtonClicked(gameName: String, userName: String, selectedDeckType: Int, requirePasscode: Boolean) {
-        val deckType: DeckType = when (selectedDeckType) {
-            actions.RADIO_FIBONACCI -> DeckType.FIBONACCI
-            actions.RADIO_T_SHIRT -> DeckType.T_SHIRT
-            else -> throw IllegalArgumentException()
+        val backPresses = view.backPresses()
+            .subscribe {
+                onBackPressed()
+            }
+
+        val createFormDetails = Observables.combineLatest(
+            view.deckTypeChanges(),
+            view.nameChanges(),
+            view.gameNameChanges()
+        ) { deckType: DeckType, userName: CharSequence, gameName: CharSequence ->
+            CreateDetails(deckType, userName.toString(), gameName.toString())
+        }.distinctUntilChanged().doOnNext {
+            if (it.isValid()) {
+                view.enableCreateButton()
+            } else {
+                view.disableCreateButton()
+            }
         }
 
-        val disposable: Disposable = dm.createPokerGame(PokerGame(gameName, deckType, requirePasscode), Player(userName))
-            .doOnSubscribe {
-                actions.showLoadingView()
+        val gameRequests = view.createGameRequests()
+            .withLatestFrom(createFormDetails) { _, details ->
+                details
             }
-            .subscribe({ pokerGame ->
-                actions.hideLoadingView()
-                if (actions.shouldShowInterstitialAd()) {
-                    createdPokerGame = pokerGame
-                    selectedUserName = userName
-                    actions.showInterstitialAd()
-                } else {
-                    navigator.goToPendingView(pokerGame, userName, true)
-                }
-            }, { e ->
-                Timber.e(e)
-                actions.hideLoadingView()
-                actions.showDefaultErrorSnackBar()
+            .flatMapSingle { onCreateClicked(it) }
+            .subscribe({ game ->
+                navigator.goToCreatePasscode(game)
+            }, { t ->
+                throw OnErrorNotImplementedException(t)
             })
 
-        disposables.add(disposable)
-    }
-
-    override fun onGameNameTextChanged(text: String, radioButtonSelected: Boolean) {
-        if (!text.isEmpty() && radioButtonSelected) {
-            actions.enableCreateButton()
-        } else {
-            actions.disableCreateButton()
-        }
-    }
-
-    override fun onDeckTypeRadioButtonChecked(text: String, radioButtonSelected: Boolean) {
-        if (!text.isEmpty() && radioButtonSelected) {
-            actions.enableCreateButton()
-        } else {
-            actions.disableCreateButton()
-        }
+        viewSubscriptions.addAll(gameRequests, backPresses)
     }
 
     override fun onBackPressed(): Boolean {
@@ -74,7 +71,45 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
         return true
     }
 
-    override fun onAdClosed() {
-        navigator.goToPendingView(createdPokerGame, selectedUserName, true)
+    private fun onCreateClicked(details: CreateDetails): Single<PokerGame> {
+        val game = PokerGame(details.gameName, details.deckType)
+        val qrBitmap = encodeAsBitmap("{ gameName: ${details.gameName} }", BarcodeFormat.QR_CODE, 300, 300)
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        qrBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        val encoded = Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+        game.qrcode = encoded
+
+        return Single.just(game)
+    }
+
+    private fun encodeAsBitmap(contents: String, format: BarcodeFormat, desiredWidth: Int, desiredHeight: Int): Bitmap {
+        val hints: Hashtable<EncodeHintType, Any> = Hashtable(2)
+        hints[EncodeHintType.CHARACTER_SET] = "UTF-8"
+        hints[EncodeHintType.MARGIN] = 1
+
+        val writer = MultiFormatWriter()
+        val result = writer.encode(contents, format, desiredWidth, desiredHeight, hints)
+        val width = result.width
+        val height = result.height
+        val pixels = IntArray(width * height)
+        // All are 0, or black, by default
+        for (y in 0 until height) {
+            val offset = y * width
+            for (x in 0 until width) {
+                pixels[offset + x] = if (result.get(x, y)) BLACK else WHITE
+            }
+        }
+
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        bitmap.setPixels(pixels, 0, width, 0, 0, width, height)
+        return bitmap
+    }
+
+    private data class CreateDetails(val deckType: DeckType?, val userName: String, val gameName: String) {
+        fun isValid(): Boolean {
+            return deckType != DeckType.NONE && userName.isNotEmpty() && gameName.isNotEmpty()
+        }
     }
 }

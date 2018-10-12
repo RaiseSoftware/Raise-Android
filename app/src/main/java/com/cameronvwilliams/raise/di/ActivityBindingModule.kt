@@ -3,6 +3,9 @@ package com.cameronvwilliams.raise.di
 import com.cameronvwilliams.raise.ui.intro.IntroActivity
 import com.cameronvwilliams.raise.ui.intro.di.IntroFragmentProvider
 import com.cameronvwilliams.raise.ui.intro.di.IntroModule
+import com.cameronvwilliams.raise.ui.offline.OfflineActivity
+import com.cameronvwilliams.raise.ui.offline.di.OfflineFragmentProvider
+import com.cameronvwilliams.raise.ui.offline.di.OfflineModule
 import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.ui.pending.di.PendingFragmentProvider
 import com.cameronvwilliams.raise.ui.pending.di.PendingModule
@@ -34,4 +37,8 @@ abstract class ActivityBindingModule {
     @PerActivity
     @ContributesAndroidInjector(modules = [ScannerModule::class, ScannerFragmentProvider::class])
     internal abstract fun scannerActivity(): ScannerActivity
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = [OfflineModule::class, OfflineFragmentProvider::class])
+    internal abstract fun offlineActivity(): OfflineActivity
 }

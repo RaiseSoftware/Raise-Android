@@ -1,21 +1,31 @@
 package com.cameronvwilliams.raise.ui.intro.presenters
 
+import com.cameronvwilliams.raise.ui.BaseFragment
+import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
-import com.cameronvwilliams.raise.ui.intro.IntroContract
+import com.cameronvwilliams.raise.ui.intro.views.IntroFragment
 
-class IntroPresenter(private val navigator: Navigator) : IntroContract.IntroUserActions {
+class IntroPresenter(private val navigator: Navigator): BasePresenter() {
 
-    override lateinit var actions: IntroContract.IntroViewActions
+    lateinit var view: IntroFragment
 
-    override fun onCreateButtonClicked() {
-        navigator.goToCreateGame()
-    }
+    override fun onViewCreated(v: BaseFragment) {
+        super.onViewCreated(v)
+        view = v as IntroFragment
 
-    override fun onJoinButtonClicked() {
-        navigator.goToJoinGame()
-    }
+//        viewSubscriptions.add(view.createButtonClicks()
+//            .subscribe {
+//                navigator.goToCreateGame()
+//            })
+//
+//        viewSubscriptions.add(view.joinButtonClicks()
+//            .subscribe {
+//                navigator.goToJoinGame()
+//            })
 
-    override fun onSettingsButtonClicked() {
-        navigator.goToSettings()
+        viewSubscriptions.add(view.settingsButtonClicks()
+            .subscribe {
+                navigator.goToSettings()
+            })
     }
 }

@@ -1,6 +1,6 @@
 package com.cameronvwilliams.raise.ui.pending.views.adapter
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
@@ -13,12 +13,12 @@ class PlayerListAdapter(private var list: List<Player>) :
         return list.size
     }
 
-    override fun onBindViewHolder(holder: PlayerListViewHolder?, position: Int) {
-        holder?.bindPlayer(list[position])
+    override fun onBindViewHolder(holder: PlayerListViewHolder, position: Int) {
+        holder.bindPlayer(list[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): PlayerListViewHolder {
-        val view = LayoutInflater.from(parent?.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayerListViewHolder {
+        val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.pending_player_row_item, parent, false)
 
         return PlayerListViewHolder(view)
