@@ -201,12 +201,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
     })
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.1'
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
-    implementation "com.github.rogerhu.DeepLinkDispatch:deeplinkdispatch:maven-SNAPSHOT"
-    kapt "com.github.rogerhu.DeepLinkDispatch:deeplinkdispatch-processor:maven-SNAPSHOT"
+    implementation 'com.airbnb:deeplinkdispatch:4.1.0'
+    kapt 'com.airbnb:deeplinkdispatch-processor:4.1.0'
 }
 
 task copyTestClasses(type: Copy) {
