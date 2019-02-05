@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/createCardView"
     android:transitionName="qcreateCardView"
-    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:cardCornerRadius="0dp"
@@ -81,7 +80,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/background_white_rounded"
             android:transitionName="qjoinForm"
-            app:layout_constraintBottom_toBottomOf="@id/gameNameText"
+            app:layout_constraintBottom_toTopOf="@id/placeholder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/deckTypeRadioGroup" />
@@ -138,10 +137,23 @@
             android:textCursorDrawable="@null"
             android:textSize="@dimen/textsize_normal"
             android:transitionName="qgameNameText"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/createButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/formDivider" />
+
+        <View
+            android:id="@+id/placeholder"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@id/createButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gameNameText" />
 
         <ImageButton
             android:id="@+id/backButton"
@@ -166,24 +178,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:color="@color/white"
-            android:visibility="gone" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="selectDeckText,deckTypeRadioGroup,joinForm,userNameEditText,formDivider,gameNameText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

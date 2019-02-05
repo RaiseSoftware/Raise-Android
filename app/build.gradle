@@ -113,8 +113,8 @@ jacoco {
 dependencies {
     def retrofitVersion = '2.4.0'
     def okhttpVersion = '3.10.0'
-    def playVisionVersion = '15.0.2'
-    def fbCoreVersion = '16.0.1'
+    def playVisionVersion = '17.0.2'
+    def fbCoreVersion = '16.0.6'
     def gsonVersion = '2.8.2'
     def daggerVersion = '2.16'
     def rxjavaVersion = '2.1.5'
@@ -125,7 +125,7 @@ dependencies {
     def permissionDispatcherVersion = '3.1.0'
 
     //Support Libraries
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
@@ -143,8 +143,9 @@ dependencies {
 
     // Firebase
     implementation "com.google.firebase:firebase-core:$fbCoreVersion"
-    implementation 'com.google.firebase:firebase-firestore:17.1.0'
-    implementation 'com.github.FrangSierra:RxFirebase:1.5.0'
+    implementation 'com.google.firebase:firebase-firestore:17.1.5'
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.github.FrangSierra:RxFirebase:1.5.6'
 
     // App Center
     implementation "com.microsoft.appcenter:appcenter-distribute:$appCenterSdkVersion"
@@ -193,6 +194,11 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.1.1'
     implementation 'com.jakewharton.rxbinding2:rxbinding-design:2.1.1'
 
+    implementation 'com.evernote:android-state:1.4.1'
+    kapt 'com.evernote:android-state-processor:1.4.1'
+
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
+
     //Testing Libs
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.18.3'
@@ -201,12 +207,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
     })
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0'
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
-    implementation 'com.airbnb:deeplinkdispatch:4.1.0'
-    kapt 'com.airbnb:deeplinkdispatch-processor:4.1.0'
+    implementation "com.github.rogerhu.DeepLinkDispatch:deeplinkdispatch:maven-SNAPSHOT"
+    kapt "com.github.rogerhu.DeepLinkDispatch:deeplinkdispatch-processor:maven-SNAPSHOT"
 }
 
 task copyTestClasses(type: Copy) {

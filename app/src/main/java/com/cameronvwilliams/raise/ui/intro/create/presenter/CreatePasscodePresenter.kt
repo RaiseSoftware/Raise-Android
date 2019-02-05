@@ -66,9 +66,8 @@ class CreatePasscodePresenter @Inject constructor(val navigator: Navigator, val 
 
     private fun onCreateClicked(details: String): Single<Result>? {
         pokerGame.passcode = details
-        pokerGame.requiresPasscode = true
 
-        return dm.createGame(pokerGame, player)
+        return dm.createGame(pokerGame)
             .map { pokerGame -> Result(ResultType.SUCCESS, pokerGame) }
             .onErrorReturn { t ->
                 Timber.e(t)

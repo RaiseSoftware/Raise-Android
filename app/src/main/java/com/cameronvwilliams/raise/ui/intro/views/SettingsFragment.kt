@@ -25,8 +25,6 @@ class SettingsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.onViewCreated(this)
-        toolbar.title = getString(R.string.settings)
-        toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_arrow_back_white_24dp, null)
     }
 
     override fun onDestroyView() {
@@ -43,8 +41,6 @@ class SettingsFragment : BaseFragment() {
     fun shareClicks(): Observable<Unit> = shareRow.clicks()
 
     fun feedbackClicks(): Observable<Unit> = feedbackRow.clicks()
-
-    fun toolBarNavigationClicks(): Observable<Unit> = toolbar.navigationClicks()
 
     companion object {
         fun newInstance(): SettingsFragment {

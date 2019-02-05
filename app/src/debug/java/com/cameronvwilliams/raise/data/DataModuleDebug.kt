@@ -6,6 +6,9 @@ import com.cameronvwilliams.raise.BuildConfig
 import com.cameronvwilliams.raise.data.remote.*
 import com.cameronvwilliams.raise.di.ApplicationContext
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -26,6 +29,23 @@ abstract class DataModuleDebug {
                 .addInterceptor(AcceptLanguageHeaderInterceptor())
                 .addNetworkInterceptor(StethoInterceptor())
                 .build()
+
+        @Provides
+        @Singleton
+        @JvmStatic
+        fun provideFirebaseDatabase(): FirebaseFirestore {
+            val firestore = FirebaseFirestore.getInstance()
+            val settings = FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build()
+            firestore.firestoreSettings = settings
+            return firestore
+        }
+
+        @Provides
+        @Singleton
+        @JvmStatic
+        fun provideFirebaseAuth() = FirebaseAuth.getInstance()
 
         @Provides
         @Singleton

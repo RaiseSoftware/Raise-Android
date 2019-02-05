@@ -16,8 +16,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
+import com.cameronvwilliams.raise.ui.custom.RoundBottomSheetDialogFragment
 import com.cameronvwilliams.raise.ui.intro.create.CreateCardFragment
-import com.cameronvwilliams.raise.ui.intro.offline.OfflineCardFragment
+import com.cameronvwilliams.raise.ui.offline.view.OfflineCardFragment
 
 class IntroFragment : BaseFragment() {
 
@@ -78,6 +79,11 @@ class IntroFragment : BaseFragment() {
     }
 
     fun settingsButtonClicks(): Observable<Unit> = settingsButton.clicks()
+
+    fun showSettingsDialog() {
+        val menuFragment = RoundBottomSheetDialogFragment()
+        menuFragment.show(activity?.supportFragmentManager, menuFragment.tag)
+    }
 
     private class GameCardsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 

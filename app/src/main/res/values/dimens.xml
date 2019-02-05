@@ -19,4 +19,8 @@
     <dimen name="textsize_large">24sp</dimen>
 
     <dimen name="text_button_size">14sp</dimen>
+
+    <dimen name="bottom_sheet_corner_radius">16dp</dimen>
+    <dimen name="bottom_sheet_top_padding">8dp</dimen>
+
 </resources>

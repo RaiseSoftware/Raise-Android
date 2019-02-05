@@ -53,14 +53,14 @@ class CreateStoryFragment : BaseFragment() {
 
         addStoryButton.setOnClickListener {
             val story = Story(titleEditText.text.toString().trim())
-            dm.createUserStory(story, pokerGame.gameUuid!!)
-                .subscribe({ list ->
-                    val cb = arguments?.get("cb") as (MutableList<Story>) -> Unit
-                    cb(list)
-                    navigator.goBack()
-                }, { error ->
-                    Timber.e(error)
-                })
+//            dm.createUserStory(story, pokerGame.gameUuid!!)
+//                .subscribe({ list ->
+//                    val cb = arguments?.get("cb") as (MutableList<Story>) -> Unit
+//                    cb(list)
+//                    navigator.goBack()
+//                }, { error ->
+//                    Timber.e(error)
+//                })
         }
     }
 

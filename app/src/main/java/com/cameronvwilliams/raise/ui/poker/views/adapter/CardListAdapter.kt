@@ -1,6 +1,6 @@
 package com.cameronvwilliams.raise.ui.poker.views.adapter
 
-import androidx.recyclerview.widget.DiffUtil
+import android.os.Parcel
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +8,15 @@ import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.Card
 import com.cameronvwilliams.raise.data.model.CardValue
-import com.jakewharton.rxbinding2.view.clicks
+import com.cameronvwilliams.raise.util.Parcelable
+import com.cameronvwilliams.raise.util.parcelableCreator
+import com.cameronvwilliams.raise.util.readEnum
+import com.cameronvwilliams.raise.util.writeEnum
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.poker_card_list_item.view.*
 
-class CardListAdapter(private var cards: MutableList<Card>) : RecyclerView.Adapter<CardListAdapter.CardListViewHolder>() {
+class CardListAdapter(private val cards: ArrayList<CardListItem>) : RecyclerView.Adapter<CardListAdapter.CardListViewHolder>() {
 
     private val clickSubject = PublishSubject.create<Int>()
 
@@ -32,55 +35,49 @@ class CardListAdapter(private var cards: MutableList<Card>) : RecyclerView.Adapt
         holder.bindCard(cards[position])
     }
 
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-    }
-
-    fun insertCardAt(index: Int, card: Card) {
-        cards[index] = card.also {
-            notifyItemInserted(index)
-        }
-    }
-
-    fun removeCardAt(index: Int): Card {
-        return cards.removeAt(index).also {
-            notifyItemRemoved(index)
-        }
-    }
-
-    fun updateList(newList: MutableList<Card>) {
-        val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(object: DiffUtil.Callback() {
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return cards[oldItemPosition].value == newList[newItemPosition].value
-            }
-
-            override fun getOldListSize() = cards.size
-
-
-            override fun getNewListSize() = newList.size
-
-            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return cards[oldItemPosition] == newList[newItemPosition]
-            }
-        })
-
-        result.dispatchUpdatesTo(this)
-        cards = newList
-    }
-
     fun cardClicks(): Observable<Int> = clickSubject
+
+    fun selectCard(index: Int) {
+        cards[index].state = CardState.SELECTED
+        notifyItemChanged(index)
+    }
+
+    fun unselectCard(index: Int) {
+        cards[index].state = CardState.UNSELECTED
+        notifyItemChanged(index)
+    }
+
+    class CardListItem(val card: Card, var state: CardState): Parcelable {
+        private constructor(parcel: Parcel) : this(
+            card = parcel.readParcelable<Card>(Card::class.java.classLoader)!!,
+            state = parcel.readEnum<CardState>()!!
+        )
+
+        override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+            writeParcelable(card, flags)
+            writeEnum(state)
+        }
+
+        companion object {
+            @JvmField
+            val CREATOR = parcelableCreator(::CardListItem)
+        }
+
+    }
+
+    enum class CardState {
+        SELECTED, UNSELECTED
+    }
 
     inner class CardListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
-            itemView.card
-                .clicks()
-                .doOnNext {
-                    clickSubject.onNext(layoutPosition)
-                }
+            itemView.card.setOnClickListener {
+                clickSubject.onNext(layoutPosition)
+            }
         }
 
-        fun bindCard(card: Card) {
-            when (card.value) {
+        fun bindCard(item: CardListItem) {
+            when (item.card.value) {
                 CardValue.X_SMALL -> itemView.card.setImageResource(R.drawable.card_xs)
                 CardValue.SMALL -> itemView.card.setImageResource(R.drawable.card_s)
                 CardValue.MEDIUM -> itemView.card.setImageResource(R.drawable.card_m)
@@ -100,6 +97,11 @@ class CardListAdapter(private var cards: MutableList<Card>) : RecyclerView.Adapt
                 CardValue.INFINITY -> itemView.card.setImageResource(R.drawable.card_infinity)
                 CardValue.QUESTION_MARK -> itemView.card.setImageResource(R.drawable.card_question)
                 CardValue.COFFEE -> itemView.card.setImageResource(R.drawable.card_coffee)
+            }
+
+            when (item.state) {
+                CardState.SELECTED -> itemView.card.alpha = .3f
+                CardState.UNSELECTED -> itemView.card.alpha = 1f
             }
         }
     }

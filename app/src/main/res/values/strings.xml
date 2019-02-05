@@ -48,9 +48,9 @@
     <string name="text_set_passcode">Set Passcode</string>
 
     <string-array name="text_deck_types">
-       <item>Standard</item>
-       <item>Fibonacci</item>
-       <item>T-Shirt</item>
-   </string-array>
+        <item>Fibonacci</item>
+        <item>T-Shirt</item>
+        <item>Standard</item>
+    </string-array>
 
 </resources>

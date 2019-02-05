@@ -1,16 +1,14 @@
 package com.cameronvwilliams.raise.data
 
-import androidx.annotation.NonNull
 import androidx.core.util.Pair
 import androidx.recyclerview.widget.DiffUtil
 import com.cameronvwilliams.raise.data.local.RaisePreferences
 import com.cameronvwilliams.raise.data.model.*
-import com.cameronvwilliams.raise.data.model.api.PokerGameBody
-import com.cameronvwilliams.raise.data.model.api.StoryBody
-import com.cameronvwilliams.raise.data.remote.RaiseAPI
+import com.cameronvwilliams.raise.data.remote.AuthService
 import com.cameronvwilliams.raise.data.remote.SocketAPI
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import durdinapps.rxfirebase2.RxFirestore
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -18,87 +16,66 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
-import com.google.firebase.firestore.FirebaseFirestore
-import durdinapps.rxfirebase2.RxFirestore
 
 @Singleton
 class DataManager @Inject constructor(
-    private val raiseAPI: RaiseAPI,
+    private val db: FirebaseFirestore,
+    private val authService: AuthService,
     private val socketClient: SocketAPI,
     private val raisePreferences: RaisePreferences
 ) {
 
-    val CODE_FORBIDDEN = 403
-    val CODE_NOT_FOUND = 404
+    fun signIn() = authService.signInAnonymously()
 
-    fun createPokerGame(game: PokerGame, player: Player): Single<PokerGame> {
-        return raiseAPI.createPokerGame(PokerGameBody(game, player))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSuccess { response ->
-                setGameToken(response.token.token)
-            }
-            .map{ response -> response.pokerGame }
+    fun getUserId() = authService.getUserId()
+
+    fun setOfflineDeckType(deckType: DeckType) {
+        raisePreferences.setDeckType(deckType)
     }
 
-    fun createGame(game: PokerGame, player: Player): Single<PokerGame> {
-        val db = FirebaseFirestore.getInstance()
+    fun getOfflineDeckType() = raisePreferences.getDeckType()
 
-        game.players?.add(player)
+    fun offlineDeckType() = raisePreferences.getDeckTypeObservable()
 
+    fun createGame(game: PokerGame): Single<PokerGame> {
         return RxFirestore.addDocument(db.collection("game"), game)
             .flatMapMaybe {
                 RxFirestore.getDocument(it)
             }
             .flatMapSingle {
-                Single.just(it.toObject(PokerGame::class.java))
+                Single.just(it.toObject(PokerGame::class.java)?.withId(it.id))
             }
-    }
-
-    fun findPokerGame(gameId: String, name: String, passcode: String? = null): Single<PokerGame> {
-        return raiseAPI.findPokerGame(gameId, name, passcode)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSuccess { response ->
-                setGameToken(response.token.token)
-            }
-            .map{ response -> response.pokerGame }
     }
 
     fun findGame(name: String, passcode: String? = ""): Single<PokerGame> {
-        val db = FirebaseFirestore.getInstance()
-
         val query = passcode?.let {
             db.collection("game")
                 .whereEqualTo("gameName", name)
                 .whereEqualTo("passcode", passcode)
         } ?: db.collection("game")
-                .whereEqualTo("gameName", name)
-                .whereEqualTo("passcode", passcode)
+            .whereEqualTo("gameName", name)
+            .whereEqualTo("passcode", passcode)
 
         return RxFirestore.getCollection(query)
-            .map {
-                it.documents[0]
+            .flatMapSingle {
+                Single.just(it.documents[0])
+            }
+            .flatMapMaybe {
+                RxFirestore.getDocument(it.reference)
             }
             .flatMapSingle {
-                Single.just(it.toObject(PokerGame::class.java))
+                Single.just(it.toObject(PokerGame::class.java)?.withId(it.id))
             }
     }
 
-    fun createUserStory(userStory: Story, gameUuid: String): Single<MutableList<Story>> {
-        return raiseAPI.createUserStory(StoryBody(userStory, gameUuid))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
+    fun joinGame(uid: String, player: Player): Completable {
+        val docRef = db.collection("game").document(uid)
+        val updateMap = HashMap<String, Any>()
+        updateMap["uid"] = player.uid!!
+        updateMap["name"] = player.name!!
+        updateMap["roles"] = player.roles
 
-    fun findUserStoriesForGame(gameUuid: String): Single<List<Story>> {
-        return raiseAPI.findUserStoriesForGame(gameUuid)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun joinGame() {
-        socketClient.connect(getGameToken())
+        return RxFirestore.updateDocument(docRef, "players",  FieldValue.arrayUnion(updateMap))
     }
 
     fun leaveGame() {
@@ -106,6 +83,7 @@ class DataManager @Inject constructor(
     }
 
     fun startGame() {
+
         socketClient.sendStartGameMessage()
     }
 
@@ -147,7 +125,7 @@ class DataManager @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun getFibonacciCards(): MutableList<Card> {
+    fun getFibonacciCards(): ArrayList<Card> {
         return arrayListOf(
             Card(DeckType.FIBONACCI, CardValue.ZERO),
             Card(DeckType.FIBONACCI, CardValue.ONE_HALF),
@@ -166,7 +144,7 @@ class DataManager @Inject constructor(
         )
     }
 
-    fun getTShirtCards(): MutableList<Card> {
+    fun getTShirtCards(): ArrayList<Card> {
         return arrayListOf(
             Card(DeckType.T_SHIRT, CardValue.X_SMALL),
             Card(DeckType.T_SHIRT, CardValue.SMALL),
@@ -177,8 +155,4 @@ class DataManager @Inject constructor(
             Card(DeckType.T_SHIRT, CardValue.COFFEE)
         )
     }
-
-    private fun setGameToken(token: String) = raisePreferences.setCurrentGameToken(token)
-
-    private fun getGameToken(): String = raisePreferences.getCurrentGameToken()
 }

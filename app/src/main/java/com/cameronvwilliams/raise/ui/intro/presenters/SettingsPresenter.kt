@@ -13,11 +13,6 @@ class SettingsPresenter(private val navigator: Navigator): BasePresenter() {
         super.onViewCreated(v)
         view = v as SettingsFragment
 
-        val navigationClicks = view.toolBarNavigationClicks()
-            .subscribe {
-                navigator.goBack()
-            }
-
         val aboutClicks = view.aboutClicks()
             .subscribe {
                 navigator.goToAbout()
@@ -33,7 +28,7 @@ class SettingsPresenter(private val navigator: Navigator): BasePresenter() {
                 navigator.goToShareRaise()
             }
 
-        viewSubscriptions.addAll(aboutClicks, feedbackClicks, shareClicks, navigationClicks)
+        viewSubscriptions.addAll(aboutClicks, feedbackClicks, shareClicks)
     }
 
     override fun onBackPressed(): Boolean {

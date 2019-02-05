@@ -52,7 +52,7 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
                 details
             }
             .subscribe({ details ->
-                navigator.goToPasscode(details.gameName, Player(details.name))
+                navigator.goToPasscode(details.gameName, Player(dm.getUserId(), details.name, arrayListOf()))
             }, { t ->
                 Timber.e(t)
                 throw OnErrorNotImplementedException(t)

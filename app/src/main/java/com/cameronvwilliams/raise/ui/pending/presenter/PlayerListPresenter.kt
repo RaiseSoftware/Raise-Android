@@ -13,10 +13,10 @@ class PlayerListPresenter(private val dm: DataManager): BasePresenter() {
         super.onViewCreated(v)
         view = v as PlayerListFragment
 
-        dm.getPlayersInGame()
-            .subscribe { result ->
-                view.updatePlayerList(result)
-            }
+//        dm.getPlayersInGame()
+//            .subscribe { result ->
+//                view.updatePlayerList(result)
+//            }
     }
 
     override fun onBackPressed(): Boolean {

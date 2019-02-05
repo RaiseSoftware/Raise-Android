@@ -28,7 +28,7 @@ class CreatePasscodeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter.onViewCreated(this, arguments?.get("game") as PokerGame, Player(""))
+        presenter.onViewCreated(this, arguments?.get("game") as PokerGame, arguments?.get("player") as Player)
     }
 
     fun passcodeChanges(): Observable<CharSequence> = passcodeEditText.textChanges()
@@ -57,7 +57,14 @@ class CreatePasscodeFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance(): CreatePasscodeFragment =
-            CreatePasscodeFragment()
+        fun newInstance(game: PokerGame, player: Player): CreatePasscodeFragment {
+            val fragment = CreatePasscodeFragment()
+            val bundle = Bundle()
+            bundle.putParcelable("game", game)
+            bundle.putParcelable("player", player)
+
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 }

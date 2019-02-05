@@ -5,6 +5,7 @@ import androidx.transition.ChangeBounds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.BounceInterpolator
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.Navigator
@@ -22,15 +23,6 @@ class JoinCardFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val t = ChangeBounds()
-        t.duration = 300L
-
-        parentFragment?.enterTransition = t
-        enterTransition = t
-
-        parentFragment?.exitTransition = t
-        exitTransition = t
 
         joinCardView.setOnClickListener {
             navigator.goToJoinGame(

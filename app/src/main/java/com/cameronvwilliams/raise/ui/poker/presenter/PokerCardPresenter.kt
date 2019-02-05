@@ -1,6 +1,7 @@
 package com.cameronvwilliams.raise.ui.poker.presenter
 
 import com.cameronvwilliams.raise.data.DataManager
+import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.poker.views.PokerCardFragment
@@ -23,6 +24,6 @@ class PokerCardPresenter(val dm: DataManager) : BasePresenter() {
     }
 
     fun onResume() {
-        dm.joinGame()
+        dm.joinGame("", Player())
     }
 }

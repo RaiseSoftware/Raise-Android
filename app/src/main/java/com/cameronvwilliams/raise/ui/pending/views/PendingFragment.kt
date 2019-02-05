@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
+import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.di.ActivityContext
 import com.cameronvwilliams.raise.ui.BaseFragment
@@ -112,23 +113,25 @@ class PendingFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        dm.joinGame()
+        dm.joinGame(pokerGame.uid!!, Player(dm.getUserId(), name = userName))
+            .subscribe()
 
-        subscriptions.add(dm.getPlayersInGame()
-            .subscribe { result ->
-                startButton.isEnabled = result.first!!.isNotEmpty()
-            })
 
-        subscriptions.add(dm.getGameStart()
-            .subscribe {
-                navigator.goToPokerGameView(pokerGame)
-                activity?.finish()
-            })
-
-        subscriptions.add(dm.getGameEnd()
-            .subscribe {
-                activity?.finish()
-            })
+//        subscriptions.add(dm.getPlayersInGame()
+//            .subscribe { result ->
+//                startButton.isEnabled = result.first!!.isNotEmpty()
+//            })
+//
+//        subscriptions.add(dm.getGameStart()
+//            .subscribe {
+//                navigator.goToPokerGameView(pokerGame)
+//                activity?.finish()
+//            })
+//
+//        subscriptions.add(dm.getGameEnd()
+//            .subscribe {
+//                activity?.finish()
+//            })
     }
 
     override fun onDestroyView() {

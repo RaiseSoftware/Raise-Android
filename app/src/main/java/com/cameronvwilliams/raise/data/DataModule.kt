@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import com.cameronvwilliams.raise.BuildConfig
 import com.cameronvwilliams.raise.data.remote.*
 import com.cameronvwilliams.raise.di.ApplicationContext
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -12,6 +14,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+
+
 
 @Module
 abstract class DataModule {
@@ -24,6 +29,23 @@ abstract class DataModule {
         fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(AcceptLanguageHeaderInterceptor())
                 .build()
+
+        @Provides
+        @Singleton
+        @JvmStatic
+        fun provideFirebaseDatabase(): FirebaseFirestore {
+            val firestore = FirebaseFirestore.getInstance()
+            val settings = FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build()
+            firestore.firestoreSettings = settings
+            return firestore
+        }
+
+        @Provides
+        @Singleton
+        @JvmStatic
+        fun provideFirebaseAuth() = FirebaseAuth.getInstance()
 
         @Provides
         @Singleton

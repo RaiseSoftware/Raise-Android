@@ -55,6 +55,9 @@ class PasscodePresenter(private val navigator: Navigator, private val dm: DataMa
             .doOnSubscribe {
                 view.showLoadingView()
             }
+//            .flatMapCompletable { game ->
+//                dm.joinGame(game.id)
+//            }
             .subscribe({ pokerGame ->
                 navigator.goToPendingView(pokerGame, userName, false)
                 view.hideLoadingView()

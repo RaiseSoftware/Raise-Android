@@ -46,9 +46,9 @@ class CreateFragment : BaseFragment() {
         return presenter.onBackPressed()
     }
 
-    fun createGameRequests(): Observable<Unit> = createButton.clicks()
+    fun createGameRequests() = createButton.clicks()
 
-    fun backPresses(): Observable<Unit> = backButton.clicks()
+    fun backPresses() = backButton.clicks()
 
     fun deckTypeChanges(): Observable<DeckType> = deckTypeRadioGroup.checkedChanges()
         .map { index: Int ->

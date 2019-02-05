@@ -1,4 +1,4 @@
-package com.cameronvwilliams.raise.ui.intro.offline
+package com.cameronvwilliams.raise.ui.offline.view
 
 import android.os.Bundle
 import androidx.transition.ChangeBounds
@@ -31,8 +31,6 @@ class OfflineCardFragment: BaseFragment() {
 
         parentFragment?.exitTransition = t
         exitTransition = t
-
-        tshirtRadio.isChecked = true
 
         offlineCardView.setOnClickListener {
             navigator.goToOffline(offlineCardView, selectDeckText, fibonacciRadio, tshirtRadio)

@@ -132,7 +132,6 @@ class ScannerFragment : BaseFragment() {
 
     fun sendPokerGame(game: PokerGame) {
         val returnIntent = Intent()
-        returnIntent.putExtra("POKER_GAME_ID", game.gameId)
         returnIntent.putExtra("POKER_GAME_PASSCODE", game.passcode)
         activity?.setResult(Activity.RESULT_OK, returnIntent)
         activity?.finish()
