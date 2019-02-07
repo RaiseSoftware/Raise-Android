@@ -51,6 +51,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        debug {
+            java.srcDirs = ['src/debug/java']
+            manifest.srcFile 'src/debug/AndroidManifest.xml'
+        }
+    }
     testOptions {
         unitTests {
             all {
