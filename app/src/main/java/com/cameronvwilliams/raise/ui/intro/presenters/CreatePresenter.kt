@@ -18,7 +18,6 @@ import io.reactivex.Single
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.withLatestFrom
-import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.util.*
 

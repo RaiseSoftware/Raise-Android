@@ -1,16 +1,13 @@
 package com.cameronvwilliams.raise.ui.intro.presenters
 
 import com.cameronvwilliams.raise.data.DataManager
-import com.cameronvwilliams.raise.data.model.ErrorResponse
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.data.model.Role
-import com.cameronvwilliams.raise.data.remote.RetrofitException
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.views.JoinFragment
-import io.reactivex.Single
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.withLatestFrom

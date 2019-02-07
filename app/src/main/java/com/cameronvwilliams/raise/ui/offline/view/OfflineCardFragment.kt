@@ -1,14 +1,14 @@
 package com.cameronvwilliams.raise.ui.offline.view
 
 import android.os.Bundle
-import androidx.transition.ChangeBounds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.transition.ChangeBounds
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
-import kotlinx.android.synthetic.main.intro_offline_card_view.*
 import com.cameronvwilliams.raise.ui.Navigator
+import kotlinx.android.synthetic.main.intro_offline_card_view.*
 import javax.inject.Inject
 
 class OfflineCardFragment: BaseFragment() {

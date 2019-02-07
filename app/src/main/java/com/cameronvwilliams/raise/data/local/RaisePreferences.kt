@@ -2,10 +2,10 @@ package com.cameronvwilliams.raise.data.local
 
 import android.content.SharedPreferences
 import com.cameronvwilliams.raise.data.model.DeckType
-import javax.inject.Inject
-import javax.inject.Singleton
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import io.reactivex.Observable
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
 const val TOKEN_KEY: String = "GAME_TOKEN_KEY"

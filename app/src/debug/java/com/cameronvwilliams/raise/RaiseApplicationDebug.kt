@@ -1,6 +1,6 @@
 package com.cameronvwilliams.raise
 
-import com.cameronvwilliams.raise.di.DaggerRaiseComponentDebug
+import com.cameronvwilliams.raise.di.DaggerRaiseComponent
 import com.facebook.stetho.Stetho
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
@@ -10,7 +10,7 @@ import timber.log.Timber.DebugTree
 
 class RaiseApplicationDebug: RaiseApplication() {
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerRaiseComponentDebug.builder().application(this).build()
+        return DaggerRaiseComponent.builder().application(this).build()
     }
 
     override fun onCreate() {

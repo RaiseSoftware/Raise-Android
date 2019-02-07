@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.fragment.app.FragmentManager
 import com.cameronvwilliams.raise.di.ActivityContext
 import com.cameronvwilliams.raise.di.PerActivity
-import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.MainActivity
+import com.cameronvwilliams.raise.ui.Navigator
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

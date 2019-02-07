@@ -6,7 +6,6 @@ import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.offline.view.OfflineGameFragment
-import com.cameronvwilliams.raise.ui.offline.view.OfflineGameFragment.BundleOptions.getDeckType
 import com.cameronvwilliams.raise.ui.poker.views.adapter.CardListAdapter
 import com.cameronvwilliams.raise.util.whenNull
 import io.reactivex.rxkotlin.plusAssign

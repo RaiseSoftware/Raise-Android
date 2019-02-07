@@ -9,7 +9,6 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.cameronvwilliams.raise.BuildConfig.BASE_URL
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseFragment

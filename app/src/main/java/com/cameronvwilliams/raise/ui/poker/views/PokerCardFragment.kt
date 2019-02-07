@@ -1,18 +1,15 @@
 package com.cameronvwilliams.raise.ui.poker.views
 
 import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.os.Bundle
-import androidx.viewpager.widget.ViewPager
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.DecelerateInterpolator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.Card

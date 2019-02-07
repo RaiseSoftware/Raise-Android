@@ -3,12 +3,11 @@ package com.cameronvwilliams.raise.ui.intro.di
 import com.cameronvwilliams.raise.ui.intro.create.CreateCardFragment
 import com.cameronvwilliams.raise.ui.intro.create.CreateFragment
 import com.cameronvwilliams.raise.ui.intro.create.CreatePasscodeFragment
+import com.cameronvwilliams.raise.ui.intro.views.*
 import com.cameronvwilliams.raise.ui.offline.view.OfflineCardFragment
 import com.cameronvwilliams.raise.ui.offline.view.OfflineFragment
-import com.cameronvwilliams.raise.ui.intro.views.*
 import com.cameronvwilliams.raise.ui.offline.view.OfflineGameFragment
 import com.cameronvwilliams.raise.ui.offline.view.OfflineSettingsFragment
-import com.cameronvwilliams.raise.ui.pending.di.PendingFragmentModule
 import com.cameronvwilliams.raise.ui.pending.views.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

@@ -8,11 +8,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.di.ActivityContext
@@ -24,6 +23,7 @@ import com.cameronvwilliams.raise.util.detections
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.scanner_fragment.*
 import permissions.dispatcher.*

@@ -1,25 +1,20 @@
 package com.cameronvwilliams.raise.ui.intro.create
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.DeckType
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.intro.presenters.CreatePresenter
-import io.reactivex.Observable
-import kotlinx.android.synthetic.main.intro_create_fragment.*
-import javax.inject.Inject
-import androidx.transition.Transition
-import com.cameronvwilliams.raise.ui.Navigator
-import android.animation.ObjectAnimator
-import androidx.transition.ChangeBounds
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.checkedChanges
 import com.jakewharton.rxbinding2.widget.textChanges
+import io.reactivex.Observable
+import kotlinx.android.synthetic.main.intro_create_fragment.*
+import javax.inject.Inject
 
 
 class CreateFragment : BaseFragment() {

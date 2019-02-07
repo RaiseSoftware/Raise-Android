@@ -1,7 +1,10 @@
 package com.cameronvwilliams.raise.data.model
 
 import android.os.Parcel
-import com.cameronvwilliams.raise.util.*
+import com.cameronvwilliams.raise.util.Parcelable
+import com.cameronvwilliams.raise.util.parcelableCreator
+import com.cameronvwilliams.raise.util.readEnum
+import com.cameronvwilliams.raise.util.writeEnum
 
 data class Card(
     private val type: DeckType,

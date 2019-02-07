@@ -1,10 +1,10 @@
 package com.cameronvwilliams.raise.ui.pending.views.adapter
 
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.Story
 import com.cameronvwilliams.raise.ui.pending.views.viewholder.StoryListViewHolder

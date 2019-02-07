@@ -5,17 +5,13 @@ import androidx.recyclerview.widget.DiffUtil
 import com.cameronvwilliams.raise.data.local.RaisePreferences
 import com.cameronvwilliams.raise.data.model.*
 import com.cameronvwilliams.raise.data.remote.AuthService
-import com.cameronvwilliams.raise.data.remote.SocketAPI
 import com.cameronvwilliams.raise.util.PlayerDiffCallback
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import durdinapps.rxfirebase2.RxFirestore
-import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,7 +19,6 @@ import javax.inject.Singleton
 class DataManager @Inject constructor(
     private val db: FirebaseFirestore,
     private val authService: AuthService,
-    private val socketClient: SocketAPI,
     private val raisePreferences: RaisePreferences
 ) {
 
@@ -99,15 +94,15 @@ class DataManager @Inject constructor(
     }
 
     fun startGame() {
-        socketClient.sendStartGameMessage()
+        TODO()
     }
 
     fun endGame() {
-        socketClient.sendEndGameMessage()
+        TODO()
     }
 
     fun submitCard(card: Card) {
-        socketClient.sendSubmitCardMessage(card)
+        TODO()
     }
 
     fun getPlayersInGame(uid: String): Flowable<Pair<List<Player>, DiffUtil.DiffResult>> {
@@ -132,27 +127,19 @@ class DataManager @Inject constructor(
     }
 
     fun getActivePlayersCards(): Flowable<Pair<List<ActiveCard>, DiffUtil.DiffResult>> {
-        return socketClient.onActiveCardSetChange()
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
+        TODO()
     }
 
     fun getGameStart(): Completable {
-        return socketClient.onGameStart()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        TODO()
     }
 
     fun getGameEnd(): Completable {
-        return socketClient.onGameEnd()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        TODO()
     }
 
     fun getUserStoriesForGame(): Flowable<Story> {
-        return socketClient.onNextUserStory()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        TODO()
     }
 
     fun getFibonacciCards(): ArrayList<Card> {

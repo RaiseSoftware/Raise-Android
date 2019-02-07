@@ -1,10 +1,8 @@
 package com.cameronvwilliams.raise.ui.intro.presenters
 
 import com.cameronvwilliams.raise.data.DataManager
-import com.cameronvwilliams.raise.data.model.ErrorResponse
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
-import com.cameronvwilliams.raise.data.remote.RetrofitException
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator

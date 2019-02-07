@@ -3,10 +3,10 @@ package com.cameronvwilliams.raise.ui.poker.views
 
 import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.PokerGame

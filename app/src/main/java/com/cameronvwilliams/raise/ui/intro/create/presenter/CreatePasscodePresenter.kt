@@ -7,7 +7,6 @@ import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.create.CreatePasscodeFragment
-import com.cameronvwilliams.raise.ui.intro.presenters.CreatePresenter
 import io.reactivex.Single
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.rxkotlin.withLatestFrom

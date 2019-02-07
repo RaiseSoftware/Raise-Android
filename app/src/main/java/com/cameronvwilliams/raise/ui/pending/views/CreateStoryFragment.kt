@@ -1,11 +1,10 @@
 package com.cameronvwilliams.raise.ui.pending.views
 
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.core.content.ContextCompat
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.PokerGame
@@ -15,7 +14,6 @@ import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.ui.poker.PokerActivity
 import kotlinx.android.synthetic.main.pending_create_story_fragment.*
-import timber.log.Timber
 import java.io.Serializable
 import javax.inject.Inject
 

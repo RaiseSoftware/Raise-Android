@@ -1,6 +1,9 @@
 package com.cameronvwilliams.raise.ui.pending.di
 
-import com.cameronvwilliams.raise.ui.pending.views.*
+import com.cameronvwilliams.raise.ui.pending.views.CreateStoryFragment
+import com.cameronvwilliams.raise.ui.pending.views.ModeratorFragment
+import com.cameronvwilliams.raise.ui.pending.views.PlayerListFragment
+import com.cameronvwilliams.raise.ui.pending.views.PokerInfoFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

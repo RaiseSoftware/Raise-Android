@@ -1,7 +1,6 @@
 package com.cameronvwilliams.raise.ui.intro.views
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.intro.presenters.PasscodePresenter
+import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding2.view.clicks
 import com.jakewharton.rxbinding2.widget.textChanges
 import io.reactivex.Observable

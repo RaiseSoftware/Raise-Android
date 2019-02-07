@@ -13,10 +13,7 @@ import androidx.annotation.LayoutRes
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.custom.RoundBottomSheetDialogFragment
 import com.cameronvwilliams.raise.ui.offline.presenter.OfflineSettingsPresenter
-import com.jakewharton.rxbinding2.widget.itemClicks
 import com.jakewharton.rxbinding2.widget.itemSelections
-import com.jakewharton.rxbinding2.widget.selection
-import com.jakewharton.rxbinding2.widget.selectionEvents
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.deck_type_spinner_item.view.*
