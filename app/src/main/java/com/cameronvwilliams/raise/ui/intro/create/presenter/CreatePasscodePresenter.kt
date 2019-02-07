@@ -54,7 +54,7 @@ class CreatePasscodePresenter @Inject constructor(val navigator: Navigator, val 
                 view.hideLoadingView()
                 view.enableSubmitButton()
                 when (result.type) {
-                    ResultType.SUCCESS -> onCreateSuccess(result.data!!)
+                    ResultType.SUCCESS -> onCreateSuccess(result.data!!, p)
                     ResultType.FAILURE -> onCreateFailure()
                 }
             }, { t ->
@@ -75,8 +75,8 @@ class CreatePasscodePresenter @Inject constructor(val navigator: Navigator, val 
             }
     }
 
-    private fun onCreateSuccess(pokerGame: PokerGame) {
-        navigator.goToPendingView(pokerGame, "", true)
+    private fun onCreateSuccess(pokerGame: PokerGame, player: Player) {
+        navigator.goToPending(pokerGame, player)
     }
 
     private fun onCreateFailure() {

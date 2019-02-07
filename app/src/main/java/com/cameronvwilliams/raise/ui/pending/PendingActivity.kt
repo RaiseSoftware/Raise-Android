@@ -47,7 +47,7 @@ class PendingActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pending_activity)
         with(PendingActivity.IntentOptions) {
-            navigator.goToPending(intent.getPokerGame(), intent.getUserName(), intent.getModeratorMode())
+            // navigator.goToPending(intent.getPokerGame(), intent.getUserName(), intent.getModeratorMode())
         }
     }
 }

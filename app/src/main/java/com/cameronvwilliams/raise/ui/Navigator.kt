@@ -19,6 +19,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
+import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
 import com.cameronvwilliams.raise.BuildConfig
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.DeckType
@@ -51,22 +52,13 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         fm.popBackStack()
     }
 
+    fun goBackToIntro() {
+        fm.popBackStack("joinGame", POP_BACK_STACK_INCLUSIVE)
+    }
+
     fun goToIntro() {
         fm.beginTransaction()
             .replace(R.id.layoutRoot, IntroFragment.newInstance())
-            .commit()
-    }
-
-    fun goToSettings() {
-        fm.beginTransaction()
-            .setCustomAnimations(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left,
-                R.anim.slide_in_left,
-                R.anim.slide_out_right
-            )
-            .replace(R.id.layoutRoot, SettingsFragment.newInstance())
-            .addToBackStack(null)
             .commit()
     }
 
@@ -102,7 +94,7 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .addSharedElement(orDividerText, "orDividerText")
             .addSharedElement(barcodeText, "barcodeText")
             .replace(R.id.layoutRoot, joinFragment)
-            .addToBackStack(null)
+            .addToBackStack("joinGame")
             .commit()
     }
 
@@ -238,15 +230,7 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
     }
 
     fun goToPasscode(gameName: String, player: Player) {
-        val fragment = PasscodeFragment.newInstance()
-        val bundle = Bundle()
-
-        with(PasscodeFragment.BundleOptions) {
-            bundle.setGameName(gameName)
-            bundle.setPlayer(player)
-        }
-
-        fragment.arguments = bundle
+        val fragment = PasscodeFragment.newInstance(gameName, player)
 
         fm.beginTransaction()
             .setCustomAnimations(
@@ -346,33 +330,12 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/RaiseSoftware/Raise-Android/issues")))
     }
 
-    fun goToPendingView(pokerGame: PokerGame, userName: String, moderatorMode: Boolean) {
-        val intent = Intent(context, PendingActivity::class.java)
-
-        (context as MainActivity).recreate()
-
-        with(PendingActivity.IntentOptions) {
-            intent.setPokerGame(pokerGame)
-            intent.setUserName(userName)
-            intent.setModeratorMode(moderatorMode)
-        }
-        context.startActivity(intent)
-    }
-
-    fun goToPending(pokerGame: PokerGame, userName: String, moderatorMode: Boolean) {
-        val fragment = PendingFragment.newInstance()
-        val bundle = Bundle()
-
-        with(PendingFragment.BundleOptions) {
-            bundle.setPokerGame(pokerGame)
-            bundle.setUserName(userName)
-            bundle.setModeratorMode(moderatorMode)
-        }
-
-        fragment.arguments = bundle
+    fun goToPending(pokerGame: PokerGame, player: Player) {
+        val fragment = PendingFragment.newInstance(pokerGame, player)
 
         fm.beginTransaction()
             .replace(R.id.layoutRoot, fragment)
+            .addToBackStack(null)
             .commit()
     }
 
@@ -381,15 +344,6 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .add(R.id.layoutRoot, CreateStoryFragment.newInstance(pokerGame, cb))
             .addToBackStack(null).commit()
-    }
-
-    fun goToPokerGameView(pokerGame: PokerGame) {
-        val intent = Intent(context, PokerActivity::class.java)
-
-        with(PokerActivity.IntentOptions) {
-            intent.setPokerGame(pokerGame)
-        }
-        context.startActivity(intent)
     }
 
     fun goToPoker(pokerGame: PokerGame) {

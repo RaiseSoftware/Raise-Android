@@ -24,24 +24,15 @@ class PasscodeFragment : BaseFragment() {
         private const val EXTRA_GAME_ID = "game_id"
         private const val EXTRA_PLAYER = "player"
 
-        fun newInstance(): PasscodeFragment {
-            return PasscodeFragment()
-        }
+        fun newInstance(gameId: String, player: Player): PasscodeFragment {
+            val fragment = PasscodeFragment()
+            val bundle = Bundle()
+            bundle.putString(EXTRA_GAME_ID, gameId)
+            bundle.putParcelable(EXTRA_PLAYER, player)
 
-        fun Bundle.getGameName(): String {
-            return getString(EXTRA_GAME_ID, "")
-        }
+            fragment.arguments = bundle
 
-        fun Bundle.setGameName(gameId: String) {
-            putString(EXTRA_GAME_ID, gameId)
-        }
-
-        fun Bundle.getPlayer(): Player {
-            return getParcelable(EXTRA_PLAYER)
-        }
-
-        fun Bundle.setPlayer(player: Player) {
-            putParcelable(EXTRA_PLAYER, player)
+            return fragment
         }
     }
 
@@ -54,14 +45,10 @@ class PasscodeFragment : BaseFragment() {
         presenter.onViewCreated(this)
 
         submitButton.setOnClickListener {
-            var gameName = ""
-            var player: Player? = null
-            with(BundleOptions) {
-                gameName = arguments!!.getGameName()
-                player = arguments!!.getPlayer()
-            }
+            val gameName: String = arguments!!.getString(EXTRA_GAME_ID)!!
+            val player: Player = arguments!!.getParcelable(EXTRA_PLAYER)!!
 
-            presenter.onSubmitButtonClick(gameName, passcodeEditText.text.toString(), player!!.name!!)
+            presenter.onSubmitButtonClick(gameName, passcodeEditText.text.toString(), player)
         }
     }
 

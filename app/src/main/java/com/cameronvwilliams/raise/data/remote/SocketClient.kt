@@ -73,7 +73,7 @@ class SocketClient(val gson: Gson, okHttpClient: OkHttpClient, private val url: 
     }
 
     override fun onGameEnd(): Completable {
-        return endGameSubject!!.flatMapCompletable { _ ->
+        return endGameSubject!!.flatMapCompletable {
             Completable.complete()
         }
     }

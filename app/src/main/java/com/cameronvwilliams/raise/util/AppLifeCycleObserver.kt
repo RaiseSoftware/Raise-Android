@@ -9,6 +9,6 @@ class AppLifeCycleObserver(val dm: DataManager) : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onEnterBackground() {
-        dm.leaveGame()
+        //dm.leaveGame()
     }
 }

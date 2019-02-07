@@ -6,9 +6,11 @@ import com.cameronvwilliams.raise.data.local.RaisePreferences
 import com.cameronvwilliams.raise.data.model.*
 import com.cameronvwilliams.raise.data.remote.AuthService
 import com.cameronvwilliams.raise.data.remote.SocketAPI
+import com.cameronvwilliams.raise.util.PlayerDiffCallback
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import durdinapps.rxfirebase2.RxFirestore
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -73,17 +75,30 @@ class DataManager @Inject constructor(
         val updateMap = HashMap<String, Any>()
         updateMap["uid"] = player.uid!!
         updateMap["name"] = player.name!!
-        updateMap["roles"] = player.roles
+        updateMap["roles"] = arrayListOf<String>().apply {
+            player.roles.forEach {
+                this.add(it.name)
+            }
+        }
 
         return RxFirestore.updateDocument(docRef, "players",  FieldValue.arrayUnion(updateMap))
     }
 
-    fun leaveGame() {
-        socketClient.disconnect()
+    fun leaveGame(uid: String, player: Player): Completable {
+        val docRef = db.collection("game").document(uid)
+        val updateMap = HashMap<String, Any>()
+        updateMap["uid"] = player.uid!!
+        updateMap["name"] = player.name!!
+        updateMap["roles"] = arrayListOf<String>().apply {
+            player.roles.forEach {
+                this.add(it.name)
+            }
+        }
+
+        return RxFirestore.updateDocument(docRef, "players",  FieldValue.arrayRemove(updateMap))
     }
 
     fun startGame() {
-
         socketClient.sendStartGameMessage()
     }
 
@@ -95,10 +110,25 @@ class DataManager @Inject constructor(
         socketClient.sendSubmitCardMessage(card)
     }
 
-    fun getPlayersInGame(): Flowable<Pair<List<Player>, DiffUtil.DiffResult>> {
-        return socketClient.onPlayersInGameChange()
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
+    fun getPlayersInGame(uid: String): Flowable<Pair<List<Player>, DiffUtil.DiffResult>> {
+        val docRef = db.collection("game").document(uid)
+        val emptyList: List<Player> = ArrayList()
+        val initialPair: Pair<List<Player>, DiffUtil.DiffResult> = Pair.create(emptyList, null)
+
+        return RxFirestore.observeDocumentRef(docRef)
+            .onBackpressureLatest()
+            .map {
+                it.toObject(PokerGame::class.java)?.withId(it.id)
+            }
+            .map {
+                it.players
+            }
+            .scan(initialPair) { pair, next ->
+                val callback = PlayerDiffCallback(pair.first!!, next)
+                val result: DiffUtil.DiffResult = DiffUtil.calculateDiff(callback, false)
+                Pair.create(next, result)
+            }
+            .skip(1)
     }
 
     fun getActivePlayersCards(): Flowable<Pair<List<ActiveCard>, DiffUtil.DiffResult>> {

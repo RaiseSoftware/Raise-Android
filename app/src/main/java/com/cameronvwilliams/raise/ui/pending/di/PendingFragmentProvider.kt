@@ -13,9 +13,6 @@ abstract class PendingFragmentProvider {
     abstract fun providePokerInfoFragment(): PokerInfoFragment
 
     @ContributesAndroidInjector(modules = [PendingFragmentModule::class])
-    abstract fun providePendingFragment(): PendingFragment
-
-    @ContributesAndroidInjector(modules = [PendingFragmentModule::class])
     abstract fun provideModeratorFragment(): ModeratorFragment
 
     @ContributesAndroidInjector(modules = [PendingFragmentModule::class])

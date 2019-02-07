@@ -1,7 +1,5 @@
 package com.cameronvwilliams.raise.ui.pending.views
 
-
-import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
@@ -11,10 +9,10 @@ import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
-import com.cameronvwilliams.raise.di.ActivityContext
+import com.cameronvwilliams.raise.data.model.Role
 import com.cameronvwilliams.raise.ui.BaseFragment
+import com.cameronvwilliams.raise.ui.MainActivity
 import com.cameronvwilliams.raise.ui.Navigator
-import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.ui.pending.views.adapter.PendingAdapter
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.pending_fragment.*
@@ -28,46 +26,30 @@ class PendingFragment : BaseFragment() {
     @Inject
     lateinit var navigator: Navigator
 
-    @field:[Inject ActivityContext]
-    lateinit var activityContext: Context
+    @Inject
+    lateinit var activityContext: MainActivity
 
     companion object BundleOptions {
         private const val EXTRA_POKER_GAME = "poker_game"
-        private const val EXTRA_USER_NAME = "user_name"
-        private const val EXTRA_MODERATOR_MODE = "moderator_mode"
+        private const val EXTRA_PLAYER = "player"
 
-        fun newInstance(): PendingFragment {
-            return PendingFragment()
-        }
+        fun newInstance(pokerGame: PokerGame, player: Player): PendingFragment {
+            val fragment = PendingFragment()
 
-        fun Bundle.getPokerGame(): PokerGame {
-            return getParcelable(EXTRA_POKER_GAME)
-        }
+            val bundle = Bundle()
 
-        fun Bundle.setPokerGame(game: PokerGame) {
-            putParcelable(EXTRA_POKER_GAME, game)
-        }
+            bundle.putParcelable(EXTRA_POKER_GAME, pokerGame)
+            bundle.putParcelable(EXTRA_PLAYER, player)
 
-        fun Bundle.getUserName(): String {
-            return getString(EXTRA_USER_NAME)
-        }
+            fragment.arguments = bundle
 
-        fun Bundle.setUserName(name: String) {
-            putString(EXTRA_USER_NAME, name)
-        }
-
-        fun Bundle.getModeratorMode(): Boolean {
-            return getBoolean(EXTRA_MODERATOR_MODE)
-        }
-
-        fun Bundle.setModeratorMode(value: Boolean) {
-            putBoolean(EXTRA_MODERATOR_MODE, value)
+            return fragment
         }
     }
 
     private lateinit var closeButtonDialog: AlertDialog
     private lateinit var pokerGame: PokerGame
-    private lateinit var userName: String
+    private lateinit var player: Player
     private var moderatorMode: Boolean = false
     private val subscriptions: CompositeDisposable = CompositeDisposable()
 
@@ -81,14 +63,12 @@ class PendingFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(BundleOptions) {
-            pokerGame = arguments!!.getPokerGame()
-            userName = arguments!!.getUserName()
-            moderatorMode = arguments!!.getModeratorMode()
-        }
+        pokerGame = arguments!!.getParcelable(EXTRA_POKER_GAME)!!
+        player = arguments!!.getParcelable(EXTRA_PLAYER)!!
+        moderatorMode = player.roles.contains(Role.MODERATOR)
 
         val adapter = PendingAdapter(
-            (activityContext as PendingActivity).supportFragmentManager,
+            activityContext.supportFragmentManager,
             pokerGame, moderatorMode
         )
         viewPager.adapter = adapter
@@ -113,15 +93,14 @@ class PendingFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        dm.joinGame(pokerGame.uid!!, Player(dm.getUserId(), name = userName))
+        dm.joinGame(pokerGame.uid!!, player)
             .subscribe()
 
+        subscriptions.add(dm.getPlayersInGame(pokerGame.uid!!)
+            .subscribe { result ->
+                startButton.isEnabled = result.first!!.isNotEmpty()
+            })
 
-//        subscriptions.add(dm.getPlayersInGame()
-//            .subscribe { result ->
-//                startButton.isEnabled = result.first!!.isNotEmpty()
-//            })
-//
 //        subscriptions.add(dm.getGameStart()
 //            .subscribe {
 //                navigator.goToPokerGameView(pokerGame)
@@ -164,9 +143,9 @@ class PendingFragment : BaseFragment() {
                     .setTitle(getString(R.string.text_exit_game))
                     .setMessage(getString(R.string.text_sure_exit))
                     .setPositiveButton(android.R.string.yes) { dialog, _ ->
-                        dm.leaveGame()
+                        dm.leaveGame(pokerGame.uid!!, player)
                         dialog.dismiss()
-                        activity!!.finish()
+                        navigator.goBackToIntro()
                     }
                     .setNegativeButton(android.R.string.no) { dialog, _ ->
                         dialog.dismiss()
