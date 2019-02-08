@@ -34,6 +34,7 @@ class ModeratorFragment : BaseFragment() {
         adapter = StoryListAdapter(mutableListOf())
         val callback = SimpleItemTouchHelperCallback(adapter)
         touchHelper = ItemTouchHelper(callback)
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.strong_orange)
 
         return inflater.inflate(R.layout.pending_moderator_fragment, container, false)
     }

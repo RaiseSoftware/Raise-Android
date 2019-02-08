@@ -34,16 +34,9 @@ class CreateStoryFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         val pokerGame = arguments?.get("game") as PokerGame
 
-        when (activity) {
-            is PendingActivity -> {
-                closeButton.setColorFilter(ContextCompat.getColor(context!!, R.color.pendingColorPrimary))
-                addStoryButton.setTextColor(ContextCompat.getColor(context!!, R.color.pendingColorPrimary))
-            }
-            is PokerActivity -> {
-                closeButton.setColorFilter(ContextCompat.getColor(context!!, R.color.pokerColorPrimary))
-                addStoryButton.setTextColor(ContextCompat.getColor(context!!, R.color.pokerColorPrimary))
-            }
-        }
+        closeButton.setColorFilter(ContextCompat.getColor(context!!, R.color.pendingColorPrimary))
+        addStoryButton.setTextColor(ContextCompat.getColor(context!!, R.color.pendingColorPrimary))
+
 
         closeButton.setOnClickListener {
             navigator.goBack()
@@ -51,14 +44,8 @@ class CreateStoryFragment : BaseFragment() {
 
         addStoryButton.setOnClickListener {
             val story = Story(titleEditText.text.toString().trim())
-//            dm.createUserStory(story, pokerGame.gameUuid!!)
-//                .subscribe({ list ->
-//                    val cb = arguments?.get("cb") as (MutableList<Story>) -> Unit
-//                    cb(list)
-//                    navigator.goBack()
-//                }, { error ->
-//                    Timber.e(error)
-//                })
+            dm.createUserStory(story, pokerGame.uid!!)
+                .subscribe()
         }
     }
 

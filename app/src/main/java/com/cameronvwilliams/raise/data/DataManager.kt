@@ -93,6 +93,14 @@ class DataManager @Inject constructor(
         return RxFirestore.updateDocument(docRef, "players",  FieldValue.arrayRemove(updateMap))
     }
 
+    fun createUserStory(story: Story, uid: String): Completable {
+        val docRef = db.collection("game").document(uid)
+        val updateMap = HashMap<String, Any>()
+        updateMap["title"] = story.title
+
+        return RxFirestore.updateDocument(docRef, "stories",  FieldValue.arrayUnion(updateMap))
+    }
+
     fun startGame() {
         TODO()
     }

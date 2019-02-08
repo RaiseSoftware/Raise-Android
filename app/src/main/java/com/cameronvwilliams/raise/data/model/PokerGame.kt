@@ -16,7 +16,8 @@ data class PokerGame(
     var passcode: String? = "",
     val createdDateTime: Date? = null,
     val startDateTime: Date? = null,
-    val players: MutableList<Player>? = mutableListOf()
+    val players: MutableList<Player>? = mutableListOf(),
+    val stories: MutableList<Story>? = mutableListOf()
 ) : Parcelable {
 
     private constructor(parcel: Parcel) : this(
@@ -29,6 +30,9 @@ data class PokerGame(
         startDateTime = parcel.readDate(),
         players = ArrayList<Player>().apply {
             parcel.readList(this, Player::class.java.classLoader)
+        },
+        stories = ArrayList<Story>().apply {
+            parcel.readList(this, Story::class.java.classLoader)
         }
     )
 
@@ -46,6 +50,7 @@ data class PokerGame(
         writeDate(createdDateTime)
         writeDate(startDateTime)
         writeList(players)
+        writeList(stories)
     }
 
     override fun describeContents(): Int = 0

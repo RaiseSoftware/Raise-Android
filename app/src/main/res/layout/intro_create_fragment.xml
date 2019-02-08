@@ -159,8 +159,6 @@
             android:id="@+id/backButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
             android:layout_margin="@dimen/margin_small"
             android:background="@null"
             android:contentDescription="@string/back_button"
