@@ -11,8 +11,14 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Observable
 
-fun Any.notNull(): Boolean {
-    return this != null
+inline fun <T:Any, R> whenNull(input: T?, callback: ()->R) {
+    if (input == null) {
+        callback()
+    }
+}
+
+inline fun <T:Any, R> whenNotNull(input: T?, callback: (T)->R): R? {
+    return input?.let(callback)
 }
 
 fun SurfaceHolder.callbacks(

@@ -2,14 +2,15 @@ package com.cameronvwilliams.raise.ui.pending.views
 
 
 import android.os.Bundle
-import androidx.core.util.Pair
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.util.Pair
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.Player
+import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.pending.presenter.PlayerListPresenter
 import com.cameronvwilliams.raise.ui.pending.views.adapter.PlayerListAdapter
@@ -33,7 +34,7 @@ class PlayerListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.onViewCreated(this)
+        presenter.onViewCreated(this, arguments!!.getParcelable("game")!!)
 
         playerList.layoutManager = layoutManager
         playerList.adapter = adapter
@@ -54,8 +55,12 @@ class PlayerListFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance(): PlayerListFragment {
-            return PlayerListFragment()
+        fun newInstance(pokerGame: PokerGame): PlayerListFragment {
+            val fragment = PlayerListFragment()
+            val args = Bundle()
+            args.putParcelable("game", pokerGame)
+            fragment.arguments = args
+            return fragment
         }
     }
 }

@@ -1,10 +1,10 @@
 package com.cameronvwilliams.raise.ui.intro.create
 
 import android.os.Bundle
-import androidx.transition.ChangeBounds
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.transition.ChangeBounds
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.Navigator

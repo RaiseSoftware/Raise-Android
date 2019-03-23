@@ -2,12 +2,12 @@ package com.cameronvwilliams.raise.ui.pending.views
 
 
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseFragment
@@ -34,6 +34,7 @@ class ModeratorFragment : BaseFragment() {
         adapter = StoryListAdapter(mutableListOf())
         val callback = SimpleItemTouchHelperCallback(adapter)
         touchHelper = ItemTouchHelper(callback)
+        requireActivity().window.statusBarColor = ContextCompat.getColor(requireContext(), R.color.strong_orange)
 
         return inflater.inflate(R.layout.pending_moderator_fragment, container, false)
     }

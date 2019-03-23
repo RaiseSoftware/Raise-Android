@@ -1,11 +1,10 @@
 package com.cameronvwilliams.raise.ui.pending.views
 
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.core.content.ContextCompat
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.PokerGame
@@ -15,7 +14,6 @@ import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.ui.poker.PokerActivity
 import kotlinx.android.synthetic.main.pending_create_story_fragment.*
-import timber.log.Timber
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -36,16 +34,9 @@ class CreateStoryFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         val pokerGame = arguments?.get("game") as PokerGame
 
-        when (activity) {
-            is PendingActivity -> {
-                closeButton.setColorFilter(ContextCompat.getColor(context!!, R.color.pendingColorPrimary))
-                addStoryButton.setTextColor(ContextCompat.getColor(context!!, R.color.pendingColorPrimary))
-            }
-            is PokerActivity -> {
-                closeButton.setColorFilter(ContextCompat.getColor(context!!, R.color.pokerColorPrimary))
-                addStoryButton.setTextColor(ContextCompat.getColor(context!!, R.color.pokerColorPrimary))
-            }
-        }
+        closeButton.setColorFilter(ContextCompat.getColor(context!!, R.color.pendingColorPrimary))
+        addStoryButton.setTextColor(ContextCompat.getColor(context!!, R.color.pendingColorPrimary))
+
 
         closeButton.setOnClickListener {
             navigator.goBack()
@@ -53,14 +44,8 @@ class CreateStoryFragment : BaseFragment() {
 
         addStoryButton.setOnClickListener {
             val story = Story(titleEditText.text.toString().trim())
-            dm.createUserStory(story, pokerGame.gameUuid!!)
-                .subscribe({ list ->
-                    val cb = arguments?.get("cb") as (MutableList<Story>) -> Unit
-                    cb(list)
-                    navigator.goBack()
-                }, { error ->
-                    Timber.e(error)
-                })
+            dm.createUserStory(story, pokerGame.uid!!)
+                .subscribe()
         }
     }
 

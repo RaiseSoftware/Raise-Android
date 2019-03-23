@@ -4,10 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.PokerGame
-import com.cameronvwilliams.raise.ui.BaseActivity
-import kotlinx.android.synthetic.main.pending_activity.*
+import com.cameronvwilliams.raise.ui.Navigator
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class PendingActivity : BaseActivity() {
+class PendingActivity : DaggerAppCompatActivity() {
+
+    @Inject
+    lateinit var navigator: Navigator
 
     companion object IntentOptions {
         private const val EXTRA_POKER_GAME = "poker_game"
@@ -43,7 +47,7 @@ class PendingActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pending_activity)
         with(PendingActivity.IntentOptions) {
-            navigator.goToPending(intent.getPokerGame(), intent.getUserName(), intent.getModeratorMode())
+            // navigator.goToPending(intent.getPokerGame(), intent.getUserName(), intent.getModeratorMode())
         }
     }
 }

@@ -3,9 +3,12 @@ package com.cameronvwilliams.raise.ui.intro.di
 import com.cameronvwilliams.raise.ui.intro.create.CreateCardFragment
 import com.cameronvwilliams.raise.ui.intro.create.CreateFragment
 import com.cameronvwilliams.raise.ui.intro.create.CreatePasscodeFragment
-import com.cameronvwilliams.raise.ui.intro.offline.OfflineCardFragment
-import com.cameronvwilliams.raise.ui.intro.offline.OfflineFragment
 import com.cameronvwilliams.raise.ui.intro.views.*
+import com.cameronvwilliams.raise.ui.offline.view.OfflineCardFragment
+import com.cameronvwilliams.raise.ui.offline.view.OfflineFragment
+import com.cameronvwilliams.raise.ui.offline.view.OfflineGameFragment
+import com.cameronvwilliams.raise.ui.offline.view.OfflineSettingsFragment
+import com.cameronvwilliams.raise.ui.pending.views.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -49,4 +52,25 @@ abstract class IntroFragmentProvider {
 
     @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
     abstract fun provideOfflineCardFragment(): OfflineCardFragment
+
+    @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
+    abstract fun provideOfflineGameFragment(): OfflineGameFragment
+
+    @ContributesAndroidInjector(modules = [IntroFragmentModule::class])
+    abstract fun provideOfflineSettingsFragment(): OfflineSettingsFragment
+
+    @ContributesAndroidInjector()
+    abstract fun providePendingFragment(): PendingFragment
+
+    @ContributesAndroidInjector()
+    abstract fun providePlayerListFragment(): PlayerListFragment
+
+    @ContributesAndroidInjector()
+    abstract fun providePokerInfoFragment(): PokerInfoFragment
+
+    @ContributesAndroidInjector()
+    abstract fun provideModeratorFragment(): ModeratorFragment
+
+    @ContributesAndroidInjector()
+    abstract fun provideCreateStoryFragment(): CreateStoryFragment
 }

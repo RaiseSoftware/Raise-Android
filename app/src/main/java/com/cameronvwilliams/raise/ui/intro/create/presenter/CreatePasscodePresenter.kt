@@ -7,7 +7,6 @@ import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.create.CreatePasscodeFragment
-import com.cameronvwilliams.raise.ui.intro.presenters.CreatePresenter
 import io.reactivex.Single
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.rxkotlin.withLatestFrom
@@ -54,7 +53,7 @@ class CreatePasscodePresenter @Inject constructor(val navigator: Navigator, val 
                 view.hideLoadingView()
                 view.enableSubmitButton()
                 when (result.type) {
-                    ResultType.SUCCESS -> onCreateSuccess(result.data!!)
+                    ResultType.SUCCESS -> onCreateSuccess(result.data!!, p)
                     ResultType.FAILURE -> onCreateFailure()
                 }
             }, { t ->
@@ -66,9 +65,8 @@ class CreatePasscodePresenter @Inject constructor(val navigator: Navigator, val 
 
     private fun onCreateClicked(details: String): Single<Result>? {
         pokerGame.passcode = details
-        pokerGame.requiresPasscode = true
 
-        return dm.createGame(pokerGame, player)
+        return dm.createGame(pokerGame)
             .map { pokerGame -> Result(ResultType.SUCCESS, pokerGame) }
             .onErrorReturn { t ->
                 Timber.e(t)
@@ -76,8 +74,8 @@ class CreatePasscodePresenter @Inject constructor(val navigator: Navigator, val 
             }
     }
 
-    private fun onCreateSuccess(pokerGame: PokerGame) {
-        navigator.goToPendingView(pokerGame, "", true)
+    private fun onCreateSuccess(pokerGame: PokerGame, player: Player) {
+        navigator.goToPending(pokerGame, player)
     }
 
     private fun onCreateFailure() {

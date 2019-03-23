@@ -5,9 +5,10 @@ import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.di.DaggerRaiseComponent
 import com.cameronvwilliams.raise.di.RaiseComponent
 import com.cameronvwilliams.raise.util.Analytics
+import com.cameronvwilliams.raise.util.AppLifeCycleObserver
+import com.evernote.android.state.StateSaver
 import dagger.android.AndroidInjector
 import dagger.android.support.DaggerApplication
-import com.cameronvwilliams.raise.util.AppLifeCycleObserver
 import javax.inject.Inject
 
 
@@ -27,6 +28,7 @@ open class RaiseApplication : DaggerApplication() {
         super.onCreate()
 
         Analytics.initialize(this)
+        StateSaver.setEnabledForAllActivitiesAndSupportFragments(this, true)
 
         val lifeCycleObserver = AppLifeCycleObserver(dm)
         ProcessLifecycleOwner.get()

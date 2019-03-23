@@ -5,38 +5,35 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.transition.ChangeBounds
-import androidx.transition.ChangeTransform
-import androidx.transition.TransitionSet
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import androidx.core.app.SharedElementCallback
-import androidx.core.content.ContextCompat.startActivity
 import android.text.Editable
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.app.SharedElementCallback
+import androidx.core.content.ContextCompat.startActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+import androidx.fragment.app.FragmentTransaction
+import androidx.transition.ChangeBounds
+import androidx.transition.ChangeTransform
+import androidx.transition.TransitionSet
 import com.cameronvwilliams.raise.BuildConfig
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.DeckType
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.data.model.Story
-import com.cameronvwilliams.raise.ui.intro.IntroActivity
 import com.cameronvwilliams.raise.ui.intro.create.CreateFragment
 import com.cameronvwilliams.raise.ui.intro.create.CreatePasscodeFragment
-import com.cameronvwilliams.raise.ui.intro.offline.OfflineFragment
 import com.cameronvwilliams.raise.ui.intro.views.*
-import com.cameronvwilliams.raise.ui.offline.OfflineActivity
+import com.cameronvwilliams.raise.ui.offline.view.OfflineFragment
 import com.cameronvwilliams.raise.ui.offline.view.OfflineGameFragment
 import com.cameronvwilliams.raise.ui.offline.view.OfflineSettingsFragment
-import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.ui.pending.views.CreateStoryFragment
 import com.cameronvwilliams.raise.ui.pending.views.PendingFragment
-import com.cameronvwilliams.raise.ui.poker.PokerActivity
 import com.cameronvwilliams.raise.ui.poker.views.PokerFragment
 import com.cameronvwilliams.raise.ui.scanner.ScannerActivity
 import com.cameronvwilliams.raise.ui.scanner.views.ScannerFragment
@@ -49,43 +46,17 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
     private val scannerRequestCode = 1000
     private val scannerRequestObservable = BehaviorSubject.createDefault<Result<PokerGame>>(Result(ResultEnum.INITIAL, null))
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == scannerRequestCode) {
-            if (resultCode == Activity.RESULT_OK) {
-                val gameId = data?.extras?.getString("POKER_GAME_ID")
-                val passcode = data?.extras?.getString("POKER_GAME_PASSCODE")
-
-                scannerRequestObservable.onNext(Result(ResultEnum.SUCCESS, PokerGame(
-                        gameId = gameId,
-                        passcode = passcode,
-                        requiresPasscode = passcode != null
-                    )))
-            } else {
-                scannerRequestObservable.onNext(Result(ResultEnum.CANCELLED, null))
-            }
-        }
-    }
-
     fun goBack() {
         fm.popBackStack()
     }
 
-    fun goToIntro(animate: Boolean = true) {
-        fm.beginTransaction()
-            .replace(R.id.layoutRoot, IntroFragment.newInstance())
-            .commit()
+    fun goBackToIntro() {
+        fm.popBackStack("joinGame", POP_BACK_STACK_INCLUSIVE)
     }
 
-    fun goToSettings() {
+    fun goToIntro() {
         fm.beginTransaction()
-            .setCustomAnimations(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left,
-                R.anim.slide_in_left,
-                R.anim.slide_out_right
-            )
-            .replace(R.id.layoutRoot, SettingsFragment.newInstance())
-            .addToBackStack(null)
+            .replace(R.id.layoutRoot, IntroFragment.newInstance())
             .commit()
     }
 
@@ -121,7 +92,7 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .addSharedElement(orDividerText, "orDividerText")
             .addSharedElement(barcodeText, "barcodeText")
             .replace(R.id.layoutRoot, joinFragment)
-            .addToBackStack(null)
+            .addToBackStack("joinGame")
             .commit()
     }
 
@@ -241,12 +212,8 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .commit()
     }
 
-    fun goToCreatePasscode(game: PokerGame) {
-        val fragment = CreatePasscodeFragment.newInstance()
-        val bundle = Bundle()
-        bundle.putParcelable("game", game)
-
-        fragment.arguments = bundle
+    fun goToCreatePasscode(game: PokerGame, player: Player) {
+        val fragment = CreatePasscodeFragment.newInstance(game, player)
 
         fm.beginTransaction()
             .setCustomAnimations(
@@ -261,15 +228,7 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
     }
 
     fun goToPasscode(gameName: String, player: Player) {
-        val fragment = PasscodeFragment.newInstance()
-        val bundle = Bundle()
-
-        with(PasscodeFragment.BundleOptions) {
-            bundle.setGameName(gameName)
-            bundle.setPlayer(player)
-        }
-
-        fragment.arguments = bundle
+        val fragment = PasscodeFragment.newInstance(gameName, player)
 
         fm.beginTransaction()
             .setCustomAnimations(
@@ -369,33 +328,12 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/RaiseSoftware/Raise-Android/issues")))
     }
 
-    fun goToPendingView(pokerGame: PokerGame, userName: String, moderatorMode: Boolean) {
-        val intent = Intent(context, PendingActivity::class.java)
-
-        (context as IntroActivity).recreate()
-
-        with(PendingActivity.IntentOptions) {
-            intent.setPokerGame(pokerGame)
-            intent.setUserName(userName)
-            intent.setModeratorMode(moderatorMode)
-        }
-        context.startActivity(intent)
-    }
-
-    fun goToPending(pokerGame: PokerGame, userName: String, moderatorMode: Boolean) {
-        val fragment = PendingFragment.newInstance()
-        val bundle = Bundle()
-
-        with(PendingFragment.BundleOptions) {
-            bundle.setPokerGame(pokerGame)
-            bundle.setUserName(userName)
-            bundle.setModeratorMode(moderatorMode)
-        }
-
-        fragment.arguments = bundle
+    fun goToPending(pokerGame: PokerGame, player: Player) {
+        val fragment = PendingFragment.newInstance(pokerGame, player)
 
         fm.beginTransaction()
             .replace(R.id.layoutRoot, fragment)
+            .addToBackStack(null)
             .commit()
     }
 
@@ -404,21 +342,6 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .add(R.id.layoutRoot, CreateStoryFragment.newInstance(pokerGame, cb))
             .addToBackStack(null).commit()
-    }
-
-    fun goToPokerGameView(pokerGame: PokerGame) {
-        val intent = Intent(context, PokerActivity::class.java)
-
-        with(PokerActivity.IntentOptions) {
-            intent.setPokerGame(pokerGame)
-        }
-        context.startActivity(intent)
-    }
-
-    fun goToOfflineView(deckType: DeckType) {
-        val intent = Intent(context, OfflineActivity::class.java)
-
-        context.startActivity(intent)
     }
 
     fun goToPoker(pokerGame: PokerGame) {
@@ -437,31 +360,16 @@ class Navigator(private val fm: FragmentManager, val context: Context) {
     }
 
     fun goToOffline(deckType: DeckType) {
-        val fragment = OfflineGameFragment.newInstance()
-        val bundle = Bundle()
-
-//        with(OfflineCardFragment.BundleOptions) {
-//            bundle.setDeckType(deckType)
-//        }
-
-        fragment.arguments = bundle
+        val fragment = OfflineGameFragment.newInstance(deckType)
 
         fm.beginTransaction()
             .replace(R.id.layoutRoot, fragment)
+            .addToBackStack(null)
             .commit()
     }
 
     fun goToOfflineSettings() {
-        fm.beginTransaction()
-            .setCustomAnimations(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left,
-                R.anim.slide_in_left,
-                R.anim.slide_out_right
-            )
-            .replace(R.id.layoutRoot, OfflineSettingsFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
+        OfflineSettingsFragment.newInstance().show(fm, null)
     }
 
     fun goToScannerView() {

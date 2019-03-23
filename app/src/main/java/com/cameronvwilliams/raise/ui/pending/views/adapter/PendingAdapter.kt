@@ -14,11 +14,11 @@ class PendingAdapter(fm: FragmentManager, game: PokerGame, moderatorMode: Boolea
         true -> arrayOf(
             ModeratorFragment.newInstance(game),
             PokerInfoFragment.newInstance(game),
-            PlayerListFragment.newInstance()
+            PlayerListFragment.newInstance(game)
         )
         false -> arrayOf(
             PokerInfoFragment.newInstance(game),
-            PlayerListFragment.newInstance()
+            PlayerListFragment.newInstance(game)
         )
     }
 

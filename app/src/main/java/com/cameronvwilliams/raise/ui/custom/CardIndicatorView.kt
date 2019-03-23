@@ -1,17 +1,16 @@
 package com.cameronvwilliams.raise.ui.custom
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import androidx.viewpager.widget.ViewPager
 import android.util.AttributeSet
-import android.view.ViewGroup.LayoutParams.*
-import android.widget.LinearLayout
-import android.widget.ImageView
-import com.cameronvwilliams.raise.R
-import androidx.annotation.ColorRes
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.viewpager.widget.ViewPager
+import com.cameronvwilliams.raise.R
 
 class CardIndicatorView
 

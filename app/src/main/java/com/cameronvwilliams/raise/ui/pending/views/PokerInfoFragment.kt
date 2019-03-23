@@ -9,7 +9,6 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.cameronvwilliams.raise.BuildConfig.BASE_URL
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.PokerGame
 import com.cameronvwilliams.raise.ui.BaseFragment
@@ -32,8 +31,6 @@ class PokerInfoFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         val pokerGame = arguments?.get("game") as PokerGame
 
-        gameIdText.text = getString(R.string.text_game_id_value, pokerGame.gameId)
-
         if (!TextUtils.isEmpty(pokerGame.passcode)) {
             passcodeText.text =
                     getString(R.string.text_passcode_value, pokerGame.passcode!!.toUpperCase())
@@ -51,7 +48,6 @@ class PokerInfoFragment : BaseFragment() {
             val share = Intent(Intent.ACTION_SEND)
             share.type = "text/plain"
             share.putExtra(Intent.EXTRA_SUBJECT, "Link to my Poker Game: ${pokerGame.gameName}!")
-            share.putExtra(Intent.EXTRA_TEXT, BASE_URL + "invite-link?gameId=${pokerGame.gameId}")
             startActivity(Intent.createChooser(share, "Share Invitation URL"))
             true
         }

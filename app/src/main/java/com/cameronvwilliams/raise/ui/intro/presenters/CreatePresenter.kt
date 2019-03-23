@@ -6,6 +6,7 @@ import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.DeckType
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
+import com.cameronvwilliams.raise.data.model.Role
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
@@ -17,7 +18,6 @@ import io.reactivex.Single
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.withLatestFrom
-import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -56,8 +56,8 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
                 details
             }
             .flatMapSingle { onCreateClicked(it) }
-            .subscribe({ game ->
-                navigator.goToCreatePasscode(game)
+            .subscribe({ result ->
+                navigator.goToCreatePasscode(result.game, result.player)
             }, { t ->
                 throw OnErrorNotImplementedException(t)
             })
@@ -71,8 +71,8 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
         return true
     }
 
-    private fun onCreateClicked(details: CreateDetails): Single<PokerGame> {
-        val game = PokerGame(details.gameName, details.deckType)
+    private fun onCreateClicked(details: CreateDetails): Single<CreateResults> {
+        val game = PokerGame(gameName = details.gameName, deckType = details.deckType)
         val qrBitmap = encodeAsBitmap("{ gameName: ${details.gameName} }", BarcodeFormat.QR_CODE, 300, 300)
         val byteArrayOutputStream = ByteArrayOutputStream()
         qrBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
@@ -81,7 +81,7 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
 
         game.qrcode = encoded
 
-        return Single.just(game)
+        return Single.just(CreateResults(game, Player(dm.getUserId(), details.userName, arrayListOf(Role.MODERATOR))))
     }
 
     private fun encodeAsBitmap(contents: String, format: BarcodeFormat, desiredWidth: Int, desiredHeight: Int): Bitmap {
@@ -106,6 +106,8 @@ class CreatePresenter(private val navigator: Navigator, private val dm: DataMana
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height)
         return bitmap
     }
+
+    private data class CreateResults(val game: PokerGame, val player: Player)
 
     private data class CreateDetails(val deckType: DeckType?, val userName: String, val gameName: String) {
         fun isValid(): Boolean {

@@ -1,18 +1,15 @@
 package com.cameronvwilliams.raise.ui.poker.views
 
 import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.os.Bundle
-import androidx.viewpager.widget.ViewPager
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.DecelerateInterpolator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.DataManager
 import com.cameronvwilliams.raise.data.model.Card
@@ -62,7 +59,7 @@ class PokerCardFragment : BaseFragment() {
             LinearLayoutManager.HORIZONTAL,
             false
         )
-        adapter = CardListAdapter(cards)
+        //adapter = CardListAdapter(cards)
 
         return inflater.inflate(R.layout.poker_card_fragment, container, false)
     }
@@ -110,27 +107,7 @@ class PokerCardFragment : BaseFragment() {
         }
 
         flipCard.setOnClickListener {
-            val oa1 = ObjectAnimator.ofFloat(selectedCard, "scaleX", 1f, 0f)
-            val oa2 = ObjectAnimator.ofFloat(selectedCard, "scaleX", 0f, 1f)
-            oa1.interpolator = DecelerateInterpolator()
-            oa2.interpolator = AccelerateDecelerateInterpolator()
-            oa1.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    super.onAnimationEnd(animation)
 
-                    activeCard?.let {
-                        if (it.faceUp == true) {
-                            it.faceUp = false
-                            selectedCard.setImageResource(R.drawable.card_back)
-                        } else {
-                            it.faceUp = true
-                            setSelectedCardImage(it)
-                        }
-                    }
-                    oa2.start()
-                }
-            })
-            oa1.start()
         }
 
         cardList.layoutManager = layoutManager
@@ -172,9 +149,6 @@ class PokerCardFragment : BaseFragment() {
             selectedCard.visibility = View.VISIBLE
             it.faceUp = true
         }
-
-        adapter.updateList(cards)
-        adapter.notifyDataSetChanged()
     }
 
     private fun setSelectedCardImage(card: Card) {

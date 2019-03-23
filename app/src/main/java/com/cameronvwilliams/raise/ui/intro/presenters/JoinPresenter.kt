@@ -1,15 +1,13 @@
 package com.cameronvwilliams.raise.ui.intro.presenters
 
 import com.cameronvwilliams.raise.data.DataManager
-import com.cameronvwilliams.raise.data.model.ErrorResponse
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
-import com.cameronvwilliams.raise.data.remote.RetrofitException
+import com.cameronvwilliams.raise.data.model.Role
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
 import com.cameronvwilliams.raise.ui.intro.views.JoinFragment
-import io.reactivex.Single
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.withLatestFrom
@@ -52,7 +50,7 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
                 details
             }
             .subscribe({ details ->
-                navigator.goToPasscode(details.gameName, Player(details.name))
+                navigator.goToPasscode(details.gameName, Player(dm.getUserId(), details.name, arrayListOf(Role.PLAYER)))
             }, { t ->
                 Timber.e(t)
                 throw OnErrorNotImplementedException(t)
@@ -64,35 +62,6 @@ class JoinPresenter(private val navigator: Navigator, private val dm: DataManage
     override fun onBackPressed(): Boolean {
         navigator.goBack()
         return true
-    }
-
-    private fun onJoinClicked(details: JoinDetails): Single<Result>? {
-        val request = details.pokerGame?.let {
-            dm.findGame(details.name, details.pokerGame.passcode)
-        } ?: dm.findGame(details.gameName)
-
-        return request.map { pokerGame ->
-                Result(ResultType.SUCCESS, Pair(pokerGame, details))
-            }
-            .onErrorReturn { t ->
-                Result(ResultType.FAILURE, Pair(null, details), t)
-            }
-    }
-
-    private fun onJoinSuccess(pokerGame: PokerGame, userName: String) {
-        view.hideLoadingView()
-        view.enableJoinButton()
-        pokerGame.startDateTime?.let {
-            navigator.goToPokerGameView(pokerGame)
-        } ?: navigator.goToPendingView(pokerGame, userName, false)
-    }
-
-    private fun onJoinFailure(t: Throwable, gameId: String, userName: String) {
-        view.hideLoadingView()
-        view.enableJoinButton()
-        when (t) {
-            else -> view.showDefaultErrorSnackBar()
-        }
     }
 
     private data class JoinDetails(val name: String, val gameName: String, val pokerGame: PokerGame?) {

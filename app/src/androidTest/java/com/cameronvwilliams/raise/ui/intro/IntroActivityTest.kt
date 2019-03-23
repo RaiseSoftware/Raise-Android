@@ -6,6 +6,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.cameronvwilliams.raise.R
+import com.cameronvwilliams.raise.ui.MainActivity
 import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.util.enterTextIntoViewWithId
 import com.cameronvwilliams.raise.util.tapViewWithId
@@ -21,7 +22,7 @@ import org.junit.runner.RunWith
 class IntroActivityTest {
 
     @get:Rule
-    val rule = ActivityTestRule<IntroActivity>(IntroActivity::class.java)
+    val rule = ActivityTestRule<MainActivity>(MainActivity::class.java)
 
     @Before
     fun setup() {

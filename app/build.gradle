@@ -26,6 +26,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         buildConfigField "String", "APP_CENTER_KEY", "\"${appCenterKey}\""
+        buildConfigField "String", "BASE_URL", '"http://localhost/"'
+        resValue 'string', 'DEEPLINK_URL', 'localhost'
     }
     buildTypes {
         debug {
@@ -49,40 +51,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    flavorDimensions "remote"
-    productFlavors {
-        local {
-            dimension "remote"
-            buildConfigField "String", "SOCKET_URL", '"http://10.0.2.2:3000/"'
-            buildConfigField "String", "API_URL", '"http://10.0.2.2:3000/api/"'
-            buildConfigField "String", "BASE_URL", '"http://10.0.2.2:3000/"'
-            resValue 'string', 'DEEPLINK_URL', '10.0.2.2:3000'
-        }
-        staging {
-            dimension "remote"
-            buildConfigField "String", "SOCKET_URL", '"https://raise.cameronvwilliams.com/"'
-            buildConfigField "String", "API_URL", '"https://raise.cameronvwilliams.com/api/"'
-            buildConfigField "String", "BASE_URL", '"https://raise.cameronvwilliams.com/"'
-            resValue 'string', 'DEEPLINK_URL', 'raise.cameronvwilliams.com'
-        }
-        mock {
-            dimension "remote"
-            buildConfigField "String", "SOCKET_URL", '"http://localhost/"'
-            buildConfigField "String", "API_URL", '"http://localhost/api/"'
-            buildConfigField "String", "BASE_URL", '"http://localhost/"'
-            resValue 'string', 'DEEPLINK_URL', 'localhost'
-        }
-    }
     sourceSets {
         debug {
             java.srcDirs = ['src/debug/java']
             manifest.srcFile 'src/debug/AndroidManifest.xml'
-        }
-        mock {
-            java.srcDirs = ['src/mock/java']
-        }
-        mockDebug {
-            java.srcDirs = ['src/mockDebug/java']
         }
     }
     testOptions {
@@ -95,15 +67,6 @@ android {
             includeAndroidResources = true
         }
     }
-
-    variantFilter { variant ->
-        def needed = variant.name in [
-                'localRelease',
-                'mockRelease',
-                'stagingRelease'
-        ]
-        variant.setIgnore(needed)
-    }
 }
 
 jacoco {
@@ -111,22 +74,18 @@ jacoco {
 }
 
 dependencies {
-    def retrofitVersion = '2.4.0'
-    def okhttpVersion = '3.10.0'
-    def playVisionVersion = '15.0.2'
-    def fbCoreVersion = '16.0.1'
+    def playVisionVersion = '17.0.2'
+    def fbCoreVersion = '16.0.6'
     def gsonVersion = '2.8.2'
     def daggerVersion = '2.16'
     def rxjavaVersion = '2.1.5'
     def rxAndroidVersion = '2.0.2'
-    def socketIOVersion = '1.0.0'
     def timberVersion = '4.6.0'
     def appCenterSdkVersion = '1.5.1'
     def permissionDispatcherVersion = '3.1.0'
 
     //Support Libraries
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.browser:browser:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
@@ -143,21 +102,14 @@ dependencies {
 
     // Firebase
     implementation "com.google.firebase:firebase-core:$fbCoreVersion"
-    implementation 'com.google.firebase:firebase-firestore:17.1.0'
-    implementation 'com.github.FrangSierra:RxFirebase:1.5.0'
+    implementation 'com.google.firebase:firebase-firestore:17.1.5'
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.github.FrangSierra:RxFirebase:1.5.6'
 
     // App Center
     implementation "com.microsoft.appcenter:appcenter-distribute:$appCenterSdkVersion"
     implementation "com.microsoft.appcenter:appcenter-analytics:$appCenterSdkVersion"
     implementation "com.microsoft.appcenter:appcenter-crashes:$appCenterSdkVersion"
-
-    //Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
-
-    //OkHttp
-    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
 
     //Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
@@ -175,11 +127,6 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
 
-    // Socket IO
-    implementation("io.socket:socket.io-client:$socketIOVersion") {
-        exclude group: 'org.json', module: 'json'
-    }
-
     //Timber
     implementation "com.jakewharton.timber:timber:$timberVersion"
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
@@ -193,6 +140,11 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.1.1'
     implementation 'com.jakewharton.rxbinding2:rxbinding-design:2.1.1'
 
+    implementation 'com.evernote:android-state:1.4.1'
+    kapt 'com.evernote:android-state-processor:1.4.1'
+
+    implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
+
     //Testing Libs
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.18.3'
@@ -201,12 +153,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
     })
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0'
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
-    implementation 'com.airbnb:deeplinkdispatch:4.1.0'
-    kapt 'com.airbnb:deeplinkdispatch-processor:4.1.0'
+    implementation "com.github.rogerhu.DeepLinkDispatch:deeplinkdispatch:maven-SNAPSHOT"
+    kapt "com.github.rogerhu.DeepLinkDispatch:deeplinkdispatch-processor:maven-SNAPSHOT"
 }
 
 task copyTestClasses(type: Copy) {

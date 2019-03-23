@@ -1,11 +1,8 @@
 package com.cameronvwilliams.raise.di
 
-import com.cameronvwilliams.raise.ui.intro.IntroActivity
+import com.cameronvwilliams.raise.ui.MainActivity
 import com.cameronvwilliams.raise.ui.intro.di.IntroFragmentProvider
 import com.cameronvwilliams.raise.ui.intro.di.IntroModule
-import com.cameronvwilliams.raise.ui.offline.OfflineActivity
-import com.cameronvwilliams.raise.ui.offline.di.OfflineFragmentProvider
-import com.cameronvwilliams.raise.ui.offline.di.OfflineModule
 import com.cameronvwilliams.raise.ui.pending.PendingActivity
 import com.cameronvwilliams.raise.ui.pending.di.PendingFragmentProvider
 import com.cameronvwilliams.raise.ui.pending.di.PendingModule
@@ -15,6 +12,8 @@ import com.cameronvwilliams.raise.ui.poker.di.PokerModule
 import com.cameronvwilliams.raise.ui.scanner.ScannerActivity
 import com.cameronvwilliams.raise.ui.scanner.di.ScannerFragmentProvider
 import com.cameronvwilliams.raise.ui.scanner.di.ScannerModule
+import com.cameronvwilliams.raise.ui.splash.SplashActivity
+import com.cameronvwilliams.raise.ui.splash.SplashModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -24,7 +23,12 @@ abstract class ActivityBindingModule {
 
     @PerActivity
     @ContributesAndroidInjector(modules = [IntroModule::class, IntroFragmentProvider::class])
-    internal abstract fun introActivity(): IntroActivity
+    internal abstract fun introActivity(): MainActivity
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = [SplashModule::class])
+    internal abstract fun splashActivity(): SplashActivity
+
 
     @PerActivity
     @ContributesAndroidInjector(modules = [PendingModule::class, PendingFragmentProvider::class])
@@ -37,8 +41,4 @@ abstract class ActivityBindingModule {
     @PerActivity
     @ContributesAndroidInjector(modules = [ScannerModule::class, ScannerFragmentProvider::class])
     internal abstract fun scannerActivity(): ScannerActivity
-
-    @PerActivity
-    @ContributesAndroidInjector(modules = [OfflineModule::class, OfflineFragmentProvider::class])
-    internal abstract fun offlineActivity(): OfflineActivity
 }

@@ -3,13 +3,15 @@ package com.cameronvwilliams.raise.ui.poker
 import android.content.Intent
 import android.os.Bundle
 import com.cameronvwilliams.raise.R
-import com.cameronvwilliams.raise.data.model.DeckType
 import com.cameronvwilliams.raise.data.model.PokerGame
-import com.cameronvwilliams.raise.ui.BaseActivity
-import com.cameronvwilliams.raise.util.notNull
-import kotlinx.android.synthetic.main.poker_activity.*
+import com.cameronvwilliams.raise.ui.Navigator
+import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
-class PokerActivity : BaseActivity() {
+class PokerActivity : DaggerAppCompatActivity() {
+
+    @Inject
+    lateinit var navigator: Navigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

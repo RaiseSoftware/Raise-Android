@@ -1,9 +1,8 @@
 package com.cameronvwilliams.raise.ui.intro.presenters
 
 import com.cameronvwilliams.raise.data.DataManager
-import com.cameronvwilliams.raise.data.model.ErrorResponse
+import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.data.model.PokerGame
-import com.cameronvwilliams.raise.data.remote.RetrofitException
 import com.cameronvwilliams.raise.ui.BaseFragment
 import com.cameronvwilliams.raise.ui.BasePresenter
 import com.cameronvwilliams.raise.ui.Navigator
@@ -50,13 +49,13 @@ class PasscodePresenter(private val navigator: Navigator, private val dm: DataMa
         return true
     }
 
-    fun onSubmitButtonClick(gameId: String, passcode: String, userName: String) {
-        val subscription = dm.findGame(gameId, passcode)
+    fun onSubmitButtonClick(gameName: String, passcode: String, player: Player) {
+        val subscription = dm.findGame(gameName, passcode)
             .doOnSubscribe {
                 view.showLoadingView()
             }
             .subscribe({ pokerGame ->
-                navigator.goToPendingView(pokerGame, userName, false)
+                navigator.goToPending(pokerGame, player)
                 view.hideLoadingView()
             }, { error ->
                 Timber.e(error)

@@ -1,8 +1,8 @@
 package com.cameronvwilliams.raise.ui.pending.views.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.cameronvwilliams.raise.R
 import com.cameronvwilliams.raise.data.model.Player
 import com.cameronvwilliams.raise.ui.pending.views.viewholder.PlayerListViewHolder
